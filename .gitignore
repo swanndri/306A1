@@ -1,1 +1,9 @@
 indigo_workspace/se306/build/
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+.Trashes
+.Spotlight-V100
+ehthumbs.db
+Thumbs.db
