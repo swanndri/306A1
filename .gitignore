@@ -1,4 +1,6 @@
 indigo_workspace/se306/build/
+indigo_workspace/se306/bin/
+indigo_workspace/setup.sh
 
 # OS Generated Files
 .DS_Store
@@ -7,3 +9,4 @@ indigo_workspace/se306/build/
 .Spotlight-V100
 ehthumbs.db
 Thumbs.db
+*~
