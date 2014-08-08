@@ -1,6 +1,4 @@
-indigo_workspace/se306/build/
-indigo_workspace/se306/bin/
-indigo_workspace/setup.sh
+se306/build/
 
 # OS Generated Files
 .DS_Store
