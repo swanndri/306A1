@@ -1,8 +1,8 @@
-prefix=/home/milos/306A1/se306/devel
+prefix=/306A1/se306/devel
 
 Name: package1
 Description: Description of package1
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/milos/306A1/se306/devel/lib 
+Libs: -L/306A1/se306/devel/lib 
 Requires: 
