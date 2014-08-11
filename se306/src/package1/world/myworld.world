@@ -44,22 +44,22 @@ interval_sim 100  # simulation timestep in milliseconds. length of each simulati
 
 window
 ( 
-  size [ 745.000 448.000 ] #size of the window in pixels
-  scale 30 
-  
+  size [ 573.000 365.000 ] #size of the window in pixels
+  scale 80
 )
 
 # load an environment bitmap
 floorplan
 ( 
   name "swarm"
-  bitmap "swarm_world.pgm"
-  size [54.0 58.7 0.5]
-  pose [ -29.350 27.000 0 90.000 ]
+#  bitmap "swarm_world.pgm"
+  bitmap "house.png"
+  size [30 30 0]
+#  pose [ 8 8 0 0 ]
 )
 # throw in a robot
 myRobot( pose [ 5 10 0 0 ] name "r0" color "blue")
-myRobot( pose [ 15 20 0 0 ] name "r1" color "green")
-myRobot( pose [ 10 30 0 0 ] name "r2" color "black")
-myRobot( pose [ 25 16 0 0 ] name "r3" color "yellow")
-myRobot( pose [ 5 28 0 0 ] name "r4" color "brown")
+myRobot( pose [ 6 10 0 0 ] name "r1" color "green")
+myRobot( pose [ 7 10 0 0 ] name "r2" color "black")
+myRobot( pose [ 8 10 0 0 ] name "r3" color "yellow")
+myRobot( pose [ 9 10 0 0 ] name "r4" color "brown")
