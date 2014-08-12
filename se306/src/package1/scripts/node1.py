@@ -16,7 +16,7 @@ roslib.load_manifest('package1')
 
 rospy.init_node('node1', anonymous=False)
 rospy.on_shutdown(shutdown)
-rate = rospy.Rate(1)
+rate = rospy.Rate(20)
 
 # Set the parameters for the target square
 linear_speed = rospy.get_param("~linear_speed", 50.0) # meters per second
@@ -70,7 +70,7 @@ other_bot_1 = rospy.Subscriber('/robot_0/cmd_vel', geometry_msgs.msg.Twist, bla2
 
 while not rospy.is_shutdown():
 	try:
-
+		print(len(recq))
 		if len(recq)>0:
 			command = recq.pop(0)
 			print (command.twist.twist.linear.x)
