@@ -3,6 +3,8 @@
 import roslib
 import rospy
 import geometry_msgs.msg
+import std_msgs.msg
+import nav_msgs.msg
 import math
 import tf
 
@@ -23,6 +25,11 @@ angular_speed = rospy.get_param("~angular_speed", 0.7) # radians per second
 angular_tolerance = rospy.get_param("~angular_tolerance", math.radians(2)) # degrees to radians
 
 cmd_vel = rospy.Publisher('/robot_0/cmd_vel', geometry_msgs.msg.Twist, queue_size=1000)
+
+def bla(msg):
+	print msg
+
+my_bot = rospy.Subscriber('/robot_0/odom', nav_msgs.msg.Odometry, bla)
 
 # The base frame is base_footprint for the TurtleBot but base_link for Pi Robot
 #base_frame = rospy.get_param('~base_frame', '/base_link')
