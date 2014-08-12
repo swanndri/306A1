@@ -16,20 +16,33 @@ roslib.load_manifest('package1')
 
 rospy.init_node('node1', anonymous=False)
 rospy.on_shutdown(shutdown)
-rate = rospy.Rate(20)
+rate = rospy.Rate(1)
 
 # Set the parameters for the target square
 linear_speed = rospy.get_param("~linear_speed", 50.0) # meters per second
 
 cmd_vel = rospy.Publisher('/robot_0/cmd_vel', geometry_msgs.msg.Twist, queue_size=1000)
+recq = []
+
 
 def bla(msg):
+
+	"""
+	if msg.twist.twist.linear.x == 0:
+		move_cmd = geometry_msgs.msg.Twist()
+		move_cmd.linear.x = linear_speed * -1
+		cmd_vel.publish(move_cmd)
+		"""
+
+	recq.append(msg)
+
+def bla2(msg):
 	print(msg)
 
 
-#my_bot = rospy.Subscriber('/robot_0/base_pose_ground_truth', nav_msgs.msg.Odometry, bla)
-#other_bot_1 = rospy.Subscriber('/robot_0/cmd_vel', geometry_msgs.msg.Twist, bla)
-other_bot_1 = rospy.Subscriber('/robot_0/base_scan',sensor_msgs.msg.LaserScan, bla)
+my_bot = rospy.Subscriber('/robot_0/base_pose_ground_truth', nav_msgs.msg.Odometry, bla)
+other_bot_1 = rospy.Subscriber('/robot_0/cmd_vel', geometry_msgs.msg.Twist, bla2)
+#other_bot_1 = rospy.Subscriber('/robot_0/base_scan',sensor_msgs.msg.LaserScan, bla)
 
 """This code has been commented out for now as it serves no purpose"""
 # The base frame is base_footprint for the TurtleBot but base_link for Pi Robot
@@ -57,8 +70,17 @@ other_bot_1 = rospy.Subscriber('/robot_0/base_scan',sensor_msgs.msg.LaserScan, b
 
 while not rospy.is_shutdown():
 	try:
-		move_cmd = geometry_msgs.msg.Twist()
-		move_cmd.linear.x = linear_speed
+
+		if len(recq)>0:
+			command = recq.pop(0)
+			print (command.twist.twist.linear.x)
+			if command.twist.twist.linear.x == 0:
+				move_cmd = geometry_msgs.msg.Twist()
+				move_cmd.linear.x = linear_speed * -1
+		else:
+			move_cmd = geometry_msgs.msg.Twist()
+			move_cmd.linear.x = linear_speed
+	
 		cmd_vel.publish(move_cmd)
 		rate.sleep()
 	except rospy.exceptions.ROSInterruptException:
