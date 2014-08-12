@@ -1,9 +1,9 @@
 define mylaser ranger
 (
   sensor(
-  range [ 0.0 30.0 ] # range
-  fov 180       # field of vision
-  samples 180   # samples 
+  range [ 0.0 30 ] # range
+  fov 360       # field of vision
+  samples 360  # samples 
   )
   # generic model properties
   color "black"
@@ -13,7 +13,7 @@ define mylaser ranger
 
 define myRobot position
 (
-  size [0.35 0.35 0.25]
+  size [0.35 0.35 1.5]
   drive "diff"
   mylaser(pose [ 0.050 0.000 0 0.000 ])
 )
@@ -54,12 +54,10 @@ floorplan
   name "swarm"
 #  bitmap "swarm_world.pgm"
   bitmap "house.png"
-  size [30 30 0]
+  size [30 30 3]
 #  pose [ 8 8 0 0 ]
 )
 # throw in a robot
 myRobot( pose [ 5 10 0 0 ] name "r0" color "blue")
 myRobot( pose [ 6 10 0 0 ] name "r1" color "green")
 myRobot( pose [ 7 10 0 0 ] name "r2" color "black")
-myRobot( pose [ 8 10 0 0 ] name "r3" color "yellow")
-myRobot( pose [ 9 10 0 0 ] name "r4" color "brown")
