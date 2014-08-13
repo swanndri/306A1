@@ -34,12 +34,14 @@ def base_pose_ground_truth_received(msg):
 	buffer.append(('bpgt', msg))
 
 def cmd_vel_received(msg):
+	print(msg)
+	"""
 	if debug_level > 2:
 		print("Got cv message at %s" % time.time())
 	buffer.append(('cv', msg))
-
-rospy.Subscriber('/robot_0/base_pose_ground_truth', nav_msgs.msg.Odometry, base_pose_ground_truth_received)
-#rospy.Subscriber('/robot_0/cmd_vel', geometry_msgs.msg.Twist, cmd_vel_received)
+	"""
+#rospy.Subscriber('/robot_0/base_pose_ground_truth', nav_msgs.msg.Odometry, base_pose_ground_truth_received)
+rospy.Subscriber('/robot_0/cmd_vel', geometry_msgs.msg.Twist, cmd_vel_received)
 #rospy.Subscriber('/robot_0/base_scan',sensor_msgs.msg.LaserScan, bla)
 
 while not rospy.is_shutdown():
