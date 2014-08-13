@@ -45,7 +45,7 @@ interval_sim 100  # simulation timestep in milliseconds. length of each simulati
 window
 ( 
   size [ 573.000 365.000 ] #size of the window in pixels
-  scale 80
+  scale 10
 )
 
 # load an environment bitmap
