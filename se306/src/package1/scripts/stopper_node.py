@@ -49,9 +49,13 @@ class Stopper:
         command.angular.y = 0.0
         command.angular.z = 0.0
         
-        # If we're going too slowly, then just stop
-        if abs(command.linear.x) < self.min_speed:
-            command.linear.x = 0
+        #This was the previous code from script before -- 
+	#If we're going too slowly, then just stop
+        #if abs(command.linear.x) < self.min_speed:
+        #    command.linear.x = 0
+	
+	if closest < self.distance:
+	    command.linear.x = 0
 
         rospy.logdebug('Distance: {0}, speed: {1}'.format(closest, command.linear.x))
 
