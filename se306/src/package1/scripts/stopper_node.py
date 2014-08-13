@@ -41,21 +41,30 @@ class Stopper:
         # If we're much more than 50cm away from things, then we want
         # to be going as fast as we can.  Otherwise, we want to slow
         # down.  A hyperbolic tangent transfer function will do this
-        # nicely.
+        # nicely
+        """.
         command.linear.x = tanh(5 * (closest - self.distance)) * self.max_speed
         command.linear.y = 0.0
         command.linear.z = 0.0
         command.angular.x = 0.0
         command.angular.y = 0.0
         command.angular.z = 0.0
-        
+        """
         #This was the previous code from script before -- 
-	#If we're going too slowly, then just stop
+    #If we're going too slowly, then just stop
         #if abs(command.linear.x) < self.min_speed:
         #    command.linear.x = 0
-	
-	if closest < self.distance:
-	    command.linear.x = 0
+    
+        if closest < self.distance:
+            command.linear.x = -1
+        else:
+            command.linear.x = 1
+
+        command.linear.y = 0.0
+        command.linear.z = 0.0
+        command.angular.x = 0.0
+        command.angular.y = 0.0
+        command.angular.z = 0.0
 
         rospy.logdebug('Distance: {0}, speed: {1}'.format(closest, command.linear.x))
 
@@ -75,4 +84,3 @@ if __name__ == '__main__':
 
     # Hand control over to ROS
     rospy.spin()
-
