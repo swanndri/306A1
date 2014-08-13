@@ -14,6 +14,8 @@ from sensor_msgs.msg import LaserScan
 # We use a hyperbolic tangent as a transfer function
 from math import tanh
 
+import random
+
 
 class Stopper:
 	def __init__(self, distance, max_speed=1, min_speed=0.01):
@@ -42,29 +44,25 @@ class Stopper:
 		# to be going as fast as we can.  Otherwise, we want to slow
 		# down.  A hyperbolic tangent transfer function will do this
 		# nicely
-		""".
+		
 		command.linear.x = tanh(5 * (closest - self.distance)) * self.max_speed
 		command.linear.y = 0.0
 		command.linear.z = 0.0
 		command.angular.x = 0.0
 		command.angular.y = 0.0
-		command.angular.z = 0.0
-		"""
-		#This was the previous code from script before -- 
-		#If we're going too slowly, then just stop
-		#if abs(command.linear.x) < self.min_speed:
-		#    command.linear.x = 0
-	
-		if closest < self.distance:
-			command.linear.x = -1
+		if command.linear.x < 0.9:
+			if self.turn_direction:
+				if self.turn_direction > 0.50:
+					command.angular.z = random.randint(0, 6)
+				else:
+					command.angular.z = random.randint(-6, 0)
+			else:
+				self.turn_direction = random.random()
 		else:
-			command.linear.x = 1
+			self.turn_direction = None
 
-		command.linear.y = 0.0
-		command.linear.z = 0.0
-		command.angular.x = 0.0
-		command.angular.y = 0.0
-		command.angular.z = 0.0
+		if closest < self.distance:
+			command.linear.x = 0
 
 		rospy.logdebug('Distance: {0}, speed: {1}'.format(closest, command.linear.x))
 
