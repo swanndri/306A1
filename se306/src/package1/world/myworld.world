@@ -1,13 +1,13 @@
 define mylaser ranger
 (
   sensor(
-  range [ 0.0 30 ] # range
+  range [ 0 30 ] # range
   fov 180       # field of vision
   samples 180  # samples 
   )
   # generic model properties
   color "black"
-  size [ 0.05 0.05 0.1 ]
+  size [ 0.05 0.05 0.5 ] # Height of notification for collision. 0.1 seems to be the minimum height
   
 )
 
@@ -15,7 +15,7 @@ define myRobot position
 (
   size [0.35 0.35 1.5]
   drive "diff"
-  mylaser(pose [ 0.050 0.000 0 0.000 ])
+  mylaser(pose [ 0.050 0.000 -0.5 0.000 ]) # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is unknown for now.
 )
 
 define floorplan model
