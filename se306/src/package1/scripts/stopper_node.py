@@ -57,6 +57,7 @@ class Stopper:
 						command.angular.x = 0.0
 						command.angular.y = 0.0
 						command.angular.z = 0.0
+
 					elif self.xPos < self.xTarget:
 						command.linear.x = 1
 						command.linear.y = 0.0
@@ -64,6 +65,7 @@ class Stopper:
 						command.angular.x = 0.0
 						command.angular.y = 0.0
 						command.angular.z = 0.0
+
 				# Buffer is 0.5 so that when a robot goes straight to the destination it doesnt collide with it
 				elif abs(self.xPos-self.xTarget) < 0.5 :
 
@@ -74,12 +76,9 @@ class Stopper:
 					command.angular.y = 0.0
 					command.angular.z = 0.0
 					self.atXTarget = True
-
-
 				
 				if self.atXTarget == True:
 					if abs(self.yPos-self.yTarget) > 0.5 :
-
 						if self.yPos > self.yTarget:
 							command.linear.x = 0.0
 							command.linear.y = 1
@@ -95,24 +94,22 @@ class Stopper:
 							else:
 								command.linear.x = -1
 
+						elif self.yPos < self.yTarget:
+							command.linear.x = 0
+							command.linear.y = -1
+							command.linear.z = 0.0
+							command.angular.x = 0.0
+							command.angular.y = 0.0
+							command.angular.z = 0.0
 
-					elif self.yPos < self.yTarget:
-						command.linear.x = 0
-						command.linear.y = -1
-						command.linear.z = 0.0
-						command.angular.x = 0.0
-						command.angular.y = 0.0
-						command.angular.z = 0.0
-
-						if self.turnCount > 0:
-							command.angular.z = math.pi/2
-							self.turnCount -= 1
-							self.has_rotated = True
-						else:
-							command.linear.x = 1
+							if self.turnCount > 0:
+								command.angular.z = math.pi/2
+								self.turnCount -= 1
+								self.has_rotated = True
+							else:
+								command.linear.x = 1
 
 					elif abs(self.yPos-self.yTarget) < 1:
-
 						command.linear.x = 0
 						command.linear.y = 0.0
 						command.linear.z = 0.0
@@ -126,9 +123,9 @@ class Stopper:
 					self.turn_count_2 = 10
 				# Else if at the target, robot needs to be able to turn again if it gets a new target
 				elif self.atXTarget == True and self.atYTarget == True:
-					print "REACHED TARGET"
+					#print "REACHED TARGET"
 					#No idea what w is yet, something to do with it's rotation
-					print ("Theta equals",msg.pose.pose.orientation.w)
+					#print ("Theta equals",msg.pose.pose.orientation.w)
 					# Rotate robot back into original orientation
 					if self.has_rotated:
 						if self.turn_count_2 > 0:
