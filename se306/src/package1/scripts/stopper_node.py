@@ -33,14 +33,21 @@ class Stopper:
 		self.has_rotated = False
 		self.atXTarget = False
 		self.atYTarget = False
+		self.count = 0
 
 		def cmd_vel_received(msg):
 			self.xTarget = msg.pose.pose.position.x
 			self.yTarget = msg.pose.pose.position.y
 
 		def cmd_vel_received2(msg):
+			
+			if (self.count == 10):
+				print("HERE")
+				self.count = 0
+
 			self.xPos = msg.pose.pose.position.x
 			self.yPos = msg.pose.pose.position.y
+			self.count = self.count + 1
 
 			command = geometry_msgs.msg.Twist()
 
