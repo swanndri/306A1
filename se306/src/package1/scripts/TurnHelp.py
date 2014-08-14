@@ -1,38 +1,39 @@
+#!/usr/bin/env python
 import math
 
 class Angle:
 
-	# Check which direction is best to rotate (anti clockwise or clockwise)
-	def check(self, angle_from, angle_to):
-		diff = angle_from - angle_to
-		if (angle_to >= 0) and (angle_to < 90): 
-			if (angle_from >= 0) and (angle_from <= 90):
+	# Check which direction is best to rotate (anti clockwise(1) or clockwise(-1))
+	def check(self):
+		diff = self.angle_from - self.angle_to
+		if (self.angle_to >= 0) and (self.angle_to < 90): 
+			if (self.angle_from >= 0) and (self.angle_from <= 90):
 				if diff > 0:
-					print ("Anti-Clockwise")
+					return -1
 				else:
-					print ("Clockwise")
+					return 1
 			else:
 				if diff > 0:
-					print ("Clockwise")
+					return 1
 				else:
-					print ("Anti-Clockwise")
+					return -1
 		else:
-			if (angle_from >= 0) and (angle_from < 90):
-				if (angle_to >= 180) and (angle_to <= 270):
+			if (self.angle_from >= 0) and (self.angle_from < 90):
+				if (self.angle_to >= 180) and (self.angle_to <= 270):
 					if diff < 0:
-						print ("Anti-Clockwise")
+						return -1
 					else:
-						print ("Clockwise")
+						return 1
 				else:
 					if diff > 0:
-						print ("Anti-Clockwise")
+						return -1
 					else:
-						print ("Clockwise")
+						return 1
 			else:
 				if diff <= 0:
-					print ("Clockwise")
+					return 1
 				else:
-					print ("Anti-Clockwise")
+					return -1
 
 	# Normalizes input angle
 	def normalize(self, input_angle):
@@ -41,15 +42,27 @@ class Angle:
 			new_angle += 360;
 		return new_angle
 
-if __name__ == '__main__':
-	# Get input from user
-	angle = Angle()
-	from_angle = input("Enter Angle from: ")
-	to_angle = input("Enter Angle to: ")
+	def __init__(self, current, target):
+		self.angle_from = self.normalize(current)
+		self.angle_to = self.normalize(target)
 
-	# Normalizes angles (makes positives)
-	from_angle = angle.normalize(from_angle)
-	to_angle = angle.normalize(to_angle)
+
+
+# if __name__ == '__main__':
+# 	# Get input from user
+# 	angle = Angle(90,180)	
+# 	# Check which direction is best to rotate
+# 	print(angle.check())
+
+# if __name__ == '__main__':
+# 	# Get input from user
+# 	angle = Angle()
+# 	from_angle = input("Enter Angle from: ")
+# 	to_angle = input("Enter Angle to: ")
+
+# 	# Normalizes angles (makes positives)
+# 	from_angle = angle.normalize(from_angle)
+# 	to_angle = angle.normalize(to_angle)
 	
-	# Check which direction is best to rotate
-	angle.check(from_angle, to_angle)
+# 	# Check which direction is best to rotate
+# 	angle.check(from_angle, to_angle)
