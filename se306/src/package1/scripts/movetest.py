@@ -30,14 +30,15 @@ class Navigate:
 		self.kitchen		=	[6,11]
 		self.living_room	=	[6,1]
 
-		#self.doorToKitchen	=	[self.door, self.hallway_mid, self.living_room, self.kitchen]
-
-		self.current_path	=	[self.door, self.hallway_mid, self.living_room, self.kitchen]
+		self.door_to_kitchen				=	[self.door, self.hallway_mid, self.living_room, self.kitchen]
+		self.bedroom_to_living_room			=	[self.bedroom, self.hallway_top, self.hallway_mid, self.living_room]
+		self.living_room_to_kitchen			=	[self.living_room, self.kitchen]
+		self.kitchen_to_bedroom				=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom]
 
 		self.target_coordinate = None
 		self.target_direction = self.west
 		
-		#self.current_path = self.doorToKitchen
+		self.current_path = self.kitchen_to_bedroom
 
 		self.facing_correct_direction = False
 
@@ -55,7 +56,6 @@ class Navigate:
 			quaternionlist = [quaternion.x, quaternion.y, quaternion.z, quaternion.w]
 			self.current_direction = euler_from_quaternion(quaternionlist)[2]
 
-			print(self.target_coordinate)
 			#Setup target direction
 			if (self.target_coordinate is not None):			
 				if(abs(self.current_coordinates[0] - self.target_coordinate[0]) > 0.5):
@@ -74,7 +74,6 @@ class Navigate:
 					else:
 						self.not_at_target = False
 						if(len(self.current_path) > 0):
-							print(self.current_path[0])
 							self.target_coordinate = self.current_path.pop(0)
 							self.not_at_target = True
 
