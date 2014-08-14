@@ -38,7 +38,7 @@ def listener():
 if __name__ == '__main__':
 	rospy.init_node('status')
 	
-	rospy.Subscriber('robot_0', String, callback)
+	rospy.Subscriber('', String, callback)
 	
     listener()
 
