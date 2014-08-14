@@ -29,6 +29,7 @@ class Stopper:
 		self.xPos = None
 		self.yPos = None
 		self.turnCount = 10
+		self.turnCount2 = 10
 		self.atXTarget = False
 		self.atYTarget = False
 		def cmd_vel_received(msg):
@@ -40,6 +41,8 @@ class Stopper:
 			self.yPos = msg.pose.pose.position.y
 
 			command = geometry_msgs.msg.Twist()
+
+			print ("Theta equals",msg.pose.pose.orientation.w)
 
 			if self.xTarget is not None and self.yTarget is not None:
 				
@@ -104,7 +107,7 @@ class Stopper:
 						else:
 							command.linear.x = 1
 
-					elif abs(self.yPos-self.yTarget) < 0.5:
+					elif abs(self.yPos-self.yTarget) < 1:
 
 						command.linear.x = 0
 						command.linear.y = 0.0
@@ -116,8 +119,17 @@ class Stopper:
 
 				if self.atXTarget == True and self.atYTarget == True:
 					print "REACHED TARGET"
+					#No idea what w is yet, something to do with it's rotation
+					print ("Theta equals",msg.pose.pose.orientation.w)
+					# Rotate robot back into original orientation
+					if self.turnCount2 > 0:
+						command.angular.z = -math.pi/2
+						self.turnCount2 -= 1
+					else:
+						command.linear.x = 0
+					
 
-
+	
 				#print(command)
 				self.pub.publish(command)
 
