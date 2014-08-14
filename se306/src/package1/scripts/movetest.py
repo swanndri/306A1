@@ -20,15 +20,32 @@ class Navigate:
 		self.north = math.pi / 2.0
 		self.south = -math.pi / 2.0
 
-		self.target_coordinates = [6,0]
+		self.cupboard 		=	[-11,12]
+		self.bedroom 		=	[-11,6]
+		self.bathroom		=	[-10,-11]
+		self.hallway_top	=	[-4,6]
+		self.hallway_mid	=	[-4,1]
+		self.hallway_bot	=	[-4,-11]
+		self.door			=	[-4,-14]
+		self.kitchen		=	[6,11]
+		self.living_room	=	[6,1]
+
+		#self.doorToKitchen	=	[self.door, self.hallway_mid, self.living_room, self.kitchen]
+
+		self.current_path	=	[self.door, self.hallway_mid, self.living_room, self.kitchen]
+
+		self.target_coordinate = None
 		self.target_direction = self.west
+		
+		#self.current_path = self.doorToKitchen
 
 		self.facing_correct_direction = False
 
 		self.not_at_target = True
-
 		self.current_coordinates = [0,0]
 		self.current_direction	= self.north
+
+		self.target_coordinate = self.current_path.pop(0)
 
 		def process_position(position_data):
 			self.current_coordinates[0] = position_data.pose.pose.position.x
@@ -38,23 +55,28 @@ class Navigate:
 			quaternionlist = [quaternion.x, quaternion.y, quaternion.z, quaternion.w]
 			self.current_direction = euler_from_quaternion(quaternionlist)[2]
 
+			print(self.target_coordinate)
 			#Setup target direction
-			if (self.target_coordinates is not None):			
-				if(abs(self.current_coordinates[0] - self.target_coordinates[0]) > 0.5):
+			if (self.target_coordinate is not None):			
+				if(abs(self.current_coordinates[0] - self.target_coordinate[0]) > 0.5):
 					self.not_at_target = True
-					if (self.current_coordinates[0] > self.target_coordinates[0]):
+					if (self.current_coordinates[0] > self.target_coordinate[0]):
 						self.target_direction = self.west
 					else:
 						self.target_direction = self.east
 				else:
-					if(abs(self.current_coordinates[1] - self.target_coordinates[1]) > 0.5):
+					if(abs(self.current_coordinates[1] - self.target_coordinate[1]) > 0.5):
 						self.not_at_target = True
-						if (self.current_coordinates[1] > self.target_coordinates[1]):
+						if (self.current_coordinates[1] > self.target_coordinate[1]):
 							self.target_direction = self.south
 						else:
 							self.target_direction = self.north
 					else:
 						self.not_at_target = False
+						if(len(self.current_path) > 0):
+							print(self.current_path[0])
+							self.target_coordinate = self.current_path.pop(0)
+							self.not_at_target = True
 
 			#ROTATION
 			if(abs(self.current_direction - self.target_direction) >  math.radians(3)):
