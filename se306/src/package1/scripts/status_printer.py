@@ -1,27 +1,44 @@
 #!/usr/bin/env python
 
+import rospy
+from sensor_msgs.msg import String
+
 class StatusPrinter:
 	
 	def __init__(self):
-		self.health = 100
-		self.bladder = 0
-		
-	def print_health(self):
-		hash_count = (self.health_max//10)
-		print " [ Health  : " + "#"*hash_count + " "*(10-hash_count) + " ] "
-		
-	def print_bladder(self):
-		hash_count = (self.bladder_max//10)
-		print " [ Bladder : " + "#"*hash_count + " "*(10-hash_count) + " ] "
+		self.activity = "Idle"
+			
+	def print_activity(self):
+		print " [ Activity  : " + activity + " "*len(activity-10) + " ]"
 		
 	def display_status(self):
-		print_health()
-		print_bladder()
+		print_activity()
 		
 	def data_received(self, data):
-		if datarelatedtohealth:
-			self.health = data
-		elif datarelatedtobladder:
-			self.bladder = data
+		self.activity = data
 			
 		self.display_status()
+		
+		
+		
+		
+		
+def callback(data):
+    rospy.loginfo(rospy.get_caller_id()+"I heard %s",data.data)
+    
+def listener():
+
+    rospy.init_node('listener', anonymous=True)
+
+    rospy.Subscriber("chatter", String, callback)
+
+    # spin() simply keeps python from exiting until this node is stopped
+    rospy.spin()
+        
+if __name__ == '__main__':
+	rospy.init_node('status')
+	
+	rospy.Subscriber('robot_0', String, callback)
+	
+    listener()
+
