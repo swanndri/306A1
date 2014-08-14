@@ -15,27 +15,46 @@ from tf.transformations import euler_from_quaternion
 
 #Rotates robot in direction of current target.
 
-east 	= 0.0
-west 	= math.pi
-north	= math.pi / 2.0
-south 	= -math.pi / 2.0
+east = 0.0
+est = math.pi
+north = math.pi / 2.0
+south = -math.pi / 2.0
 
 target_coordinates = [6,0]
 target_direction = west
 
 facing_correct_direction = False
-at_target = False
+
+atx_target = False
+not_at_target = True
 
 current_coordinates = [0,0]
 current_direction	= north
 
 def process_position(position_data):
 	current_coordinates[0] = position_data.pose.pose.position.x
-	current_coordinates[0] = position_data.pose.pose.position.y
+	current_coordinates[1] = position_data.pose.pose.position.y
 	
 	quaternion = position_data.pose.pose.orientation
 	quaternionlist = [quaternion.x, quaternion.y, quaternion.z, quaternion.w]
 	current_direction = euler_from_quaternion(quaternionlist)[2]
+
+	#Setup target direction
+	if (target_coordinates is not None):			
+		if(abs(current_coordinates[0] - target_coordinates[0]) > 0.5):
+			if (current_coordinates[0] > target_coordinates[0]):
+				target_direction = west
+			else:
+				target_direction = east
+		else:
+			atx_target = True
+			if(abs(current_coordinates[1] - target_coordinates[1]) > 0.5):
+				if (current_coordinates[1] > target_coordinates[1]):
+					target_direction = south
+				else:
+					target_direction = north
+			else:
+				not_at_target = False
 
 	#ROTATION
 	if(abs(current_direction - target_direction) >  math.radians(3)):
