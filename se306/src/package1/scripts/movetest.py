@@ -15,10 +15,10 @@ from tf.transformations import euler_from_quaternion
 
 #Rotates robot in direction of current target.
 
-north 	= 0.0
-south 	= math.pi
-west 	= math.pi / 2.0
-east 	= -math.pi / 2.0
+east 	= 0.0
+west 	= math.pi
+north	= math.pi / 2.0
+south 	= -math.pi / 2.0
 
 target_coordinates = [6,0]
 target_direction = west
@@ -36,16 +36,20 @@ def process_position(position_data):
 	quaternion = position_data.pose.pose.orientation
 	quaternionlist = [quaternion.x, quaternion.y, quaternion.z, quaternion.w]
 	current_direction = euler_from_quaternion(quaternionlist)[2]
-	
-	if(abs(current_direction - target_direction) >  math.radians(2)):
+
+	#ROTATION
+	if(abs(current_direction - target_direction) >  math.radians(3)):
 		move_cmd.angular.z = -2 * math.pi / 25
+		facing_correct_direction = False
 	else:
 		move_cmd.angular.z = 0
 		facing_correct_direction = True
 
-def process_linear_velocity(velocity_data):
-	pass
-
+	#LINEAR MOVEMENT
+	if (facing_correct_direction == True):
+		move_cmd.linear.x = 1
+	else:
+		move_cmd.linear.x = 0
 
 rospy.init_node('navigater_robot_0')
 robot_0_movement_publisher = rospy.Publisher('/robot_1/cmd_vel', geometry_msgs.msg.Twist, queue_size=10)
