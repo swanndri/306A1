@@ -34,11 +34,12 @@ class Navigate:
 		self.bedroom_to_living_room			=	[self.bedroom, self.hallway_top, self.hallway_mid, self.living_room]
 		self.living_room_to_kitchen			=	[self.living_room, self.kitchen]
 		self.kitchen_to_bedroom				=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom]
+		self.kitchen_to_cupboard			=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom, self.cupboard]
 
 		self.target_coordinate = None
 		self.target_direction = self.west
 		
-		self.current_path = self.kitchen_to_bedroom
+		self.current_path = self.kitchen_to_cupboard
 
 		self.facing_correct_direction = False
 
