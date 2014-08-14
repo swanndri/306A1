@@ -1,8 +1,9 @@
 
-class Angles:
+class Angle:
 
-	def check(angle_from, angle_to):
-		diff = angle_from-angle_to
+	# Check which direction is best to rotate (anti clockwise or clockwise)
+	def check(self, angle_from, angle_to):
+		diff = angle_from - angle_to
 		if (angle_to >= 0) and (angle_to < 90): 
 			if (angle_from >= 0) and (angle_from <= 90):
 				if diff > 0:
@@ -32,17 +33,25 @@ class Angles:
 				else:
 					print ("Anti-Clockwise")
 
-	def normalize(angle_norm):
-		newAngle = int(angle_norm)
-    		if newAngle < 0:
-			newAngle += 360;
-		return newAngle
+	# Normalizes input angle
+	def normalize(self, input_angle):
+		new_angle = int(input_angle)
+    		if new_angle < 0:
+			new_angle += 360;
+		return new_angle
 
-	what = input("Enter Angle from: ")
-	huh = input("Enter Angle to: ")
-	what = normalize(what)
-	huh = normalize(huh)
-	check(what, huh)
+if __name__ == '__main__':
+	# Get input from user
+	angle = Angle()
+	from_angle = input("Enter Angle from: ")
+	to_angle = input("Enter Angle to: ")
+
+	# Normalizes angles (makes positives)
+	from_angle = angle.normalize(from_angle)
+	to_angle = angle.normalize(to_angle)
+	
+	# Check which direction is best to rotate
+	angle.check(from_angle, to_angle)
 
 
 
