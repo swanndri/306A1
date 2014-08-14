@@ -1,3 +1,4 @@
+import math
 
 class Angle:
 
@@ -52,7 +53,3 @@ if __name__ == '__main__':
 	
 	# Check which direction is best to rotate
 	angle.check(from_angle, to_angle)
-
-
-
-
