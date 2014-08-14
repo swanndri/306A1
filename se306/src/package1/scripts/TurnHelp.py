@@ -1,3 +1,4 @@
+import math
 
 class Angles:
 
@@ -40,6 +41,8 @@ class Angles:
 
 	what = input("Enter Angle from: ")
 	huh = input("Enter Angle to: ")
+	#what = math.degrees(int(what))
+	#huh = math.degrees(int(what))
 	what = normalize(what)
 	huh = normalize(huh)
 	check(what, huh)
