@@ -39,15 +39,15 @@ class Navigate:
 		self.target_coordinate = None
 		self.target_direction = self.west
 		
-		self.current_path = self.kitchen_to_cupboard
+		self.current_path = self.door_to_kitchen
 
 		self.facing_correct_direction = False
 
 		self.not_at_target = True
 		self.current_coordinates = [0,0]
 		self.current_direction	= self.north
-
-		self.target_coordinate = self.current_path.pop(0)
+		
+		#self.target_coordinate = self.current_path.pop(0)
 
 		def process_position(position_data):
 			self.current_coordinates[0] = position_data.pose.pose.position.x
@@ -78,21 +78,29 @@ class Navigate:
 							self.target_coordinate = self.current_path.pop(0)
 							self.not_at_target = True
 
-			#ROTATION
-			if(abs(self.current_direction - self.target_direction) >  math.radians(3)):
-				move_cmd.angular.z = -2 * math.pi / 25
-				self.facing_correct_direction = False
-			else:
-				move_cmd.angular.z = 0
-				self.facing_correct_direction = True
+				#ROTATION
+				if(abs(self.current_direction - self.target_direction) >  math.radians(3)):
+					move_cmd.angular.z = -2 * math.pi / 25
+					self.facing_correct_direction = False
+				else:
+					move_cmd.angular.z = 0
+					self.facing_correct_direction = True
 
-			#LINEAR MOVEMENT
-			if (self.facing_correct_direction == True and self.not_at_target == True):
-				move_cmd.linear.x = 1
-			else:
-				move_cmd.linear.x = 0
+				#LINEAR MOVEMENT
+				if (self.facing_correct_direction == True and self.not_at_target == True):
+					move_cmd.linear.x = 1
+				else:
+					move_cmd.linear.x = 0
+
+		def process_event(action_msg):
+			#print('test')
+			message = str(action_msg).split("data: ")[1]
+			if (message == 'Resident.wakeup'):
+				self.current_path = self.bedroom_to_living_room
+				self.target_coordinate = self.current_path.pop(0)
 
 		rospy.Subscriber('/robot_1/base_pose_ground_truth', nav_msgs.msg.Odometry, process_position)
+		rospy.Subscriber("scheduler", String, process_event)
 		robot_0_movement_publisher = rospy.Publisher('/robot_1/cmd_vel', geometry_msgs.msg.Twist, queue_size=10)
 		rate = rospy.Rate(10)
 
