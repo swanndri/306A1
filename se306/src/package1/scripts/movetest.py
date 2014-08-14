@@ -13,72 +13,76 @@ import tf
 from std_msgs.msg import String
 from tf.transformations import euler_from_quaternion
 
-#Rotates robot in direction of current target.
+class Navigate:
+	def __init__(self):
+		self.east = 0.0
+		self.west = math.pi
+		self.north = math.pi / 2.0
+		self.south = -math.pi / 2.0
 
-east = 0.0
-est = math.pi
-north = math.pi / 2.0
-south = -math.pi / 2.0
+		self.target_coordinates = [6,0]
+		self.target_direction = self.west
 
-target_coordinates = [6,0]
-target_direction = west
+		self.facing_correct_direction = False
 
-facing_correct_direction = False
+		self.not_at_target = True
 
-atx_target = False
-not_at_target = True
+		self.current_coordinates = [0,0]
+		self.current_direction	= self.north
 
-current_coordinates = [0,0]
-current_direction	= north
+		def process_position(position_data):
+			self.current_coordinates[0] = position_data.pose.pose.position.x
+			self.current_coordinates[1] = position_data.pose.pose.position.y
+			
+			quaternion = position_data.pose.pose.orientation
+			quaternionlist = [quaternion.x, quaternion.y, quaternion.z, quaternion.w]
+			self.current_direction = euler_from_quaternion(quaternionlist)[2]
 
-def process_position(position_data):
-	current_coordinates[0] = position_data.pose.pose.position.x
-	current_coordinates[1] = position_data.pose.pose.position.y
-	
-	quaternion = position_data.pose.pose.orientation
-	quaternionlist = [quaternion.x, quaternion.y, quaternion.z, quaternion.w]
-	current_direction = euler_from_quaternion(quaternionlist)[2]
-
-	#Setup target direction
-	if (target_coordinates is not None):			
-		if(abs(current_coordinates[0] - target_coordinates[0]) > 0.5):
-			if (current_coordinates[0] > target_coordinates[0]):
-				target_direction = west
-			else:
-				target_direction = east
-		else:
-			atx_target = True
-			if(abs(current_coordinates[1] - target_coordinates[1]) > 0.5):
-				if (current_coordinates[1] > target_coordinates[1]):
-					target_direction = south
+			#Setup target direction
+			if (self.target_coordinates is not None):			
+				if(abs(self.current_coordinates[0] - self.target_coordinates[0]) > 0.5):
+					self.not_at_target = True
+					if (self.current_coordinates[0] > self.target_coordinates[0]):
+						self.target_direction = self.west
+					else:
+						self.target_direction = self.east
 				else:
-					target_direction = north
+					if(abs(self.current_coordinates[1] - self.target_coordinates[1]) > 0.5):
+						self.not_at_target = True
+						if (self.current_coordinates[1] > self.target_coordinates[1]):
+							self.target_direction = self.south
+						else:
+							self.target_direction = self.north
+					else:
+						self.not_at_target = False
+
+			#ROTATION
+			if(abs(self.current_direction - self.target_direction) >  math.radians(3)):
+				move_cmd.angular.z = -2 * math.pi / 25
+				self.facing_correct_direction = False
 			else:
-				not_at_target = False
+				move_cmd.angular.z = 0
+				self.facing_correct_direction = True
 
-	#ROTATION
-	if(abs(current_direction - target_direction) >  math.radians(3)):
-		move_cmd.angular.z = -2 * math.pi / 25
-		facing_correct_direction = False
-	else:
-		move_cmd.angular.z = 0
-		facing_correct_direction = True
+			#LINEAR MOVEMENT
+			if (self.facing_correct_direction == True and self.not_at_target == True):
+				move_cmd.linear.x = 1
+			else:
+				move_cmd.linear.x = 0
 
-	#LINEAR MOVEMENT
-	if (facing_correct_direction == True):
-		move_cmd.linear.x = 1
-	else:
-		move_cmd.linear.x = 0
+		rospy.Subscriber('/robot_1/base_pose_ground_truth', nav_msgs.msg.Odometry, process_position)
+		robot_0_movement_publisher = rospy.Publisher('/robot_1/cmd_vel', geometry_msgs.msg.Twist, queue_size=10)
+		rate = rospy.Rate(10)
 
-rospy.init_node('navigater_robot_0')
-robot_0_movement_publisher = rospy.Publisher('/robot_1/cmd_vel', geometry_msgs.msg.Twist, queue_size=10)
-rate = rospy.Rate(10)
+		
+		move_cmd = geometry_msgs.msg.Twist()
+		target = math.pi/2
 
-rospy.Subscriber('/robot_1/base_pose_ground_truth', nav_msgs.msg.Odometry, process_position)
+		while not rospy.is_shutdown():
+			robot_0_movement_publisher.publish(move_cmd)
+			rate.sleep()
 
-move_cmd = geometry_msgs.msg.Twist()
-target = math.pi/2
-
-while not rospy.is_shutdown():
-	robot_0_movement_publisher.publish(move_cmd)
-	rate.sleep()
+if __name__ == '__main__':
+	rospy.init_node('navigater_robot_0')
+	navigate = Navigate()
+	
