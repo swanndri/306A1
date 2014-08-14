@@ -7,8 +7,10 @@ import rosgraph_msgs
 
 from std_msgs.msg import String
 
-def process_event(data):
-    print(data)
+def process_event(action_msg):
+	#print('test')
+	message = str(action_msg).split("data: ")[1]
+	print(message)
     
 def listener():
 
