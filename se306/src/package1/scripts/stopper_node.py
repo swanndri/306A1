@@ -29,7 +29,8 @@ class Stopper:
 		self.xPos = None
 		self.yPos = None
 		self.turnCount = 10
-		self.turnCount2 = 10
+		self.turn_count_2 = 10
+		self.has_rotated = False
 		self.atXTarget = False
 		self.atYTarget = False
 		def cmd_vel_received(msg):
@@ -42,11 +43,11 @@ class Stopper:
 
 			command = geometry_msgs.msg.Twist()
 
-			print ("Theta equals",msg.pose.pose.orientation.w)
+			#print ("Theta equals",msg.pose.pose.orientation.w)
 
 			if self.xTarget is not None and self.yTarget is not None:
-				
-				if abs(self.xPos-self.xTarget) > 0.1 :
+				# Buffer is 0.5 so that when a robot goes straight to the destination it doesnt collide with it and detects it
+				if abs(self.xPos-self.xTarget) > 0.5 :
 
 					if self.xPos > self.xTarget:
 						command.linear.x = -1
@@ -62,8 +63,8 @@ class Stopper:
 						command.angular.x = 0.0
 						command.angular.y = 0.0
 						command.angular.z = 0.0
-
-				elif abs(self.xPos-self.xTarget) < 0.1 :
+				# Buffer is 0.5 so that when a robot goes straight to the destination it doesnt collide with it
+				elif abs(self.xPos-self.xTarget) < 0.5 :
 
 					command.linear.x = 0
 					command.linear.y = 0.0
@@ -89,6 +90,7 @@ class Stopper:
 							if self.turnCount > 0:
 								command.angular.z = math.pi/2
 								self.turnCount -= 1
+								self.has_rotated = True
 							else:
 								command.linear.x = -1
 
@@ -104,6 +106,7 @@ class Stopper:
 						if self.turnCount > 0:
 							command.angular.z = math.pi/2
 							self.turnCount -= 1
+							self.has_rotated = True
 						else:
 							command.linear.x = 1
 
@@ -122,14 +125,11 @@ class Stopper:
 					#No idea what w is yet, something to do with it's rotation
 					print ("Theta equals",msg.pose.pose.orientation.w)
 					# Rotate robot back into original orientation
-					if self.turnCount2 > 0:
-						command.angular.z = -math.pi/2
-						self.turnCount2 -= 1
-					else:
-						command.linear.x = 0
-					
-
-	
+					if self.has_rotated:
+						if self.turn_count_2 > 0:
+							command.angular.z = -math.pi/2
+							self.turn_count_2 -= 1
+							
 				#print(command)
 				self.pub.publish(command)
 
