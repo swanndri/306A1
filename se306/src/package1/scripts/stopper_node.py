@@ -33,6 +33,7 @@ class Stopper:
 		self.has_rotated = False
 		self.atXTarget = False
 		self.atYTarget = False
+
 		def cmd_vel_received(msg):
 			self.xTarget = msg.pose.pose.position.x
 			self.yTarget = msg.pose.pose.position.y
@@ -120,7 +121,11 @@ class Stopper:
 						command.angular.z = 0.0
 						self.atYTarget = True
 
-				if self.atXTarget == True and self.atYTarget == True:
+				# If robot is not at the target, it will need to robot back to its original orientation at some point
+				if self.atXTarget == False and self.atYTarget == False:
+					self.turn_count_2 = 10
+				# Else if at the target, robot needs to be able to turn again if it gets a new target
+				elif self.atXTarget == True and self.atYTarget == True:
 					print "REACHED TARGET"
 					#No idea what w is yet, something to do with it's rotation
 					print ("Theta equals",msg.pose.pose.orientation.w)
@@ -129,7 +134,14 @@ class Stopper:
 						if self.turn_count_2 > 0:
 							command.angular.z = -math.pi/2
 							self.turn_count_2 -= 1
-							
+							#Let the robot be able to make another turn again
+							self.turnCount = 10
+
+					# If at the target, self.atXTarget and self.atYTarget will be set to True again in the code before this
+					# so it won't cause problems. But if it gains a new target then this allows it to go towards that now instead
+					self.atXTarget = False
+					self.atYTarget = False
+
 				#print(command)
 				self.pub.publish(command)
 
