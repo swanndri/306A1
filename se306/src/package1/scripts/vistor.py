@@ -113,6 +113,6 @@ class Navigate:
 			rate.sleep()
 
 if __name__ == '__main__':
-	rospy.init_node('visitor')
+	rospy.init_node('visitor_robot')
 	navigate = Navigate()
 	

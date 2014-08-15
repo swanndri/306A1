@@ -129,6 +129,6 @@ class Navigate:
 			rate.sleep()
 
 if __name__ == '__main__':
-	rospy.init_node('navigater_robot_0')
+	rospy.init_node('resident_prototype')
 	navigate = Navigate()
 	

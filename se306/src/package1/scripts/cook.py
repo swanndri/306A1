@@ -123,5 +123,5 @@ class Navigate:
 			rate.sleep()
 
 if __name__ == '__main__':
-	rospy.init_node('cook')
+	rospy.init_node('cook_robot')
 	navigate = Navigate()
