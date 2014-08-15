@@ -29,9 +29,11 @@ class Navigate:
 		self.door			=	[-4,-14]
 		self.kitchen		=	[6,11]
 		self.living_room	=	[6,1]
+		self.cook_idle		= 	[13,-13]
 
 		self.door_to_kitchen				=	[self.door, self.hallway_mid, self.living_room, self.kitchen]
 		self.kitchen_to_door				=	[self.kitchen, self.living_room, self.hallway_mid]
+		self.cook_path						=	[self.cook_idle, self.living_room, self.kitchen, self.living_room, self.cook_idle]
 		self.bedroom_to_living_room			=	[self.bedroom, self.hallway_top, self.hallway_mid, self.living_room]
 		self.living_room_to_kitchen			=	[self.living_room, self.kitchen]
 		self.kitchen_to_bedroom				=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom]
@@ -98,7 +100,7 @@ class Navigate:
 			#print('test')
 			message = str(action_msg).split("data: ")[1]
 			if ('Cook.cook_' in message):
-				self.current_path = self.door_to_kitchen + self.kitchen_to_door
+				self.current_path = self.cook_path
 				self.target_coordinate = self.current_path.pop(0)
 			# if (message == 'Cook.cook_lunch'):
 			# 	self.current_path = self.door_to_kitchen + self.kitchen_to_door
