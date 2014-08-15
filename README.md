@@ -3,4 +3,4 @@
 
 Welcome to Segfault's 306 Project 1 GitHub repository!
 
-Feel free to explore our [wiki](https://github.com/swanndri/306A1/wiki/Home_1) to get a firm understanding of our project.
+Feel free to explore our [wiki](https://github.com/swanndri/306A1/wiki/1-Home) to get a firm understanding of our project.
