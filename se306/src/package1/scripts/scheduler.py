@@ -11,10 +11,10 @@ from std_msgs.msg import String
 simulation_time = 0
 pub = rospy.Publisher('scheduler', String, queue_size=10)
 
-scheduled_tasks = { 480: 'Resident.wakeup', 
-				 	540: 'Resident.eat_breakfast',
-				 	660: 'Resident.take_meds',
-				 	750: 'Resident.eat_lunch',
+scheduled_tasks = { 280: 'Resident.wakeup', 
+				 	440: 'Resident.eat_breakfast',
+				 	540: 'Resident.take_meds',
+				 	900: 'Resident.eat_lunch',
 				 	1080:'Resident.eat_dinner',
 				 	1320:'Resident.sleep',
 

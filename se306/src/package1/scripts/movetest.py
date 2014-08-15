@@ -35,6 +35,7 @@ class Navigate:
 		self.living_room_to_kitchen			=	[self.living_room, self.kitchen]
 		self.kitchen_to_bedroom				=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom]
 		self.kitchen_to_cupboard			=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom, self.cupboard]
+		self.cupboard_to_kitchen			=	[self.cupboard, self.bedroom, self.hallway_top, self.hallway_mid, self.living_room, self.kitchen]
 
 		self.target_coordinate = None
 		self.target_direction = self.west
@@ -98,11 +99,26 @@ class Navigate:
 			if (message == 'Resident.wakeup'):
 				self.current_path = self.bedroom_to_living_room
 				self.target_coordinate = self.current_path.pop(0)
+			if (message == 'Resident.eat_breakfast'):
+				self.current_path = self.living_room_to_kitchen
+				self.target_coordinate = self.current_path.pop(0)
+			if (message == 'Resident.take_meds'):
+				self.current_path = self.kitchen_to_cupboard
+				self.target_coordinate = self.current_path.pop(0)
+			if (message == 'Resident.eat_lunch'):
+				self.current_path = self.cupboard_to_kitchen
+				self.target_coordinate = self.current_path.pop(0)
+			if (message == 'Resident.eat_dinner'):
+				pass
+			if (message == 'Resident.sleep'):
+				self.current_path = self.kitchen_to_bedroom
+				self.target_coordinate = self.current_path.pop(0)
+
 
 		rospy.Subscriber('/robot_1/base_pose_ground_truth', nav_msgs.msg.Odometry, process_position)
 		rospy.Subscriber("scheduler", String, process_event)
 		robot_0_movement_publisher = rospy.Publisher('/robot_1/cmd_vel', geometry_msgs.msg.Twist, queue_size=10)
-		rate = rospy.Rate(10)
+		rate = rospy.Rate(40)
 
 		
 		move_cmd = geometry_msgs.msg.Twist()
