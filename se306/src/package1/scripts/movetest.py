@@ -81,7 +81,7 @@ class Navigate:
 
 				#ROTATION
 				if(abs(self.current_direction - self.target_direction) >  math.radians(4)):
-					move_cmd.angular.z = -2 * math.pi / 25
+					move_cmd.angular.z = -1 * math.pi / 25
 					self.facing_correct_direction = False
 				else:
 					move_cmd.angular.z = 0
@@ -97,21 +97,21 @@ class Navigate:
 			#print('test')
 			message = str(action_msg).split("data: ")[1]
 			if (message == 'Resident.wakeup'):
-				self.current_path = self.bedroom_to_living_room
+				self.current_path = list(self.bedroom_to_living_room)
 				self.target_coordinate = self.current_path.pop(0)
 			if (message == 'Resident.eat_breakfast'):
-				self.current_path = self.living_room_to_kitchen
+				self.current_path = list(self.living_room_to_kitchen)
 				self.target_coordinate = self.current_path.pop(0)
 			if (message == 'Resident.take_meds'):
-				self.current_path = self.kitchen_to_cupboard
+				self.current_path = list(self.kitchen_to_cupboard)
 				self.target_coordinate = self.current_path.pop(0)
 			if (message == 'Resident.eat_lunch'):
-				self.current_path = self.cupboard_to_kitchen
+				self.current_path = list(self.cupboard_to_kitchen)
 				self.target_coordinate = self.current_path.pop(0)
 			if (message == 'Resident.eat_dinner'):
 				pass
 			if (message == 'Resident.sleep'):
-				self.current_path = self.kitchen_to_bedroom
+				self.current_path = list(self.kitchen_to_bedroom)
 				self.target_coordinate = self.current_path.pop(0)
 
 

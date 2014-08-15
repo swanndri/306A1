@@ -81,8 +81,8 @@ class Navigate:
 							self.not_at_target = True
 
 				#ROTATION
-				if(abs(self.current_direction - self.target_direction) >  math.radians(4)):
-					move_cmd.angular.z = -2 * math.pi / 25
+				if(abs(self.current_direction - self.target_direction) >  math.radians(3)):
+					move_cmd.angular.z = -1 * math.pi / 25
 					self.facing_correct_direction = False
 				else:
 					move_cmd.angular.z = 0
@@ -97,7 +97,7 @@ class Navigate:
 		def process_event(action_msg):
 			message = str(action_msg).split("data: ")[1]
 			if (message == 'Visitor.visit'):
-				self.current_path = self.door_to_living_room + (self.door_to_living_room[::-1])
+				self.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
 				self.target_coordinate = self.current_path.pop(0)
 
 		rospy.Subscriber('/robot_0/base_pose_ground_truth', nav_msgs.msg.Odometry, process_position)
