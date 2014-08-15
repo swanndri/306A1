@@ -81,7 +81,7 @@ class Navigate:
 							self.not_at_target = True
 
 				#ROTATION
-				if(abs(self.current_direction - self.target_direction) >  math.radians(3)):
+				if(abs(self.current_direction - self.target_direction) >  math.radians(4)):
 					move_cmd.angular.z = -2 * math.pi / 25
 					self.facing_correct_direction = False
 				else:
