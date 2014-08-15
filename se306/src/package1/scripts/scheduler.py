@@ -11,18 +11,19 @@ from std_msgs.msg import String
 simulation_time = 0
 pub = rospy.Publisher('scheduler', String, queue_size=10)
 
-scheduled_tasks = { 280: 'Resident.wakeup', 
-				 	440: 'Resident.eat_breakfast',
-				 	540: 'Resident.take_meds',
-				 	900: 'Resident.eat_lunch',
-				 	1080:'Resident.eat_dinner',
-				 	1320:'Resident.sleep',
+scheduled_tasks = { 100: 'Resident.wakeup', 
+				 	1350: 'Resident.eat_breakfast',
+				 	1900: 'Resident.take_meds',
+				 	2550: 'Resident.eat_lunch',
+				 	3000: 'Resident.idle',
+				 	3500:'Resident.eat_dinner',
+				 	3750:'Resident.sleep',
 
-				 	510: 'Cook.cook_breakfast',
-					720: 'Cook.cook_lunch',
-					1050:'Cook.cook_dinner',	
+				 	750: 'Cook.cook_breakfast',
+					2200:'Cook.cook_lunch',
+					3300:'Cook.cook_dinner',	
 
-					130: 'Visitor.visit'}
+					330: 'Visitor.visit'}
 
 def publish(actionmsg):        
         pub.publish(actionmsg)
@@ -33,7 +34,7 @@ def schedule_events(time):
 	#1440 because there are 1440 minutes in a day therefore 1 minute simulation = 1 second real time
 	#0 = 12:00am (midnight). 
 	#480 = 8:00am
-	simulation_time  = time.clock.secs % 1440
+	simulation_time  = time.clock.secs % 4320
 	actionmsg = None
 	if ( time.clock.nsecs == 100000000 ):
 		actionmsg = scheduled_tasks.get(simulation_time)

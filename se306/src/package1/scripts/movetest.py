@@ -29,13 +29,15 @@ class Navigate:
 		self.door			=	[-4,-14]
 		self.kitchen		=	[6,11]
 		self.living_room	=	[6,1]
+		self.idle			=	[12,4]
 
 		self.door_to_kitchen				=	[self.door, self.hallway_mid, self.living_room, self.kitchen]
-		self.bedroom_to_living_room			=	[self.bedroom, self.hallway_top, self.hallway_mid, self.living_room]
+		self.bedroom_to_living_room			=	[self.bedroom, self.hallway_top, self.hallway_mid, self.living_room, self.idle]
 		self.living_room_to_kitchen			=	[self.living_room, self.kitchen]
 		self.kitchen_to_bedroom				=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom]
-		self.kitchen_to_cupboard			=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom, self.cupboard]
-		self.cupboard_to_kitchen			=	[self.cupboard, self.bedroom, self.hallway_top, self.hallway_mid, self.living_room, self.kitchen]
+		self.kitchen_to_cupboard			=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom, self.cupboard, self.bedroom]
+		self.cupboard_to_kitchen			=	[self.bedroom, self.hallway_top, self.hallway_mid, self.living_room, self.kitchen]
+		self.kitchen_to_idle				=	[self.kitchen, self.living_room, self.idle]
 
 		self.target_coordinate = None
 		self.target_direction = self.west
@@ -109,9 +111,13 @@ class Navigate:
 				self.current_path = list(self.cupboard_to_kitchen)
 				self.target_coordinate = self.current_path.pop(0)
 			if (message == 'Resident.eat_dinner'):
-				pass
+				self.current_path = list(self.living_room_to_kitchen)
+				self.target_coordinate = self.current_path.pop(0)
 			if (message == 'Resident.sleep'):
 				self.current_path = list(self.kitchen_to_bedroom)
+				self.target_coordinate = self.current_path.pop(0)
+			if (message == 'Resident.idle'):
+				self.current_path = list(self.kitchen_to_idle)
 				self.target_coordinate = self.current_path.pop(0)
 
 
