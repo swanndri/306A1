@@ -81,12 +81,12 @@ class Navigate:
 							self.not_at_target = True
 
 				# Use clockwise object instead of -1 in move_cmd.angular.z after it has been implemented fully
-				#clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
-				#print clockwise
+				clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
+				print "TurnHelp.Angle == %d" % clockwise
 				
 				#ROTATION
 				if(abs(self.current_direction - self.target_direction) >  math.radians(4)):
-					move_cmd.angular.z = -1 * math.pi / 25
+					move_cmd.angular.z = clockwise * math.pi / 25
 					self.facing_correct_direction = False
 				else:
 					move_cmd.angular.z = 0
