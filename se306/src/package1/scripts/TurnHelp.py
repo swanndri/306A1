@@ -21,9 +21,9 @@ class Angle:
 			if (self.angle_from >= 0) and (self.angle_from < 90):
 				if (self.angle_to >= 180) and (self.angle_to <= 270):
 					if diff < 0:
-						return -1
-					else:
 						return 1
+					else:
+						return -1
 				else:
 					if diff > 0:
 						return -1
@@ -43,6 +43,9 @@ class Angle:
 		return new_angle
 
 	def __init__(self, current, target):
+		#convert input rads to degrees
+		current = math.degrees(current)
+		target = math.degrees(target)
 		self.angle_from = self.normalize(current)
 		self.angle_to = self.normalize(target)
 

@@ -9,6 +9,7 @@ import sensor_msgs.msg
 import math
 import time
 import tf
+import TurnHelp
 
 from std_msgs.msg import String
 from tf.transformations import euler_from_quaternion
@@ -81,6 +82,10 @@ class Navigate:
 						if(len(self.current_path) > 0):
 							self.target_coordinate = self.current_path.pop(0)
 							self.not_at_target = True
+
+				# Use clockwise object instead of -1 in move_cmd.angular.z after it has been implemented fully
+				#clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
+				#print clockwise
 
 				#ROTATION
 				if(abs(self.current_direction - self.target_direction) >  math.radians(3)):
