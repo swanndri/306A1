@@ -7,15 +7,15 @@ define mylaser ranger
   )
   # generic model properties
   color "black"
-  size [ 0.05 0.05 0.5 ] # Height of notification for collision. 0.1 seems to be the minimum height
+  size [ 0.050 0.050 0.500 ] # Height of notification for collision. 0.1 seems to be the minimum height
   
 )
 
 define myRobot position
 (
-  size [0.35 0.35 1.5]
+  size [0.350 0.350 1.500]
   drive "diff"
-  mylaser(pose [ 0.175 0.000 -0.5 0.000 ]) # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is unknown for now.
+  mylaser(pose [ 0.175 0.000 -0.500 0.000 ]) # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is unknown for now.
 )	
 
 define floorplan model
@@ -26,7 +26,7 @@ define floorplan model
   # most maps will need a bounding box
   boundary 1
   
-  ranger_return 1
+  ranger_return 1.000
 )
 
 define my_block model
@@ -44,8 +44,8 @@ interval_sim 100  # simulation timestep in milliseconds. length of each simulati
 
 window
 ( 
-  size [ 573.000 365.000 ] #size of the window in pixels
-  scale 10
+  size [ 573 365 ] #size of the window in pixels
+  scale 12.100
 )
 
 # load an environment bitmap
@@ -54,10 +54,10 @@ floorplan
   name "swarm"
 #  bitmap "swarm_world.pgm"
   bitmap "house.png"
-  size [30 30 3]
+  size [30.000 30.000 3.000]
 #  pose [ 8 8 0 0 ]
 )
 # throw in a robot
-myRobot( pose [ 5 10 0 0 ] name "r0" color "white" bitmap "images/R.jpg")
-myRobot( pose [ 6 10 0 0 ] name "r1" color "green")
-myRobot( pose [ 7 10 0 0 ] name "r2" color "black")
+myRobot( pose [ -3.000 -14.000 0.000 0.000 ] name "r0" color "white")
+myRobot( pose [ -14.000 -6.000 0.000 0.000 ] name "r1" color "green")
+myRobot( pose [ -4.000 -14.000 0.000 0.000 ] name "r2" color "black")
