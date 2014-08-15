@@ -9,6 +9,7 @@ import sensor_msgs.msg
 import math
 import time
 import tf
+import TurnHelp
 
 from std_msgs.msg import String
 from tf.transformations import euler_from_quaternion
@@ -81,9 +82,13 @@ class Navigate:
 							self.target_coordinate = self.current_path.pop(0)
 							self.not_at_target = True
 
+				# Use clockwise object instead of -1 in move_cmd.angular.z after it has been implemented fully
+				clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
+				print "TurnHelp.Angle == %d" % clockwise
+				
 				#ROTATION
 				if(abs(self.current_direction - self.target_direction) >  math.radians(4)):
-					move_cmd.angular.z = -1 * math.pi / 25
+					move_cmd.angular.z = clockwise * math.pi / 25
 					self.facing_correct_direction = False
 				else:
 					move_cmd.angular.z = 0
@@ -135,6 +140,6 @@ class Navigate:
 			rate.sleep()
 
 if __name__ == '__main__':
-	rospy.init_node('navigater_robot_0')
+	rospy.init_node('resident_prototype')
 	navigate = Navigate()
 	
