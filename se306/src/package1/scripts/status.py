@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
-import rospy
-import roslib
-import std_msgs.msg
 
-roslib.load_manifest('package1')
+import roslib; roslib.load_manifest('package1')
+import std_msgs.msg
+import rospy
 
 rospy.init_node('status', anonymous=True)
 
@@ -12,7 +11,10 @@ rate = rospy.Rate(10)
 
 
 def callback(msg):
-	print msg.data + "/100"
+	if int(msg.data) <= 0:
+		print "0/100"
+	else:
+		print msg.data + "/100"
 
 
 
