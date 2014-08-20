@@ -19,4 +19,4 @@ class Paths:
 	cupboard_to_kitchen			=	[bedroom, hallway_top, hallway_mid, living_room, kitchen]
 	door_to_living_room			=	[door, hallway_mid, living_room]
 	kitchen_to_idle				=	[kitchen, living_room, idle]
-
+	cook_path					=	[cook_idle, living_room, kitchen, living_room, cook_idle]
