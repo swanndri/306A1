@@ -22,7 +22,7 @@ class Resident:
 	def callback(self, msg):
 		
 		#pulls the secs value from the Clock object
-		if int(str(msg).split()[2]) % 14 == 0:
+		if int(str(msg).split()[2]) % 42 == 0:
 			self.fullness -= 1
 			print ("fullness is:", self.fullness)
 			self.pub.publish("Fullness: " + str(self.fullness))	
@@ -32,6 +32,9 @@ class Resident:
 	def process_event(self, action_msg):
 		#print('test')
 		message = str(action_msg).split("data: ")[1]
+		if ("Resident.eat" in message):
+			self.fullness += 30
+		#self.pub.publish(message)	
 		print(message)
 
 if __name__ == '__main__':
