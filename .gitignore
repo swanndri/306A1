@@ -9,3 +9,4 @@ nohup.out
 ehthumbs.db
 Thumbs.db
 *~
+*.pyc
