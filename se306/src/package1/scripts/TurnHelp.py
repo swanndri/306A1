@@ -10,20 +10,25 @@ class Angle:
 		self.angle_from = self.normalize(current)
 		self.angle_to = self.normalize(target)
 	
-	# Check which direction is best to rotate (anti clockwise(1) or clockwise(-1))
+	# Check which direction is best to rotate (anti clockwise(-1) or clockwise(1))
 	def check(self):
 		move_angle = self.angle_to - self.angle_from
 		
-		if not move_angle:
-			return 0
-		
-		if move_angle > 180:
-				move_angle = 360 - move_angle * -1
-		
-		if move_angle > 0:
+		if (((self.angle_from - self.angle_to) + 360) % 360) > 180:
 			return 1
 		else:
 			return -1
+
+		#if not move_angle:
+		#	return 0
+		
+		#if move_angle > 180:
+		#		move_angle = 360 - move_angle * -1
+		
+		#if move_angle > 0:
+		#	return 1
+		#else:
+		#	return -1
 
 	# Normalizes input angle
 	def normalize(self, input_angle):
