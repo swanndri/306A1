@@ -10,38 +10,18 @@ import math
 import time
 import tf
 import TurnHelp
-import path_constants
+import constants
 
 from std_msgs.msg import String
 from tf.transformations import euler_from_quaternion
 
-class Navigate(path_constants.Paths):
+class Navigation(constants.Paths):
 	def __init__(self):
 		self.east = 0.0
 		self.west = math.pi
 		self.north = math.pi / 2.0
 		self.south = -math.pi / 2.0
 
-		# self.cupboard 		=	[-11,12]
-		# self.bedroom 		=	[-11,6]
-		# self.bathroom		=	[-10,-11]
-		# self.hallway_top	=	[-4,6]
-		# self.hallway_mid	=	[-4,1]
-		# self.hallway_bot	=	[-4,-11]
-		# self.door			=	[-4,-14]
-		# self.kitchen		=	[6,11]
-		# self.living_room	=	[6,1]
-		# self.idle			=	[12,4]
-
-		# self.door_to_kitchen				=	[self.door, self.hallway_mid, self.living_room, self.kitchen]
-		# self.bedroom_to_living_room			=	[self.bedroom, self.hallway_top, self.hallway_mid, self.living_room, self.idle]
-		# self.living_room_to_kitchen			=	[self.living_room, self.kitchen]
-		# self.kitchen_to_bedroom				=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom]
-		# self.kitchen_to_cupboard			=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom, self.cupboard, self.bedroom]
-		# self.cupboard_to_kitchen			=	[self.bedroom, self.hallway_top, self.hallway_mid, self.living_room, self.kitchen]
-		# self.door_to_living_room			=	[self.door, self.hallway_mid, self.living_room]
-		# self.kitchen_to_idle				=	[self.kitchen, self.living_room, self.idle]
-		
 		self.target_coordinate = None
 		self.target_direction = self.west
 		
@@ -120,5 +100,5 @@ class Navigate(path_constants.Paths):
 
 if __name__ == '__main__':
 	rospy.init_node('resident_prototype')
-	navigate = Navigate()
+	navigate = Navigation()
 	

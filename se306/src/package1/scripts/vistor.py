@@ -10,12 +10,13 @@ import math
 import time
 import tf
 import TurnHelp
-import path_constants
+import constants
+import navigation
 
 from std_msgs.msg import String
 from tf.transformations import euler_from_quaternion
 
-class Navigate(path_constants.Paths):
+class Navigate(constants.Paths):
 	def __init__(self):
 		self.east = 0.0
 		self.west = math.pi
