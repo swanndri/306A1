@@ -48,10 +48,13 @@ class Navigation(constants.Paths):
 			# Use clockwise object instead of -1 in move_cmd.angular.z after it has been implemented fully
 			clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
 			
+			max_speed = 1
+			rotation_speed = (abs(self.current_direction - self.target_direction) / 180) * max_speed * 100
+			print(rotation_speed)
 			#ROTATION
 			if(abs(self.current_direction - self.target_direction) >  math.radians(4)):
 				#self.move_cmd.angular.z = clockwise * math.pi / 25
-				self.move_cmd.angular.z = clockwise * math.pi / 8
+				self.move_cmd.angular.z = clockwise * rotation_speed
 				self.facing_correct_direction = False
 			else:
 				self.move_cmd.angular.z = 0
