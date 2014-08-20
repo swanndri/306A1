@@ -14,11 +14,16 @@ class Angle:
 	def check(self):
 		move_angle = self.angle_to - self.angle_from
 		
-		if (((self.angle_from - self.angle_to) + 360) % 360) > 180:
-			return 1
+		if (move_angle > 0):
+			if (abs(move_angle) > 180):
+				return -1
+			else:
+				return 1
 		else:
-			return -1
-
+			if (abs(move_angle) > 180):
+				return 1
+			else:
+				return -1
 		#if not move_angle:
 		#	return 0
 		

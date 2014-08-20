@@ -87,9 +87,11 @@ class Navigate:
 				#clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
 				#print clockwise
 
+				clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
+
 				#ROTATION
 				if(abs(self.current_direction - self.target_direction) >  math.radians(3)):
-					move_cmd.angular.z = -1 * math.pi / 25
+					move_cmd.angular.z = clockwise * math.pi / 25
 					self.facing_correct_direction = False
 				else:
 					move_cmd.angular.z = 0
