@@ -6,18 +6,16 @@ import geometry_msgs.msg
 import std_msgs.msg
 import nav_msgs.msg
 import sensor_msgs.msg
-import math
 import time
-import tf
-import TurnHelp
-import constants
 import navigation
 
 from std_msgs.msg import String
-from tf.transformations import euler_from_quaternion
 
-class Cook(constants.Paths, navigation.Navigation):
+class Cook(navigation.Navigation):
 
+	''' When a message is passed out from the scheduler, determine whether it is
+	relevant to this object. If so, take the neccessary action
+	'''
 	def process_event(self, action_msg):
 		message = str(action_msg).split("data: ")[1]
 		if ('Cook.cook_' in message):
@@ -26,6 +24,10 @@ class Cook(constants.Paths, navigation.Navigation):
 
 	def __init__(self):
 		self.rate = rospy.Rate(20)
+		# Create a navigation object which will be used to manage all the calls
+		# relating to movement. Passed the robot's name so that the publisher 
+		# and subscribers for it's navigation can be set up. 
+		#Eventually we will make this input a variable instead of hardcoded
 		self.navigate = navigation.Navigation("robot_2")
 		rospy.Subscriber("scheduler", String, self.process_event)
 

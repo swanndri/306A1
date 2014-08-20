@@ -15,13 +15,24 @@ import constants
 from std_msgs.msg import String
 from tf.transformations import euler_from_quaternion
 
+''' This class handles all navigation for robots. It is meant to supplement
+other robot classes and provide them with the navigation functionality.
+It uses the constants.Paths for it's path variables to keep things tidy and
+minimize possible duplication
+'''
+
 class Navigation(constants.Paths):
+
 	def normalize(self, input_angle):
 		new_angle = int(input_angle)
     		if new_angle < 0:
 			new_angle += 360;
 		return new_angle
 
+	''' This method is used to let a robot rotate at a high speed when it is not 
+	close to the target angle it is rotating to, while also allowing it to slow
+	down as it approaches it's target
+	'''	
 	def get_rotation_speed(self):
 		old_max = 180
 		old_min = 1
@@ -39,6 +50,8 @@ class Navigation(constants.Paths):
 		rotation_speed = (((difference - old_min) * new_range) / old_range) + new_min
 		return rotation_speed
 
+
+	# Process current position and move if neccessary
 	def process_position(self, position_data):
 		self.current_coordinates[0] = position_data.pose.pose.position.x
 		self.current_coordinates[1] = position_data.pose.pose.position.y
@@ -47,7 +60,7 @@ class Navigation(constants.Paths):
 		quaternionlist = [quaternion.x, quaternion.y, quaternion.z, quaternion.w]
 		self.current_direction = euler_from_quaternion(quaternionlist)[2]
 
-		#Setup target direction
+		# Setup target direction
 		if (self.target_coordinate is not None):			
 			if(abs(self.current_coordinates[0] - self.target_coordinate[0]) > 0.5):
 				self.not_at_target = True
@@ -68,11 +81,13 @@ class Navigation(constants.Paths):
 						self.target_coordinate = self.current_path.pop(0)
 						self.not_at_target = True
 
+			# Find optimal direction to rotate
 			clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
+			# Finding optimal speed to rotate
 			rotation_speed = self.get_rotation_speed()
-			print(rotation_speed)
+			# print(rotation_speed)
 
-			#ROTATION
+			# Rotation
 			if(abs(self.current_direction - self.target_direction) >  math.radians(4)):
 				#self.move_cmd.angular.z = clockwise * math.pi / 25
 				self.move_cmd.angular.z = clockwise * rotation_speed
@@ -81,24 +96,32 @@ class Navigation(constants.Paths):
 				self.move_cmd.angular.z = 0
 				self.facing_correct_direction = True
 
-			#LINEAR MOVEMENT
+			# Linear movement
 			if (self.facing_correct_direction == True and self.not_at_target == True):
 				self.move_cmd.linear.x = 1
 			else:
 				self.move_cmd.linear.x = 0
 
+	''' Robots are initialized with a name which is passed in as a parameter. This allows us
+	to use this class to publish and subscribe with many different robots inheriting from this
+	class
+	'''
 	def __init__(self, robot_name):
-		self.target_coordinate = None
-		self.target_direction = self.west
 		self.robot_name = robot_name
 		
+		# Default path and direction
 		self.current_path = self.door_to_kitchen
+		self.current_direction	= self.north
+
+		# Default target path and direction
+		self.target_coordinate = None
+		self.target_direction = self.west
+
+		self.current_coordinates = [0,0]
+
+		self.not_at_target = True		
 		self.facing_correct_direction = False
 
-		self.not_at_target = True
-		self.current_coordinates = [0,0]
-		self.current_direction	= self.north
-		
 		self.move_cmd = geometry_msgs.msg.Twist()
 
 		subscribe_to = "/" + robot_name + "/base_pose_ground_truth"
@@ -107,6 +130,7 @@ class Navigation(constants.Paths):
 		publish_to = "/" + robot_name + "/cmd_vel"		
 		self.movement_publisher = rospy.Publisher(publish_to, geometry_msgs.msg.Twist, queue_size=10)		
 		
+	# Method currently is unused and has no real function yet	
 	def move (self, room):
 		self.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
 		self.target_coordinate = self.current_path.pop(0)
