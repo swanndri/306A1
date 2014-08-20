@@ -37,4 +37,3 @@ if __name__ == '__main__':
 	rospy.init_node('visitor_robot')
 	visit = Visitor()
 	
-	
