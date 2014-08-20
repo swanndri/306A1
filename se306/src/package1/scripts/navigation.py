@@ -16,9 +16,10 @@ from std_msgs.msg import String
 from tf.transformations import euler_from_quaternion
 
 class Navigation(constants.Paths):
-	def __init__(self):
+	def __init__(self, robot_name):
 		self.target_coordinate = None
 		self.target_direction = self.west
+		self.robot_name = robot_name
 		
 		self.current_path = self.door_to_kitchen
 
@@ -28,7 +29,12 @@ class Navigation(constants.Paths):
 		self.current_coordinates = [0,0]
 		self.current_direction	= self.north
 		
-		#self.target_coordinate = self.current_path.pop(0)
+		subscribe_to = "/" + robot_name + "/base_pose_ground_truth"
+		rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, process_position)
+
+		publish_to = "/" + robot_name + "/cmd_vel"
+		robot_0_movement_publisher = rospy.Publisher(publish_to, geometry_msgs.msg.Twist, queue_size=10)
+
 
 		def process_position(position_data):
 			self.current_coordinates[0] = position_data.pose.pose.position.x
@@ -77,10 +83,8 @@ class Navigation(constants.Paths):
 				else:
 					move_cmd.linear.x = 0
 
-		rospy.Subscriber('/robot_1/base_pose_ground_truth', nav_msgs.msg.Odometry, process_position)
-		robot_0_movement_publisher = rospy.Publisher('/robot_1/cmd_vel', geometry_msgs.msg.Twist, queue_size=10)
+		
 		rate = rospy.Rate(40)
-
 		
 		move_cmd = geometry_msgs.msg.Twist()
 		target = math.pi/2
@@ -95,5 +99,5 @@ class Navigation(constants.Paths):
 
 if __name__ == '__main__':
 	rospy.init_node('resident_prototype')
-	navigate = Navigation()
+	navigate = Navigation("navigate_class")
 	
