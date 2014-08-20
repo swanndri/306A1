@@ -30,6 +30,7 @@ class Navigate:
 		self.door			=	[-4,-14]
 		self.kitchen		=	[6,11]
 		self.living_room	=	[6,1]
+		self.idle			=	[12,4]
 
 		self.door_to_kitchen				=	[self.door, self.hallway_mid, self.living_room, self.kitchen]
 		self.bedroom_to_living_room			=	[self.bedroom, self.hallway_top, self.hallway_mid, self.living_room]
@@ -38,7 +39,8 @@ class Navigate:
 		self.kitchen_to_cupboard			=	[self.kitchen, self.living_room, self.hallway_mid, self.hallway_top, self.bedroom, self.cupboard]
 		self.cupboard_to_kitchen			=	[self.cupboard, self.bedroom, self.hallway_top, self.hallway_mid, self.living_room, self.kitchen]
 		self.door_to_living_room			=	[self.door, self.hallway_mid, self.living_room]
-
+		self.kitchen_to_idle				=	[self.kitchen, self.living_room, self.idle]
+		
 		self.target_coordinate = None
 		self.target_direction = self.west
 		
@@ -84,7 +86,6 @@ class Navigate:
 				# Use clockwise object instead of -1 in move_cmd.angular.z after it has been implemented fully
 				#clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
 				#print clockwise
-
 				#ROTATION
 				if(abs(self.current_direction - self.target_direction) >  math.radians(3)):
 					move_cmd.angular.z = -1 * math.pi / 25

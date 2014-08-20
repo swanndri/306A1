@@ -20,7 +20,10 @@ class Angle:
 		if move_angle > 180:
 				move_angle = 360 - move_angle * -1
 		
-		return 1 if move_angle > 0 else -1
+		if move_angle > 0:
+			return 1
+		else:
+			return -1
 
 	# Normalizes input angle
 	def normalize(self, input_angle):

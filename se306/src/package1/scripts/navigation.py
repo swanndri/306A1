@@ -101,34 +101,7 @@ class Navigate:
 				else:
 					move_cmd.linear.x = 0
 
-		def process_event(action_msg):
-			#print('test')
-			message = str(action_msg).split("data: ")[1]
-			if (message == 'Resident.wakeup'):
-				self.current_path = list(self.bedroom_to_living_room)
-				self.target_coordinate = self.current_path.pop(0)
-			if (message == 'Resident.eat_breakfast'):
-				self.current_path = list(self.living_room_to_kitchen)
-				self.target_coordinate = self.current_path.pop(0)
-			if (message == 'Resident.take_meds'):
-				self.current_path = list(self.kitchen_to_cupboard)
-				self.target_coordinate = self.current_path.pop(0)
-			if (message == 'Resident.eat_lunch'):
-				self.current_path = list(self.cupboard_to_kitchen)
-				self.target_coordinate = self.current_path.pop(0)
-			if (message == 'Resident.eat_dinner'):
-				self.current_path = list(self.living_room_to_kitchen)
-				self.target_coordinate = self.current_path.pop(0)
-			if (message == 'Resident.sleep'):
-				self.current_path = list(self.kitchen_to_bedroom)
-				self.target_coordinate = self.current_path.pop(0)
-			if (message == 'Resident.idle'):
-				self.current_path = list(self.kitchen_to_idle)
-				self.target_coordinate = self.current_path.pop(0)
-
-
 		rospy.Subscriber('/robot_1/base_pose_ground_truth', nav_msgs.msg.Odometry, process_position)
-		rospy.Subscriber("scheduler", String, process_event)
 		robot_0_movement_publisher = rospy.Publisher('/robot_1/cmd_vel', geometry_msgs.msg.Twist, queue_size=10)
 		rate = rospy.Rate(40)
 
@@ -139,6 +112,10 @@ class Navigate:
 		while not rospy.is_shutdown():
 			robot_0_movement_publisher.publish(move_cmd)
 			rate.sleep()
+
+	def move (self, room):
+		self.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
+		self.target_coordinate = self.current_path.pop(0)
 
 if __name__ == '__main__':
 	rospy.init_node('resident_prototype')
