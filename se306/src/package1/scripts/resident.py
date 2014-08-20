@@ -23,9 +23,12 @@ class Resident:
 		
 		#pulls the secs value from the Clock object
 		if int(str(msg).split()[2]) % 42 == 0:
-			self.fullness -= 1
-			print ("fullness is:", self.fullness)
-			self.pub.publish("Fullness: " + str(self.fullness))	
+			if self.fullness > 0:
+				self.fullness -= 1
+				print ("fullness is:", self.fullness)
+				self.pub.publish("Fullness: " + str(self.fullness))
+			else:
+				pass
 		
 	
 
