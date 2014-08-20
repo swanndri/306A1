@@ -17,25 +17,24 @@ from std_msgs.msg import String
 from tf.transformations import euler_from_quaternion
 
 class Visitor(constants.Paths, navigation.Navigation):
-	def __init__(self, robot_name):
-		navigate = navigation.Navigation(robot_name)
-		rate = rospy.Rate(40)
-		
 
-	def process_event(action_msg):
+	def process_event(self, action_msg):
 		message = str(action_msg).split("data: ")[1]
 		if (message == 'Visitor.visit'):
-			self.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
-			self.target_coordinate = self.current_path.pop(0)
+			self.navigate.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
+			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
 
+	def __init__(self):		
+		self.rate = rospy.Rate(20)
+		self.navigate = navigation.Navigation("robot_0")		
+		rospy.Subscriber("scheduler", String, self.process_event)
+
+		while not rospy.is_shutdown():
+			self.navigate.movement_publisher.publish(self.navigate.move_cmd)
+			self.rate.sleep()
 
 if __name__ == '__main__':
 	rospy.init_node('visitor_robot')
-	navigate = Visitor("visitor_robot")
-	rospy.Subscriber("scheduler", String, process_event)
-
-	move_cmd = geometry_msgs.msg.Twist()
-	target = math.pi/2
-	while not rospy.is_shutdown():
-		navigate.rate.sleep()
+	visit = Visitor()
+	
 	

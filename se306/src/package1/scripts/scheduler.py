@@ -23,7 +23,7 @@ scheduled_tasks = { 100: 'Resident.wakeup',
 					2200:'Cook.cook_lunch',
 					3300:'Cook.cook_dinner',	
 
-					330: 'Visitor.visit'}
+					030: 'Visitor.visit'}
 
 def publish(actionmsg):        
         pub.publish(actionmsg)
