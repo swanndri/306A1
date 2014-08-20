@@ -16,6 +16,29 @@ from std_msgs.msg import String
 from tf.transformations import euler_from_quaternion
 
 class Navigation(constants.Paths):
+	def normalize(self, input_angle):
+		new_angle = int(input_angle)
+    		if new_angle < 0:
+			new_angle += 360;
+		return new_angle
+
+	def get_rotation_speed(self):
+		old_max = 180
+		old_min = 1
+		new_max = 1
+		new_min = 0.3
+
+		target_angle 	= 	self.normalize(int(math.degrees(self.target_direction)))
+		current_angle 	=	self.normalize(int(math.degrees(self.current_direction)))
+	
+		difference = abs(target_angle -  current_angle)
+
+		old_range = (old_max - old_min)  
+		new_range = (new_max - new_min)  
+
+		rotation_speed = (((difference - old_min) * new_range) / old_range) + new_min
+		return rotation_speed
+
 	def process_position(self, position_data):
 		self.current_coordinates[0] = position_data.pose.pose.position.x
 		self.current_coordinates[1] = position_data.pose.pose.position.y
@@ -45,13 +68,14 @@ class Navigation(constants.Paths):
 						self.target_coordinate = self.current_path.pop(0)
 						self.not_at_target = True
 
-			# Use clockwise object instead of -1 in move_cmd.angular.z after it has been implemented fully
 			clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
-			
+			rotation_speed = self.get_rotation_speed()
+			print(rotation_speed)
+
 			#ROTATION
 			if(abs(self.current_direction - self.target_direction) >  math.radians(4)):
 				#self.move_cmd.angular.z = clockwise * math.pi / 25
-				self.move_cmd.angular.z = clockwise * math.pi / 8
+				self.move_cmd.angular.z = clockwise * rotation_speed
 				self.facing_correct_direction = False
 			else:
 				self.move_cmd.angular.z = 0
