@@ -11,6 +11,7 @@ class Paths:
 	cook_idle		= 	[13,-13]
 	idle			=	[12,4]
 
+	
 	door_to_kitchen				=	[door, hallway_mid, living_room, kitchen]
 	bedroom_to_living_room		=	[bedroom, hallway_top, hallway_mid, living_room, idle]
 	living_room_to_kitchen		=	[living_room, kitchen]
