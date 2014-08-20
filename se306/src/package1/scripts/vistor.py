@@ -20,7 +20,7 @@ class Visitor(constants.Paths, navigation.Navigation):
 	def __init__(self, robot_name):
 		navigate = navigation.Navigation(robot_name)
 		rate = rospy.Rate(40)
-
+		
 
 	def process_event(action_msg):
 		message = str(action_msg).split("data: ")[1]
