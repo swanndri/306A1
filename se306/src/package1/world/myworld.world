@@ -13,9 +13,20 @@ define mylaser ranger
 
 define myRobot position
 (
+  block
+    (
+      points 3
+      point[0] [1 0.5]
+      point[1] [0 1]
+      point[2] [0 0]                
+      z [0 1]
+    )
+  #fit shape to this size in meters
+  size [0.5 0.5 0.5]
   size [0.350 0.350 1.500]
   drive "diff"
-  mylaser(pose [ 0.175 0.000 -0.500 0.000 ]) # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is unknown for now.
+  mylaser(pose [ 0.175 0.000 -0.500 0.000 ]) 
+  # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is unknown for now.
 )	
 
 define floorplan model
@@ -27,12 +38,6 @@ define floorplan model
   boundary 1
   
   ranger_return 1.000
-)
-
-define my_block model
-(
-  size [0.5 0.5 0.5]
-  gui_nose 0
 )
 
 # set the resolution of the underlying raytrace model in meters
@@ -58,6 +63,6 @@ floorplan
 #  pose [ 8 8 0 0 ]
 )
 # throw in a robot
-myRobot( pose [ -3.000 -14.000 0.000 0.000 ] name "r0" color "white")
+myRobot( pose [ -3.000 -14.000 0.000 90.000 ] name "r0" color "white")
 myRobot( pose [ -11.000 6.000 0.000 0.000 ] name "r1" color "green")
-myRobot( pose [ 13.000 -13.000 0.000 0.000 ] name "r2" color "black")
+myRobot( pose [ 13.000 -13.000 0.000 90.000 ] name "r2" color "black")
