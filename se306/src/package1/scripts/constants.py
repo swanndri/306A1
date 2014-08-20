@@ -1,4 +1,13 @@
+import math
+
 class Paths:
+
+	east = 0.0
+	west = math.pi
+	north = math.pi / 2.0
+	south = -math.pi / 2.0
+
+
 	cupboard 		=	[-11,12]
 	bedroom 		=	[-11,6]
 	bathroom		=	[-10,-11]

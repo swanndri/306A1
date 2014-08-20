@@ -17,11 +17,6 @@ from tf.transformations import euler_from_quaternion
 
 class Navigation(constants.Paths):
 	def __init__(self):
-		self.east = 0.0
-		self.west = math.pi
-		self.north = math.pi / 2.0
-		self.south = -math.pi / 2.0
-
 		self.target_coordinate = None
 		self.target_direction = self.west
 		
