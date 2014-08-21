@@ -34,7 +34,13 @@ define myRobotFurniture position
   size [1.500 1 0.500]
   drive "diff"
   mylaser(pose [ 0.175 0.000 -0.500 0.000 ]) 
-  # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is unknown for now.
+) 
+
+define myRobotBed position
+(
+  size [0.750 1.250 0.500]
+  drive "diff"
+  mylaser(pose [ 0.175 0.000 -0.500 0.000 ]) 
 ) 
 
 define floorplan model
@@ -78,5 +84,7 @@ myRobot( pose [ 13.000 -13.000 0.600 90.000 ] name "r2" color "black")
 myRobotFurniture( pose [ 14.000 4.000 0.000 -90.000 ] name "rTV" color "black" bitmap "images/tv2.png")
 #myRobotFurniture( pose [ 6.000 12.000 0.000 0.000 ] name "rStove" color "black" bitmap "images/stove.png")
 #myRobotFurniture( pose [ 11.000 4.000 0.000 90.000 ] name "rCouch" color "black" bitmap "images/Couch.png")
-#myRobotFurniture( pose [ -13.000 6.000 0.000 0.000 ] name "rBed" color "black" bitmap "images/bed.png")
+
+myRobotBed( pose [ -11.000 6.000 0.000 0.000 ] name "rBed" color "black" bitmap "images/bed.png")
+
 #myRobotFurniture( pose [ -13.000 -13.000 0.000 180.000 ] name "rToilet" color "black" bitmap "images/toilet.png")
