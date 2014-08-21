@@ -9,7 +9,7 @@ nohup xterm -e "source /306A1/se306/devel/setup.bash;cd /306A1/se306/src/package
 nohup xterm -e "source /306A1/se306/devel/setup.bash;cd /306A1/se306/src/package1/;rosrun package1 cook.py; read" >/dev/null 2>&1 &
 nohup xterm -e "source /306A1/se306/devel/setup.bash;cd /306A1/se306/src/package1/;rosrun package1 vistor.py; read" >/dev/null 2>&1 &
 
-#nohup xterm -e "source /306A1/se306/devel/setup.bash;cd /306A1/se306/src/package1/;rosrun package1 resident.py; read" >/dev/null 2>&1 &
-#nohup xterm -e "source /306A1/se306/devel/setup.bash;cd /306A1/se306/src/package1/;rosrun package1 status.py; read" >/dev/null 2>&1 &
+nohup xterm -e "source /306A1/se306/devel/setup.bash;cd /306A1/se306/src/package1/;rosrun package1 resident.py; read" >/dev/null 2>&1 &
+nohup xterm -e "source /306A1/se306/devel/setup.bash;cd /306A1/se306/src/package1/;rosrun package1 status.py; read" >/dev/null 2>&1 &
 clear
 exit

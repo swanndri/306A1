@@ -14,22 +14,21 @@ class Resident:
 		
 	
 	def pub_sub(self):
-		sub = rospy.Subscriber("clock", std_msgs.msg.String, self.callback)
+		sub = rospy.Subscriber("clock", rosgraph_msgs.msg.Clock, self.callback)
 		rospy.Subscriber("scheduler", std_msgs.msg.String, self.process_event)
 		self.pub = rospy.Publisher('human', std_msgs.msg.String, \
 		queue_size=10)
 		
 	def callback(self, msg):
-		
 		#pulls the secs value from the Clock object
-		if int(str(msg).split()[2]) % 42 == 0:
+		if int(msg.clock.secs) % 42 == 0:
 			if self.fullness > 0:
 				self.fullness -= 1
 				print ("fullness is:", self.fullness)
 				self.pub.publish("Fullness: " + str(self.fullness))
+				print(self.fullness)
 			else:
 				pass
-		
 	
 
 	def process_event(self, action_msg):

@@ -19,7 +19,7 @@ def callback(msg):
 		mlabelmid["bg"] = "grey"
 		mlabelhigh["bg"] = "grey"
 		mlabelfull["bg"] = "grey"
-		print "0/100"
+		print ("0/100")
 	else:
 		if cur_health <= 75 and cur_health > 50:
 			#not full
@@ -39,7 +39,7 @@ def callback(msg):
 			mlabelmid["bg"] = "grey"
 			mlabelhigh["bg"] = "grey"
 			mlabelfull["bg"] = "grey"
-		print msg.data + "/100"
+		print (msg.data + "/100")
 
 def scheduler_callback(msg):
 	msg = str(msg)
