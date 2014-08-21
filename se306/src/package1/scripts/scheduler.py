@@ -12,18 +12,19 @@ simulation_time = 0
 pub = rospy.Publisher('scheduler', String, queue_size=10)
 
 scheduled_tasks = { 100: 'Resident.wakeup', 
-				 	1350: 'Resident.eat_breakfast',
-				 	1900: 'Resident.take_meds',
-				 	2550: 'Resident.eat_lunch',
-				 	3000: 'Resident.idle',
-				 	3500:'Resident.eat_dinner',
+				 	900: 'Resident.eat_breakfast',
+				 	1100: 'Resident.take_meds',
+				 	1850: 'Resident.eat_lunch',
+				 	2210: 'Resident.idle',
+				 	3000:'Resident.eat_dinner',
 				 	3750:'Resident.sleep',
 
-				 	300: 'Cook.cook_breakfast',
-					2200:'Cook.cook_lunch',
-					3300:'Cook.cook_dinner',	
+				 	600: 'Cook.cook_breakfast',
+					1570:'Cook.cook_lunch',
+					2650:'Cook.cook_dinner',	
 
-					030: 'Visitor.visit'}
+					300: 'Visitor.visit',
+					2450: 'Visitor.visit'}
 
 def publish(actionmsg):        
         pub.publish(actionmsg)
