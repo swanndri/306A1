@@ -12,6 +12,7 @@ rate = rospy.Rate(40)
 
 
 def callback(msg):
+	print (msg)
 	cur_health = int(msg.data.split()[1])
 	if cur_health <= 0:
 		#not low
@@ -98,6 +99,7 @@ mlabel3 = Label(text="bladder: ")
 mstatus = Label(text="Status: ")
 mstatus_bar = Label(width="40")
 
+
 # button = Button(text="OK",command=decrease).grid(row=3,column=0)
 
 mlabel.grid(row=0,column=0,sticky=W)
@@ -110,6 +112,7 @@ mlabel2.grid(row=1,column=0)
 mlabel3.grid(row=2,column=0)
 mstatus.place(x=0,y=100)
 mstatus_bar.place(x=50,y=100)
+
 
 mGui.mainloop()
 
