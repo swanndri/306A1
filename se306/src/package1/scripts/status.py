@@ -11,27 +11,65 @@ class StatusGUI(tk.Tk):
 		tk.Tk.__init__(self, *args, **kwargs)
 
 		#sets the dimensions and settings of thw window
-		self.geometry("450x250+700+100")
-		self.title("Status")
+		self.geometry("400x350+700+100")
+		self.title("Resident status")
 
 		#build the GUI components
-		self.hunger_label = ttk.Label(text="hunger: ")
+		self.hunger_label = ttk.Label(text="Hunger: ")
 		self.hunger_progress = ttk.Progressbar(self, orient="horizontal", 
 										length=200, mode="determinate")
-		self.health_label = ttk.Label(text="health: ")
-		self.bladder_label = ttk.Label(text="bladder: ")
+		self.health_label = ttk.Label(text="Health: ")
+		self.health_progress = ttk.Progressbar(self, orient="horizontal", 
+										length=200, mode="determinate")
+		self.entertainment_label = ttk.Label(text="Entertainment: ")
+		self.entertainment_progress = ttk.Progressbar(self, orient="horizontal", 
+										length=200, mode="determinate")
+		self.sanity_label = ttk.Label(text="Sanity: ")
+		self.sanity_progress = ttk.Progressbar(self, orient="horizontal", 
+										length=200, mode="determinate")
+		self.fitness_label = ttk.Label(text="Fitness: ")
+		self.fitness_progress = ttk.Progressbar(self, orient="horizontal", 
+										length=200, mode="determinate")
+		self.thirst_label = ttk.Label(text="Thirst: ")
+		self.thirst_progress = ttk.Progressbar(self, orient="horizontal", 
+										length=200, mode="determinate")
+		self.hygiene_label = ttk.Label(text="Hygiene: ")
+		self.hygiene_progress = ttk.Progressbar(self, orient="horizontal", 
+										length=200, mode="determinate")
+		self.bladder_label = ttk.Label(text="Bladder: ")
+		self.bladder_progress = ttk.Progressbar(self, orient="horizontal", 
+										length=200, mode="determinate")
 		self.status_label = ttk.Label(text="Status: ")
-		self.status_info = ttk.Label(width="50")
+		self.status_info = ttk.Label(width="100")
 		
 		#position the GUI components 
-		self.hunger_progress.grid(row=0,column=2)
-		self.hunger_label.grid(row=0,column=0)
-		self.health_label.grid(row=1,column=0)
-		self.bladder_label.grid(row=2,column=0)
-		self.status_label.place(x=0,y=100)
-		self.status_info.place(x=50,y=100)
+		self.hunger_label.place(x=15,y=10,width=70)
+		self.hunger_progress.place(x=130,y=10)
+		self.health_label.place(x=15,y=40)
+		self.health_progress.place(x=130,y=40)
+		self.entertainment_label.place(x=15,y=70)
+		self.entertainment_progress.place(x=130,y=70)
+		self.sanity_label.place(x=15,y=100)
+		self.sanity_progress.place(x=130,y=100)
+		self.fitness_label.place(x=15,y=130)
+		self.fitness_progress.place(x=130,y=130)
+		self.thirst_label.place(x=15,y=160)
+		self.thirst_progress.place(x=130,y=160)
+		self.hygiene_label.place(x=15,y=190)
+		self.hygiene_progress.place(x=130,y=190)
+		self.bladder_label.place(x=15,y=220)
+		self.bladder_progress.place(x=130,y=220)
+		self.status_label.place(x=15,y=250)
+		self.status_info.place(x=50,y=270,bordermode="inside")
 
 		self.hunger_progress["value"] = 100
+		self.health_progress["value"] = 100
+		self.entertainment_progress["value"] = 100
+		self.sanity_progress["value"] = 100
+		self.fitness_progress["value"] = 100
+		self.thirst_progress["value"] = 100
+		self.hygiene_progress["value"] = 100
+		self.bladder_progress["value"] = 100
 
 	def update_hunger_level(self,cur_health):
 		self.hunger_level = cur_health
@@ -45,6 +83,8 @@ rate = rospy.Rate(40)
 def callback(msg):
 	print (msg)
 	cur_health = int(msg.data.split()[1])
+	if cur_health > 100:
+		cur_health = 100
 	mGui.update_hunger_level(cur_health)
 	if cur_health <= 0:
 		print ("0/100")
