@@ -97,7 +97,7 @@ class Navigation(constants.Paths):
 
 			# Linear movement
 			if (self.facing_correct_direction == True and self.not_at_target == True):
-				self.move_cmd.linear.x = 1
+				self.move_cmd.linear.x = self.movement_speed
 			else:
 				self.move_cmd.linear.x = 0
 
@@ -108,6 +108,7 @@ class Navigation(constants.Paths):
 	def __init__(self, robot_name):
 		self.robot_name = robot_name
 		
+		self.movement_speed = 0.3
 		# Default path and direction
 		self.current_path = self.door_to_kitchen
 		self.current_direction	= self.north
