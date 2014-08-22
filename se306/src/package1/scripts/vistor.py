@@ -24,6 +24,8 @@ class Visitor(navigation.Navigation):
 
 	def __init__(self):		
 		self.rate = rospy.Rate(20)
+		self.task_list = []
+		self.status = "idle"
 		# Create a navigation object which will be used to manage all the calls
 		# relating to movement. Passed the robot's name so that the publisher 
 		# and subscribers for it's navigation can be set up. 
@@ -33,6 +35,14 @@ class Visitor(navigation.Navigation):
 
 		while not rospy.is_shutdown():
 			self.navigate.movement_publisher.publish(self.navigate.move_cmd)
+
+			if (len(self.navigate.target_coordinate) == 0):
+				self.status = "idle"
+
+
+			if (len(self.task_list) > 0 and self.status == "idle"):
+				self.perform_task(self.task_list.pop(0))
+
 			self.rate.sleep()
 
 if __name__ == '__main__':

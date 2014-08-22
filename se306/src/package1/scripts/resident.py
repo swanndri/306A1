@@ -12,6 +12,7 @@ class Resident:
 	def __init__(self):
 		self.fullness = 100
 		
+		
 	
 	def pub_sub(self):
 		sub = rospy.Subscriber("clock", rosgraph_msgs.msg.Clock, self.callback)
