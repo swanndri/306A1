@@ -4,6 +4,7 @@ import roslib
 import rospy
 import std_msgs.msg
 import navigation
+import constants
 
 from std_msgs.msg import String
 
@@ -70,7 +71,7 @@ class Cook(navigation.Navigation):
 	# 	self.pub.publish(command)
 
 	def __init__(self):
-		self.rate = rospy.Rate(20)
+		self.rate = rospy.Rate(constants.RosConstants.robot_rate)
 		self.task_list = []
 		self.status = "idle"
 		# Create a navigation object which will be used to manage all the calls
