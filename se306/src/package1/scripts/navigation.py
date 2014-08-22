@@ -61,7 +61,7 @@ class Navigation(constants.Paths):
 		self.current_direction = euler_from_quaternion(quaternionlist)[2]
 
 		# Setup target direction
-		if (self.target_coordinate is not None):			
+		if (len(self.target_coordinate) > 0):			
 			if(abs(self.current_coordinates[0] - self.target_coordinate[0]) > 0.5):
 				self.not_at_target = True
 				if (self.current_coordinates[0] > self.target_coordinate[0]):
@@ -80,6 +80,8 @@ class Navigation(constants.Paths):
 					if(len(self.current_path) > 0):
 						self.target_coordinate = self.current_path.pop(0)
 						self.not_at_target = True
+					else:
+						self.target_coordinate = []
 
 			# Find optimal direction to rotate
 			clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
@@ -114,7 +116,7 @@ class Navigation(constants.Paths):
 		self.current_direction	= self.north
 
 		# Default target path and direction
-		self.target_coordinate = None
+		self.target_coordinate = []
 		self.target_direction = self.west
 
 		self.current_coordinates = [0,0]
