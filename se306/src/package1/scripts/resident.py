@@ -64,11 +64,7 @@ class Resident(navigation.Navigation):
 	def __init__(self):
 		self.fullness = 100
 
-<<<<<<< HEAD
-		self.rate = rospy.Rate(10)
-=======
 		self.rate = rospy.Rate(constants.RosConstants.robot_rate)
->>>>>>> 63ca1c44fce1e13aada44af3d12efc19f4eec3db
 		self.task_list = []
 		self.status = "idle"
 
