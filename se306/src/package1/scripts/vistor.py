@@ -14,9 +14,21 @@ class Visitor(navigation.Navigation):
 	'''
 	def process_event(self, action_msg):
 		message = str(action_msg).split("data: ")[1]
-		if (message == 'Visitor.visit'):
+		if ("Visitor" in message):
+			
+			self.task_list.append(message)
+
+			
+
+	def perform_task(self, task):
+
+		self.status = "active" 
+
+		if task =="Visitor.visit":
 			self.navigate.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
 			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
+
+
 
 	def __init__(self):		
 		self.rate = rospy.Rate(20)

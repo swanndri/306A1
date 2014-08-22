@@ -24,7 +24,7 @@ class Cook(navigation.Navigation):
 
 		self.status = "active" 
 
-		if task =="Cook.cook_":
+		if ("Cook.cook_" in task):
 			self.navigate.current_path = list(self.cook_path)
 			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
 
