@@ -66,12 +66,12 @@ class Resident(navigation.Navigation):
 		self.rate = rospy.Rate(20)
 		self.task_list = []
 		self.status = "idle"
+
 		# Create a navigation object which will be used to manage all the calls
 		# relating to movement. Passed the robot's name so that the publisher 
 		# and subscribers for it's navigation can be set up. 
 		#Eventually we will make this input a variable instead of hardcoded
 		self.navigate = navigation.Navigation("robot_1")		
-
 		rospy.Subscriber("scheduler", String, self.process_event)
 		sub = rospy.Subscriber("clock", rosgraph_msgs.msg.Clock, self.callback)
 		self.pub = rospy.Publisher('human', std_msgs.msg.String, queue_size=10)
