@@ -19,25 +19,33 @@ class Paths:
 	south = -math.pi / 2.0
 
 	# Invisible nodes/points within our house
-	cupboard 		=	[-11,12]
-	bedroom 		=	[-11,6]
-	bathroom		=	[-10,-11]
-	hallway_top		=	[-4,6]
-	hallway_mid		=	[-4,1]
-	hallway_bot		=	[-4,-11]
-	door			=	[-4,-14]
-	kitchen			=	[6,11]
-	living_room		=	[6,1]
-	cook_idle		= 	[13,-13]
+	cupboard 		=	[-3.8, 4.2]
+	bedroom 		=	[-3.8, 2.1]
+	bathroom		=	[-3.8, -3.7]
+	hallway_top		=	[-1.2, 1.9]
+	hallway_mid		=	[-1.2, 0.45]
+	hallway_bot		=	[-1.2, -3.7]
+	door			=	[-1.2, -6]
+	kitchen			=	[2.1, 3.8]
+	living_room_middle	=	[2.1, 0.25]
+	cook_idle		= 	[4, -2]
 	idle			=	[12,4]
 
+	living_room_entrance = [0.3, 0.25]
+
+	# Furniture
+	bed = [-2.3, -1.1]
+	kitchen_stove = []
+	sofa = [0.3, -3]
+
+
 	# Paths robots can take
-	door_to_kitchen				=	[door, hallway_mid, living_room, kitchen]
-	bedroom_to_living_room		=	[bedroom, hallway_top, hallway_mid, living_room, idle]
-	living_room_to_kitchen		=	[living_room, kitchen]
-	kitchen_to_bedroom			=	[kitchen, living_room, hallway_mid, hallway_top, bedroom]
-	kitchen_to_cupboard			=	[kitchen, living_room, hallway_mid, hallway_top, bedroom, cupboard, bedroom]
-	cupboard_to_kitchen			=	[bedroom, hallway_top, hallway_mid, living_room, kitchen]
-	door_to_living_room			=	[door, hallway_mid, living_room]
-	kitchen_to_idle				=	[kitchen, living_room, idle]
-	cook_path					=	[cook_idle, living_room, kitchen, living_room, cook_idle]
+	door_to_kitchen				=	[door, hallway_mid, living_room_middle, kitchen]
+	bedroom_to_living_room		=	[bedroom, hallway_top, hallway_mid, living_room_entrance, sofa]
+	living_room_to_kitchen		=	[living_room_middle, kitchen]
+	kitchen_to_bedroom			=	[kitchen, living_room_middle, hallway_mid, hallway_top, bedroom]
+	kitchen_to_cupboard			=	[kitchen, living_room_middle, hallway_mid, hallway_top, bedroom, cupboard, bedroom]
+	cupboard_to_kitchen			=	[bedroom, hallway_top, hallway_mid, living_room_middle, kitchen]
+	door_to_living_room			=	[door, hallway_mid, living_room_middle]
+	kitchen_to_sofa				=	[kitchen, living_room_middle, sofa]
+	cook_path					=	[cook_idle, living_room_middle, kitchen, living_room_middle, cook_idle]

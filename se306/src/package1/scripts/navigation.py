@@ -59,14 +59,14 @@ class Navigation(constants.Paths):
 
 		# Setup target direction
 		if (len(self.target_coordinate) > 0):			
-			if(abs(self.current_coordinates[0] - self.target_coordinate[0]) > 0.5):
+			if(abs(self.current_coordinates[0] - self.target_coordinate[0]) > 0.2):
 				self.not_at_target = True
 				if (self.current_coordinates[0] > self.target_coordinate[0]):
 					self.target_direction = self.west
 				else:
 					self.target_direction = self.east
 			else:
-				if(abs(self.current_coordinates[1] - self.target_coordinate[1]) > 0.5):
+				if(abs(self.current_coordinates[1] - self.target_coordinate[1]) > 0.2):
 					self.not_at_target = True
 					if (self.current_coordinates[1] > self.target_coordinate[1]):
 						self.target_direction = self.south
@@ -87,7 +87,7 @@ class Navigation(constants.Paths):
 			# print(rotation_speed)
 
 			# Rotation
-			if(abs(self.current_direction - self.target_direction) >  math.radians(4)):
+			if(abs(self.current_direction - self.target_direction) >  math.radians(1)):
 				#self.move_cmd.angular.z = clockwise * math.pi / 25
 				self.move_cmd.angular.z = clockwise * rotation_speed
 				self.facing_correct_direction = False
