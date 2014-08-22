@@ -1,6 +1,5 @@
 import math
 
-
 ''' The Paths calls of constants is used in the Navigation class.
 
 This class contains the invisible nodes we will use to make robots
@@ -47,5 +46,10 @@ class Paths:
 	kitchen_to_cupboard			=	[kitchen, living_room_middle, hallway_mid, hallway_top, bedroom, cupboard, bedroom]
 	cupboard_to_kitchen			=	[bedroom, hallway_top, hallway_mid, living_room_middle, kitchen]
 	door_to_living_room			=	[door, hallway_mid, living_room_middle]
-	kitchen_to_sofa				=	[kitchen, living_room_middle, sofa]
+	kitchen_to_idle				=	[kitchen, living_room_middle, sofa]
 	cook_path					=	[cook_idle, living_room_middle, kitchen, living_room_middle, cook_idle]
+
+
+class RosConstants:
+
+	robot_rate = 10

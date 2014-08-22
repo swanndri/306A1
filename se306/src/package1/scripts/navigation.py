@@ -87,7 +87,7 @@ class Navigation(constants.Paths):
 			# print(rotation_speed)
 
 			# Rotation
-			if(abs(self.current_direction - self.target_direction) >  math.radians(1)):
+			if(abs(self.current_direction - self.target_direction) >  math.radians(2)):
 				#self.move_cmd.angular.z = clockwise * math.pi / 25
 				self.move_cmd.angular.z = clockwise * rotation_speed
 				self.facing_correct_direction = False

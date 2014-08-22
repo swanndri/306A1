@@ -6,6 +6,7 @@ import rospy
 import rosgraph_msgs
 import std_msgs.msg
 import navigation
+import constants
 
 from std_msgs.msg import String
 
@@ -63,7 +64,7 @@ class Resident(navigation.Navigation):
 	def __init__(self):
 		self.fullness = 100
 
-		self.rate = rospy.Rate(20)
+		self.rate = rospy.Rate(constants.RosConstants.robot_rate)
 		self.task_list = []
 		self.status = "idle"
 
