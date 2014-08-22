@@ -101,7 +101,7 @@ class Navigation(constants.Paths):
 				self.move_cmd.linear.x = self.movement_speed
 			else:
 				self.move_cmd.linear.x = 0
-
+		print(self.target_coordinate)
 	''' Robots are initialized with a name which is passed in as a parameter. This allows us
 	to use this class to publish and subscribe with many different robots inheriting from this
 	class
@@ -109,7 +109,7 @@ class Navigation(constants.Paths):
 	def __init__(self, robot_name):
 		self.robot_name = robot_name
 		
-		self.movement_speed = 1
+		self.movement_speed = 0.5
 		# Default path and direction
 		self.current_path = self.door_to_kitchen
 		self.current_direction	= self.north

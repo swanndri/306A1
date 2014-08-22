@@ -82,7 +82,7 @@ myRobot( pose [ -2.300 -1.100 0.600 0.000 ] name "resident" color "green")
 myRobot( pose [ 4 -2.000 0.600 90.000 ] name "visitor" color "black")
 
 myRobotFurniture( pose [ 4.3.000 -3.010 0.000 -90.000 ] name "rTV" color "black" bitmap "images/tv2.png")
-#myRobotFurniture( pose [ 6.000 12.000 0.000 0.000 ] name "rStove" color "black" bitmap "images/stove.png")
+myRobotFurniture( pose [ 3.000 4.000 0.000 0.000 ] name "rStove" color "black" bitmap "images/stove.png")
 
 myRobotFurniture( pose [ 0.000 -2.500 0.000 90.000 ] name "rCouch" color "black" bitmap "images/Couch.png")
 myRobotFurniture( pose [ 0.000 -4.000 0.000 90.000 ] name "rCouch" color "black" bitmap "images/Couch.png")
@@ -90,4 +90,4 @@ myRobotFurniture( pose [ 0.000 -4.000 0.000 90.000 ] name "rCouch" color "black"
 myRobotBed( pose [ -2.500 -1.5000 0.000 90.000 ] name "rBed" color "black" bitmap "images/bed.png")
 myRobotBed( pose [ -2.500 -0.7500 0.000 90.000 ] name "rBed" color "black" bitmap "images/bed.png")
 
-#myRobotFurniture( pose [ -13.000 -13.000 0.000 180.000 ] name "rToilet" color "black" bitmap "images/toilet.png")
+myRobotFurniture( pose [ -4.000 -4.000 0.000 180.000 ] name "rToilet" color "black" bitmap "images/toilet.png")

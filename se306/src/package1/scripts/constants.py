@@ -42,11 +42,11 @@ class Paths:
 	door_to_kitchen				=	[door, hallway_mid, living_room_middle, kitchen]
 	bedroom_to_living_room		=	[bedroom, hallway_top, hallway_mid, living_room_entrance, sofa]
 	living_room_to_kitchen		=	[living_room_middle, kitchen]
-	kitchen_to_bedroom			=	[kitchen, living_room_middle, hallway_mid, hallway_top, bedroom]
+	kitchen_to_bedroom			=	[kitchen, living_room_middle, hallway_mid, hallway_top, bedroom, bed]
 	kitchen_to_cupboard			=	[kitchen, living_room_middle, hallway_mid, hallway_top, bedroom, cupboard, bedroom]
 	cupboard_to_kitchen			=	[bedroom, hallway_top, hallway_mid, living_room_middle, kitchen]
 	door_to_living_room			=	[door, hallway_mid, living_room_middle]
-	kitchen_to_idle				=	[kitchen, living_room_middle, sofa]
+	kitchen_to_sofa				=	[kitchen, living_room_middle, sofa]
 	cook_path					=	[cook_idle, living_room_middle, kitchen, living_room_middle, cook_idle]
 
 
