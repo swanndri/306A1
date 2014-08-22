@@ -6,6 +6,7 @@ import rospy
 import rosgraph_msgs
 import std_msgs.msg
 import navigation
+import constants
 
 from std_msgs.msg import String
 
@@ -55,7 +56,7 @@ class Resident(navigation.Navigation):
 			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
 		
 		if (task == 'Resident.idle'):
-			self.navigate.current_path = list(self.kitchen_to_idle)
+			self.navigate.current_path = list(self.kitchen_to_sofa)
 			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
 
 
@@ -63,15 +64,15 @@ class Resident(navigation.Navigation):
 	def __init__(self):
 		self.fullness = 100
 
-		self.rate = rospy.Rate(20)
+		self.rate = rospy.Rate(constants.RosConstants.robot_rate)
 		self.task_list = []
 		self.status = "idle"
+
 		# Create a navigation object which will be used to manage all the calls
 		# relating to movement. Passed the robot's name so that the publisher 
 		# and subscribers for it's navigation can be set up. 
 		#Eventually we will make this input a variable instead of hardcoded
 		self.navigate = navigation.Navigation("robot_1")		
-
 		rospy.Subscriber("scheduler", String, self.process_event)
 		sub = rospy.Subscriber("clock", rosgraph_msgs.msg.Clock, self.callback)
 		self.pub = rospy.Publisher('human', std_msgs.msg.String, queue_size=10)
