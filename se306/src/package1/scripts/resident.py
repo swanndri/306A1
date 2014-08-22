@@ -19,6 +19,7 @@ class Resident(navigation.Navigation):
 		message = str(action_msg).split("data: ")[1]
 		
 		if ("Resident.eat" in message):
+			self.task_list.append(message)
 			self.fullness += 30
 			if (self.fullness > 100):
 				self.fullness = 100
@@ -81,7 +82,7 @@ class Resident(navigation.Navigation):
 		while not rospy.is_shutdown():
 			self.navigate.movement_publisher.publish(self.navigate.move_cmd)
 			# print statement for debugging path
-			# print (self.task_list, self.status, self.navigate.target_coordinate)
+			print (self.task_list, self.status, self.navigate.target_coordinate)
 			if (len(self.navigate.target_coordinate) == 0):
 				self.status = "idle"
 
@@ -100,7 +101,7 @@ class Resident(navigation.Navigation):
 			if self.fullness > 0:
 				self.fullness -= 1
 				self.pub.publish("Fullness: " + str(self.fullness))
-				print("Fullness:",self.fullness)
+				# print("Fullness:",self.fullness)
 
 
 if __name__ == '__main__':

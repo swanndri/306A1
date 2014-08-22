@@ -17,7 +17,7 @@ scheduled_tasks = { 8: 'Resident.wakeup',
 				 	85: 'Resident.eat_lunch',
 				 	100: 'Resident.idle',
 				 	170:'Resident.eat_dinner',
-				 	380:'Resident.sleep',
+				 	200:'Resident.sleep',
 
 				 	30: 'Cook.cook_breakfast',
 					70:'Cook.cook_lunch',
