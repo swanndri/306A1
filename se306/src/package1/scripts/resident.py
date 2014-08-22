@@ -4,15 +4,16 @@
 import roslib
 import rospy
 import rosgraph_msgs
-
 import std_msgs.msg
-from std_msgs.msg import String
-
 import navigation
 
+from std_msgs.msg import String
 
 class Resident(navigation.Navigation):
 
+	''' When a message is passed out from the scheduler, determine whether it is
+	relevant to this object. If so, take the neccessary action
+	'''
 	def process_event(self, action_msg):
 		message = str(action_msg).split("data: ")[1]
 		

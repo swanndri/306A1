@@ -2,11 +2,7 @@
 
 import roslib
 import rospy
-import geometry_msgs.msg
 import std_msgs.msg
-import nav_msgs.msg
-import sensor_msgs.msg
-import time
 import navigation
 
 from std_msgs.msg import String
