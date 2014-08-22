@@ -55,7 +55,7 @@ class Resident(navigation.Navigation):
 			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
 		
 		if (task == 'Resident.idle'):
-			self.navigate.current_path = list(self.kitchen_to_idle)
+			self.navigate.current_path = list(self.kitchen_to_sofa)
 			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
 
 
@@ -63,7 +63,7 @@ class Resident(navigation.Navigation):
 	def __init__(self):
 		self.fullness = 100
 
-		self.rate = rospy.Rate(20)
+		self.rate = rospy.Rate(10)
 		self.task_list = []
 		self.status = "idle"
 

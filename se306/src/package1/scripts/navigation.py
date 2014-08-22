@@ -33,8 +33,8 @@ class Navigation(constants.Paths):
 	def get_rotation_speed(self):
 		old_max = 180
 		old_min = 1
-		new_max = 1
-		new_min = 0.3
+		new_max = 4
+		new_min = 0.1
 
 		target_angle 	= 	self.normalize(int(math.degrees(self.target_direction)))
 		current_angle 	=	self.normalize(int(math.degrees(self.current_direction)))
@@ -84,10 +84,11 @@ class Navigation(constants.Paths):
 			clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
 			# Finding optimal speed to rotate
 			rotation_speed = self.get_rotation_speed()
+			print(rotation_speed)
 			# print(rotation_speed)
 
 			# Rotation
-			if(abs(self.current_direction - self.target_direction) >  math.radians(1)):
+			if(abs(self.current_direction - self.target_direction) >  math.radians(2)):
 				#self.move_cmd.angular.z = clockwise * math.pi / 25
 				self.move_cmd.angular.z = clockwise * rotation_speed
 				self.facing_correct_direction = False
@@ -108,7 +109,7 @@ class Navigation(constants.Paths):
 	def __init__(self, robot_name):
 		self.robot_name = robot_name
 		
-		self.movement_speed = 0.3
+		self.movement_speed = 1
 		# Default path and direction
 		self.current_path = self.door_to_kitchen
 		self.current_direction	= self.north
