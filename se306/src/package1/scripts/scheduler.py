@@ -11,19 +11,20 @@ from std_msgs.msg import String
 simulation_time = 0
 pub = rospy.Publisher('scheduler', String, queue_size=10)
 
-scheduled_tasks = { 100: 'Resident.wakeup', 
-				 	1350: 'Resident.eat_breakfast',
-				 	1900: 'Resident.take_meds',
-				 	2550: 'Resident.eat_lunch',
-				 	3000: 'Resident.idle',
-				 	3500:'Resident.eat_dinner',
-				 	3750:'Resident.sleep',
+scheduled_tasks = { 8: 'Resident.wakeup', 
+				 	45: 'Resident.eat_breakfast',
+				 	55: 'Resident.take_meds',
+				 	85: 'Resident.eat_lunch',
+				 	100: 'Resident.idle',
+				 	170:'Resident.eat_dinner',
+				 	380:'Resident.sleep',
 
-				 	300: 'Cook.cook_breakfast',
-					2200:'Cook.cook_lunch',
-					3300:'Cook.cook_dinner',	
+				 	30: 'Cook.cook_breakfast',
+					70:'Cook.cook_lunch',
+					150:'Cook.cook_dinner',	
 
-					030: 'Visitor.visit'}
+					23: 'Visitor.visit',
+					120: 'Visitor.visit'}
 
 def publish(actionmsg):        
         pub.publish(actionmsg)
@@ -34,7 +35,7 @@ def schedule_events(time):
 	#1440 because there are 1440 minutes in a day therefore 1 minute simulation = 1 second real time
 	#0 = 12:00am (midnight). 
 	#480 = 8:00am
-	simulation_time  = time.clock.secs % 4320
+	simulation_time  = time.clock.secs % 420
 	actionmsg = None
 	if ( time.clock.nsecs == 100000000 ):
 		actionmsg = scheduled_tasks.get(simulation_time)
@@ -49,3 +50,7 @@ rospy.init_node('scheduler')
 
 rospy.Subscriber('/clock', rosgraph_msgs.msg.Clock, schedule_events)
 rospy.spin()
+
+
+
+#jak gittest

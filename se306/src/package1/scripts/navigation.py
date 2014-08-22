@@ -5,10 +5,7 @@ import rospy
 import geometry_msgs.msg
 import std_msgs.msg
 import nav_msgs.msg
-import sensor_msgs.msg
 import math
-import time
-import tf
 import TurnHelp
 import constants
 
@@ -36,8 +33,8 @@ class Navigation(constants.Paths):
 	def get_rotation_speed(self):
 		old_max = 180
 		old_min = 1
-		new_max = 1
-		new_min = 0.3
+		new_max = 4
+		new_min = 0.1
 
 		target_angle 	= 	self.normalize(int(math.degrees(self.target_direction)))
 		current_angle 	=	self.normalize(int(math.degrees(self.current_direction)))
@@ -61,15 +58,15 @@ class Navigation(constants.Paths):
 		self.current_direction = euler_from_quaternion(quaternionlist)[2]
 
 		# Setup target direction
-		if (self.target_coordinate is not None):			
-			if(abs(self.current_coordinates[0] - self.target_coordinate[0]) > 0.5):
+		if (len(self.target_coordinate) > 0):			
+			if(abs(self.current_coordinates[0] - self.target_coordinate[0]) > 0.2):
 				self.not_at_target = True
 				if (self.current_coordinates[0] > self.target_coordinate[0]):
 					self.target_direction = self.west
 				else:
 					self.target_direction = self.east
 			else:
-				if(abs(self.current_coordinates[1] - self.target_coordinate[1]) > 0.5):
+				if(abs(self.current_coordinates[1] - self.target_coordinate[1]) > 0.2):
 					self.not_at_target = True
 					if (self.current_coordinates[1] > self.target_coordinate[1]):
 						self.target_direction = self.south
@@ -80,15 +77,18 @@ class Navigation(constants.Paths):
 					if(len(self.current_path) > 0):
 						self.target_coordinate = self.current_path.pop(0)
 						self.not_at_target = True
+					else:
+						self.target_coordinate = []
 
 			# Find optimal direction to rotate
 			clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
 			# Finding optimal speed to rotate
 			rotation_speed = self.get_rotation_speed()
+			print(rotation_speed)
 			# print(rotation_speed)
 
 			# Rotation
-			if(abs(self.current_direction - self.target_direction) >  math.radians(4)):
+			if(abs(self.current_direction - self.target_direction) >  math.radians(2)):
 				#self.move_cmd.angular.z = clockwise * math.pi / 25
 				self.move_cmd.angular.z = clockwise * rotation_speed
 				self.facing_correct_direction = False
@@ -98,7 +98,7 @@ class Navigation(constants.Paths):
 
 			# Linear movement
 			if (self.facing_correct_direction == True and self.not_at_target == True):
-				self.move_cmd.linear.x = 1
+				self.move_cmd.linear.x = self.movement_speed
 			else:
 				self.move_cmd.linear.x = 0
 
@@ -109,12 +109,13 @@ class Navigation(constants.Paths):
 	def __init__(self, robot_name):
 		self.robot_name = robot_name
 		
+		self.movement_speed = 1
 		# Default path and direction
 		self.current_path = self.door_to_kitchen
 		self.current_direction	= self.north
 
 		# Default target path and direction
-		self.target_coordinate = None
+		self.target_coordinate = []
 		self.target_direction = self.west
 
 		self.current_coordinates = [0,0]
