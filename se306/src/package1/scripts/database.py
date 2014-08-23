@@ -80,24 +80,89 @@ class Database(object):
 		EVENTS = {
 			'Resident.wakeup': {
 				'explanation': 'Resident is currently waking up',
-				'priority': 1
+				'priority': 3
+			},
+			'Resident.sleep': {
+				'explanation': 'Resident is going to sleep',
+				'priority': 3
 			},
 			'Resident.eat_breakfast': {
 				'explanation': 'Resident is eating breakfast',
+				'priority': 3
+			},
+			'Resident.eat_lunch': {
+				'explanation': 'Resident is eating lunch',
+				'priority': 3
+			},
+			'Resident.eat_dinner': {
+				'explanation': 'Resident is eating dinner',
+				'priority': 3
+			},
+			'Resident.take_meds': {
+				'explanation': 'Resident is taking medication',
+				'priority': 1
+			},
+			'Resident.idle': {
+				'explanation': 'Resident is not doing anything',
+				'priority': 3
+			},
+			'Cook.cook_breakfast': {
+				'explanation': 'Cook robot is cooking breakfast',
+				'priority': 1
+			},
+			'Cook.cook_lunch': {
+				'explanation': 'Cook robot is cooking lunch',
+				'priority': 1
+			},
+			'Cook.cook_dinner': {
+				'explanation': 'Cook robot is cooking dinner',
+				'priority': 1
+			},
+			'Resident.take_meds': {
+				'explanation': 'Resident is taking medication',
+				'priority': 1
+			},
+			'Visitor.visit': {
+				'explanation': 'Someone is visiting the house',
 				'priority': 1
 			}
 		}
 
 		LEVELS = {
 			'fullness': {
-				'warn_medium': 'resident getting a bit hungry',
-				'warn_low': 'resident pretty damn hungry right now man',
-				'warn_dangerous': 'resident starving now...'
+				'warn_medium': 'Resident getting a bit hungry',
+				'warn_low': 'Resident pretty damn hungry right now man',
+				'warn_dangerous': 'Resident starving now...'
 			}
-			'health': {},
-			'entertainment': {},
-			'sanity': {},
-			'fitness': {},
-			'hydration': {},
-			'hygene': {}
+			'health': {
+				'warn_medium': 'Resident looks a bit unhealthy',
+				'warn_low': 'Resident\'s health is concerning',
+				'warn_dangerous': 'OW OW OWOWOWOW the resident is dying'
+			},
+			'entertainment': {
+				'warn_medium': 'The resident looks quite bored',
+				'warn_low': 'Resident is getting reallllly bored',
+				'warn_dangerous': 'ENTERTAIN THE RESIDENT OR WE ALL DIE'
+			},
+			'sanity': {
+				'warn_medium': 'Resident is losing sanity',
+				'warn_low': 'Resident\'s behaviour is a bit concerning',
+				'warn_dangerous': "Resident is going crazy right n- \
+					AAAAAAAH"
+			},
+			'fitness': {
+				'warn_medium': 'Resident is getting unfit',
+				'warn_low': 'Resident is really unfit',
+				'warn_dangerous': 'Resident is incredibly unfit'
+			},
+			'hydration': {
+				'warn_medium': 'Me Tarzan. Resident thirsty.',
+				'warn_low': 'Resident could really use some water',
+				'warn_dangerous': 'RESIDENT NEEDS WATERRRR!!!!'
+			},
+			'hygene': {
+				'warn_medium': 'Resident\'s hygiene is slightly bad',
+				'warn_low': 'Resident\'s hygiene is really bad',
+				'warn_dangerous': 'Resident is wallowing his own filth'
+			}
 		}
