@@ -64,6 +64,12 @@ class Resident(navigation.Navigation):
 
 	def __init__(self):
 		self.fullness = 100
+		self.health = 100
+		self.entertainment = 100
+		self.sanity = 100
+		self.fitness = 100
+		self.thirst = 100
+		self.hygiene = 100
 
 		self.rate = rospy.Rate(constants.RosConstants.robot_rate)
 		self.task_list = []
@@ -97,13 +103,48 @@ class Resident(navigation.Navigation):
 		# Old hunger rate
 		# if ((int(msg.clock.secs) % 42 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0))
 		
+		#hunger/fullness
 		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):
 			if self.fullness > 0:
 				self.fullness -= 1
 				self.pub.publish("Fullness: " + str(self.fullness))
-				# print("Fullness:",self.fullness)
-
-
+		
+		#health		
+		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):
+			if self.health > 0:
+				self.health -= 1
+				self.pub.publish("Health: " + str(self.health))
+				
+		#entertainment	
+		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):		
+			if self.entertainment > 0:
+				self.entertainment -= 1
+				self.pub.publish("Entertainment: " + str(self.entertainment))
+				
+		#sanity
+		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):
+			if self.sanity > 0:
+				self.sanity -= 1
+				self.pub.publish("Sanity: " + str(self.sanity))
+				
+		#fitness
+		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):
+			if self.fitness > 0:
+				self.fitness -= 1
+				self.pub.publish("Fitness: " + str(self.fitness))
+				
+		#thirst
+		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):
+			if self.thirst > 0:
+				self.thirst -= 1
+				self.pub.publish("Thirst: " + str(self.thirst))
+				
+		#hygiene
+		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):
+			if self.hygiene > 0:
+				self.hygiene -= 1
+				self.pub.publish("Hygiene: " + str(self.hygiene))
+				
 if __name__ == '__main__':
 	rospy.init_node('resident_robot')
 	resident = Resident()
