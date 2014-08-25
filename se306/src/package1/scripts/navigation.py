@@ -38,15 +38,15 @@ class Navigation(constants.Paths):
 
 		target_angle 	= 	self.normalize(int(math.degrees(self.target_direction)))
 		current_angle 	=	self.normalize(int(math.degrees(self.current_direction)))
-	
+
 		difference = abs(target_angle -  current_angle)
+		difference = abs((difference + 180) % 360 - 180)
 
 		old_range = (old_max - old_min)  
 		new_range = (new_max - new_min)  
 
 		rotation_speed = (((difference - old_min) * new_range) / old_range) + new_min
 		return rotation_speed
-
 
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
@@ -102,6 +102,7 @@ class Navigation(constants.Paths):
 			else:
 				self.move_cmd.linear.x = 0
 		print(self.target_coordinate)
+
 	''' Robots are initialized with a name which is passed in as a parameter. This allows us
 	to use this class to publish and subscribe with many different robots inheriting from this
 	class
