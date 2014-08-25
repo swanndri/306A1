@@ -1,14 +1,15 @@
 define mylaser ranger
 (
   sensor(
-  range [ 0 30 ] # range
-  fov 180       # field of vision
-  samples 180  # samples 
+    range [ 0 10 ] # range
+    fov 180       # field of vision
+    samples 180  # samples 
   )
+
   # generic model properties
-  color "black"
-  size [ 0.050 0.050 0.500 ] # Height of notification for collision. 0.1 seems to be the minimum height
-  
+
+  size [ 0.50 0.50 0.2 ] 
+  # Height of notification for collision. 0.1 seems to be the minimum height
 )
 
 define myRobot position
@@ -22,25 +23,27 @@ define myRobot position
       z [0 1]
     )
   #fit shape to this size in meters
-  #size [0.5 0.5 0.5]
-  size [0.350 0.350 1.500]
+  size [0.350 0.350 .500]
   drive "diff"
-  mylaser(pose [ 0.175 0.000 -0.500 0.000 ]) 
-  # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is unknown for now.
+  
+  mylaser(pose [ 0.350 0.350 00 0.00 ]) 
+  
+  # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is direction facing
 )
 
-define myRobotFurniture position
+define myRobotFurniture model
 (
   size [1.500 1 0.500]
-  drive "diff"
-  mylaser(pose [ 0.175 0.000 -0.500 0.000 ]) 
+  ranger_return 1.000
+
+  #drive "diff"
+  #mylaser(pose [ 0.175 0.000 -0.500 0.000 ]) 
 ) 
 
-define myRobotBed position
+define myRobotBed model
 (
   size [0.750 1.250 0.500]
-  drive "diff"
-  mylaser(pose [ 0.175 0.000 -0.500 0.000 ]) 
+  ranger_return 1
 ) 
 
 define floorplan model
@@ -60,26 +63,24 @@ resolution 0.02 #resolution of the underline bitmap model in meters.
 
 interval_sim 100  # simulation timestep in milliseconds. length of each simulation update cycle.
 
-
 window
 ( 
-  size [ 573 365 ] #size of the window in pixels
-  scale 12.100
+  size [ 800 800 ] #size of the window in pixels
+  scale 50.000
 )
 
 # load an environment bitmap
 floorplan
 ( 
-  name "swarm"
-#  bitmap "swarm_world.pgm"
+  name "house"
   bitmap "house.png"
   size [10.000 10.000 3.000]
 #  pose [ 8 8 0 0 ]
 )
-# throw in a robot
-myRobot( pose [ -1.200 -10.00 0.600 90.000 ] name "cook" color "yellow")
-myRobot( pose [ -2.300 -1.100 0.600 0.000 ] name "resident" color "green")
-myRobot( pose [ 4 -2.000 0.600 90.000 ] name "visitor" color "black")
+
+myRobot( pose [ -1.200 -10.00 0.000 90.000 ] name "cook" color "yellow")
+myRobot( pose [ -2.300 -1.100 0.000 0.000 ] name "resident" color "green")
+myRobot( pose [ 4 -2.000 0000 90.000 ] name "visitor" color "black")
 
 myRobotFurniture( pose [ 4.3.000 -3.010 0.000 -90.000 ] name "rTV" color "black" bitmap "images/tv2.png")
 myRobotFurniture( pose [ 2.000 4.500 0.000 0.000 ] name "rStove" color "black" bitmap "images/stove.png")

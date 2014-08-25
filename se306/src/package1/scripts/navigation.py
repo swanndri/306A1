@@ -3,8 +3,10 @@
 import roslib
 import rospy
 import geometry_msgs.msg
+import sensor_msgs.msg
 import std_msgs.msg
 import nav_msgs.msg
+
 import math
 import TurnHelp
 import constants
@@ -48,6 +50,9 @@ class Navigation(constants.Paths):
 		rotation_speed = (((difference - old_min) * new_range) / old_range) + new_min
 		return rotation_speed
 
+	def process_range_data(self, lazer_beamz):
+		print(lazer_beamz.ranges[90])
+
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
 		self.current_coordinates[0] = position_data.pose.pose.position.x
@@ -84,7 +89,6 @@ class Navigation(constants.Paths):
 			clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
 			# Finding optimal speed to rotate
 			rotation_speed = self.get_rotation_speed()
-			print(rotation_speed)
 			# print(rotation_speed)
 
 			# Rotation
@@ -101,16 +105,15 @@ class Navigation(constants.Paths):
 				self.move_cmd.linear.x = self.movement_speed
 			else:
 				self.move_cmd.linear.x = 0
-		print(self.target_coordinate)
 
 	''' Robots are initialized with a name which is passed in as a parameter. This allows us
 	to use this class to publish and subscribe with many different robots inheriting from this
 	class
 	'''
 	def __init__(self, robot_name):
-		self.robot_name = robot_name
-		
+		self.robot_name = robot_name		
 		self.movement_speed = 0.5
+
 		# Default path and direction
 		self.current_path = self.door_to_kitchen
 		self.current_direction	= self.north
@@ -132,7 +135,11 @@ class Navigation(constants.Paths):
 		publish_to = "/" + robot_name + "/cmd_vel"		
 		self.movement_publisher = rospy.Publisher(publish_to, geometry_msgs.msg.Twist, queue_size=10)		
 		
-	# Method currently is unused and has no real function yet	
+		subscribe_to = "/" + robot_name + "/base_scan"
+		rospy.Subscriber(subscribe_to, sensor_msgs.msg.LaserScan, self.process_range_data)
+
+	# Method currently is unused and has no real function yet. Need current position for this method
+	# to be useful
 	def move (self, room):
 		self.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
 		self.target_coordinate = self.current_path.pop(0)
