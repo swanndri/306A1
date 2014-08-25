@@ -51,7 +51,12 @@ class Navigation(constants.Paths):
 		return rotation_speed
 
 	def process_range_data(self, lazer_beamz):
-		print(lazer_beamz.ranges[90])
+		distance_infront = min(lazer_beamz.ranges[89:92])
+		if(distance_infront < 0.5):
+			self.collision = True
+		else:
+			self.collision = False
+		print(distance_infront)
 
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
@@ -106,6 +111,8 @@ class Navigation(constants.Paths):
 			else:
 				self.move_cmd.linear.x = 0
 
+		if(self.collision == True):
+			self.move_cmd.linear.x = 0	
 	''' Robots are initialized with a name which is passed in as a parameter. This allows us
 	to use this class to publish and subscribe with many different robots inheriting from this
 	class
@@ -114,6 +121,7 @@ class Navigation(constants.Paths):
 		self.robot_name = robot_name		
 		self.movement_speed = 0.5
 
+		self.collision = False
 		# Default path and direction
 		self.current_path = self.door_to_kitchen
 		self.current_direction	= self.north

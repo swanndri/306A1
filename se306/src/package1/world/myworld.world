@@ -26,7 +26,7 @@ define myRobot position
   size [0.350 0.350 .500]
   drive "diff"
   
-  mylaser(pose [ 0.350 0.350 -0.2 0.00 ]) 
+  mylaser(pose [ 0.350 0.0 -0.2 0.00 ]) 
   
   # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is direction facing
 )
