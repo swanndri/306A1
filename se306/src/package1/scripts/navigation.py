@@ -52,7 +52,7 @@ class Navigation(constants.Paths):
 
 	def process_range_data(self, lazer_beamz):
 		distance_infront = min(lazer_beamz.ranges[89:92])
-		if(distance_infront < 0.5):
+		if(distance_infront < 0.05):
 			self.collision = True
 		else:
 			self.collision = False
