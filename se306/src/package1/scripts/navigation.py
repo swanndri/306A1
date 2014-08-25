@@ -51,8 +51,8 @@ class Navigation(constants.Paths):
 		return rotation_speed
 
 	def process_range_data(self, lazer_beamz):
-		distance_infront = min(lazer_beamz.ranges[85:96])
-		if(distance_infront < 0.05):
+		distance_infront = min(lazer_beamz.ranges[45:136])
+		if(distance_infront < 0.2):
 			self.collision = True
 		else:
 			self.collision = False
