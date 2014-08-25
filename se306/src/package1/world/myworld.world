@@ -100,5 +100,5 @@ collidable_objects( pose [ 2.000 4.500 0.000 0.000 ] name "rStove" color "black"
 collidable_objects( pose [ -4.000 -4.500 0.000 180.000 ] name "rToilet" color "black" bitmap "images/toilet.png")
 
 collidable_objects( pose [ 0.500 4.500 0.000 0.000 ] name "rFridge" color "black" bitmap "images/Fridge.png")
-collidable_objects( pose [ 4.000 1.000 0.000 0.000 ] name "rTable" color "black" bitmap "images/table.png")
+collidable_objects( pose [ 4.000 1.100 0.000 0.000 ] name "rTable" color "black" bitmap "images/table.png")
 collidable_objects( pose [ -4.000 -3.000 0.000 0.000 ] name "rSink" color "black" bitmap "images/sink.png") 
