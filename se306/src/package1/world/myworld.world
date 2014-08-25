@@ -95,3 +95,11 @@ myRobotFurniture( pose [ -4.000 -4.500 0.000 180.000 ] name "rToilet" color "bla
 myRobotFurniture( pose [ 0.500 4.500 0.000 0.000 ] name "rFridge" color "black" bitmap "images/Fridge.png")
 myRobotFurniture( pose [ 4.000 1.000 0.000 0.000 ] name "rTable" color "black" bitmap "images/table.png")
 myRobotFurniture( pose [ -4.000 -3.000 0.000 0.000 ] name "rSink" color "black" bitmap "images/sink.png") 
+
+myRobotBed( pose [ -2.500 -3.000 0.000 0.000 ] name "rGym" color "black" bitmap "images/bathtub.png")
+
+myRobotFurniture( pose [ -4.000 1.000 0.000 0.000 ] name "rGym" color "black" bitmap "images/gym.png")
+
+myRobotFurniture( pose [ 0.500 1.500 0.000 0.000 ] name "rPiano" color "black" bitmap "images/piano.png")
+
+myRobotFurniture( pose [ 4.000 4.500 0.000 0.000 ] name "rDishWasher" color "black" bitmap "images/dishwasher.png")
