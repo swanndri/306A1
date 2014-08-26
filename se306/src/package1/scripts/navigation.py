@@ -25,7 +25,6 @@ class Navigation(constants.Paths):
 	''' -----------------------------Call Backs-----------------------------'''
 
 	def process_range_data(self, lazer_beamz):
-		"""
 		if (self.target_coordinate != [] and self.facing_correct_direction == True):
 			adjust_distance = 0.7
 
@@ -57,7 +56,6 @@ class Navigation(constants.Paths):
 				self.collision = True
 			else:
 				self.collision = False			
-		"""
 			
 
 	# Process current position and move if neccessary
