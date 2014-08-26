@@ -26,7 +26,7 @@ class Paths(object):
 	hallway_mid = [-1.2, 0.45]
 	hallway_bot = [-1.2, -3.7]
 	door = [-1.2, -6]
-	kitchen = 2.05, 3.5]
+	kitchen = [2.05, 3.5]
 	kitchen_entrance = [2.05, 1.6]
 	living_room_top_right = [4.5, 1.6]
 	living_room_middle = [2.05, 0.45]
