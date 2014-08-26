@@ -16,11 +16,12 @@ class Cook(navigation.Navigation):
 		self.rate = rospy.Rate(constants.RosConstants.robot_rate)
 		self.task_list = []
 		self.status = "idle"
+
 		# Create a navigation object which will be used to manage all the calls
-		# relating to movement. Passed the robot's name so that the publisher 
-		# and subscribers for it's navigation can be set up. 
-		#Eventually we will make this input a variable instead of hardcoded
+		# relating to movement. Pass the robot's name so that the publisher 
+		# and subscribers for its navigation can be set up.
 		self.navigate = navigation.Navigation("robot_2")
+
 		rospy.Subscriber("scheduler", std_msgs.msg.String, self.process_event)
 
 		self.loop()
