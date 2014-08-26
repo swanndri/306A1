@@ -26,7 +26,7 @@ class Cook(navigation.Navigation):
 
 		self.loop()
 
-	def loop():
+	def loop(self):
 		while not rospy.is_shutdown():
 			self.navigate.movement_publisher.publish(self.navigate.move_cmd)
 
