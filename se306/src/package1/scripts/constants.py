@@ -18,19 +18,22 @@ class Paths:
 	south = -math.pi / 2.0
 
 	# Invisible nodes/points within our house
-	cupboard 		=	[-3.8, 4.2]
-	bedroom 		=	[-3.8, 2.1]
-	bathroom		=	[-3.8, -3.7]
+	cupboard 		=	[-3.6, 4.2]
+	bedroom 		=	[-3.6, 2.1]
+	bathroom		=	[-3.6, -3.7]
 	hallway_top		=	[-1.2, 1.9]
 	hallway_mid		=	[-1.2, 0.45]
 	hallway_bot		=	[-1.2, -3.7]
 	door			=	[-1.2, -6]
-	kitchen			=	[2.1, 3.8]
-	living_room_middle	=	[2.1, 0.25]
-	cook_idle		= 	[4, -2]
+	kitchen			=	[2.05, 3.5]
+	kitchen_entrance = [2.05, 1.7]
+	living_room_top_right = [4.5, 1.7]
+	living_room_middle	=	[2.05, 0.45]
+	cook_idle		= 	[4.5, -1.85]
 	idle			=	[12,4]
 
-	living_room_entrance = [0.3, 0.25]
+	living_room_entrance = [1, 0.45]
+	living_room_sofa = [1, -3]
 
 	# Furniture
 	bed = [-2.3, -1.1]
@@ -40,14 +43,14 @@ class Paths:
 
 	# Paths robots can take
 	door_to_kitchen				=	[door, hallway_mid, living_room_middle, kitchen]
-	bedroom_to_living_room		=	[bedroom, hallway_top, hallway_mid, living_room_entrance, sofa]
+	bedroom_to_living_room		=	[bedroom, hallway_top, hallway_mid, living_room_entrance, living_room_sofa, sofa]
 	living_room_to_kitchen		=	[living_room_middle, kitchen]
 	kitchen_to_bedroom			=	[kitchen, living_room_middle, hallway_mid, hallway_top, bedroom, bed]
 	kitchen_to_cupboard			=	[kitchen, living_room_middle, hallway_mid, hallway_top, bedroom, cupboard, bedroom]
 	cupboard_to_kitchen			=	[bedroom, hallway_top, hallway_mid, living_room_middle, kitchen]
 	door_to_living_room			=	[door, hallway_mid, living_room_middle]
-	kitchen_to_sofa				=	[kitchen, living_room_middle, sofa]
-	cook_path					=	[cook_idle, living_room_middle, kitchen, living_room_middle, cook_idle]
+	kitchen_to_sofa				=	[kitchen, living_room_middle, living_room_sofa, sofa]
+	cook_path					=	[cook_idle, living_room_top_right, kitchen_entrance, kitchen, kitchen_entrance, living_room_top_right, cook_idle]
 
 
 class RosConstants:
