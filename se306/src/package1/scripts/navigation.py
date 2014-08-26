@@ -29,8 +29,9 @@ class Navigation(constants.Paths):
 			targetx = self.target_coordinate[0]
 			targety = self.target_coordinate[1]
 			
-			distance_infront = min(lazer_beamz.ranges[89:92])
-			
+			#distance_infront = min(lazer_beamz.ranges[89:92])
+			distance_infront = min(lazer_beamz.ranges[45:136])
+
 			print("distance_infront" + str(distance_infront))
 			print("Distance_to_target" + str(self.get_distance_to_target(targetx, targety)))
 		
