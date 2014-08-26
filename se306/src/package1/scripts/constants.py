@@ -126,7 +126,7 @@ class Paths(object):
 	# Room rectangle list
 	rect_list = [	
 						Rectangle.Rectangle("Cupboard", [-5, 5], [-1.7, 3.6]),
-						Rectangle.Rectangle("Room", [-5, 3.6], [-1.7, 2.3]),
+						Rectangle.Rectangle("Room", [-5, 3.6], [-1.7, -2.3]),
 						Rectangle.Rectangle("Bathroom", [-5, -2.3], [-1.7, -5]),
 						Rectangle.Rectangle("Hallway", [-1.7, 5], [-0.7, -5]),
 						Rectangle.Rectangle("Kitchen", [-0.7, 5], [5, 2.2]),
