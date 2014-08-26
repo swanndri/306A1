@@ -190,6 +190,7 @@ class Navigation(constants.Paths):
 		for rect in self.rect_list:
 			if(rect.contains(pt)):
 				return rect.name
+		return "Outside"
 
 	''' ----------------------------------Init----------------------------------'''
 
