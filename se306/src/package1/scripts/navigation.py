@@ -186,7 +186,7 @@ class Navigation(constants.Paths):
 		ycurrent = current_coordinates[1]
 		pt = [xcurrent, ycurrent]
 
-		for (rect in self.rect_list):
+		for rect in self.rect_list:
 			if(rect.contains(pt)):
 				return rect.name
 

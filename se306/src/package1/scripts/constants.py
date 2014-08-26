@@ -92,7 +92,7 @@ class Paths(object):
 	cook_idle = [4.5, -1.85]
 	idle = [12,4]
 
-	living_room_entrance = [1, 0.45]
+	living_room_entrance = [1.5, 0.45]
 	living_room_sofa = [1, -3]
 
 	# Furniture
