@@ -26,15 +26,19 @@ class Navigation(constants.Paths):
 
 	def process_range_data(self, lazer_beamz):
 		if (self.target_coordinate != [] and self.facing_correct_direction == True):
+			targetx = self.target_coordinate[0]
+			targety = self.target_coordinate[1]
+			
 			distance_infront = min(lazer_beamz.ranges[89:92])
-				
+			
 			print("distance_infront" + str(distance_infront))
-			print("Distance_to_target" + str(self.get_distance_to_target()))
+			print("Distance_to_target" + str(self.get_distance_to_target(targetx, targety)))
 		
 			if(distance_infront < 0.2):
 				self.collision = True
 			else:
 				self.collision = False		
+
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
 		self.current_coordinates[0] = position_data.pose.pose.position.x
@@ -87,7 +91,6 @@ class Navigation(constants.Paths):
 
 		if(self.collision == True):
 			self.move_cmd.linear.x = 0	
-
 	''' -----------------------------Helper Methods-----------------------------'''
 
 	def normalize(self, input_angle):
@@ -121,9 +124,9 @@ class Navigation(constants.Paths):
 		angle = math.radians(angle)
 		return angle
 
-	def get_distance_to_target(self):
-		x_squared = pow((self.target_coordinate[0] - self.current_coordinates[0]), 2)
-		y_squared = pow((self.target_coordinate[1] - self.current_coordinates[1]), 2)
+	def get_distance_to_target(self, targetx, targety):
+		x_squared = pow((targetx - self.current_coordinates[0]), 2)
+		y_squared = pow((targety - self.current_coordinates[1]), 2)
 		return math.sqrt(x_squared + y_squared)
 
 	''' This method is used to let a robot rotate at a high speed when it is not 
