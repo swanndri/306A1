@@ -25,20 +25,40 @@ class Navigation(constants.Paths):
 	''' -----------------------------Call Backs-----------------------------'''
 
 	def process_range_data(self, lazer_beamz):
+		"""
 		if (self.target_coordinate != [] and self.facing_correct_direction == True):
+			adjust_distance = 0.7
+
 			targetx = self.target_coordinate[0]
 			targety = self.target_coordinate[1]
-			
-			#distance_infront = min(lazer_beamz.ranges[89:92])
-			distance_infront = min(lazer_beamz.ranges[45:136])
 
-			print("distance_infront" + str(distance_infront))
-			print("Distance_to_target" + str(self.get_distance_to_target(targetx, targety)))
-		
-			if(distance_infront < 0.2):
+			distance_infront = min(lazer_beamz.ranges[89:92])	
+			immediate_infront = min(lazer_beamz.ranges[45:136])		
+			distance_to_waypoint = self.get_distance_to_target(targetx, targety)
+
+			if(distance_infront < distance_to_waypoint / 2):
+				self.current_path.insert(0,self.target_coordinate)
+
+				perp = self.normalize(math.degrees(self.current_direction))
+				perp = perp + 90
+				perp = self.normalize(perp)
+
+				x_adjust = math.cos(math.radians(perp)) * adjust_distance
+				y_adjust = math.sin(math.radians(perp)) * adjust_distance
+
+				x1 = ((targetx - self.current_coordinates[0]) / 2) + self.current_coordinates[0]
+				y1 = ((targety - self.current_coordinates[1]) / 2) + self.current_coordinates[1]
+
+				new_coord = [x1 + x_adjust, y1 + y_adjust]
+				self.target_coordinate = new_coord 
+				self.facing_correct_direction = False
+
+			if(immediate_infront == min(lazer_beamz.ranges[45:136]) < 0.2):
 				self.collision = True
 			else:
-				self.collision = False		
+				self.collision = False			
+		"""
+			
 
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
@@ -95,8 +115,10 @@ class Navigation(constants.Paths):
 	''' -----------------------------Helper Methods-----------------------------'''
 	def normalize(self, input_angle):
 		new_angle = int(input_angle)
+    		if (new_angle > 360):
+    			new_angle = new_angle - 360
     		if new_angle < 0:
-			new_angle += 360;
+				new_angle += 360;
 		return new_angle
 
 	def calculate_heading(self):
@@ -164,7 +186,7 @@ class Navigation(constants.Paths):
 	'''
 	def __init__(self, robot_name):
 		self.robot_name = robot_name		
-		self.movement_speed = 0.7
+		self.movement_speed = 0.4
 
 		self.collision = False
 		# Default path and direction
