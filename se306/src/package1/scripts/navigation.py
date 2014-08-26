@@ -63,6 +63,7 @@ class Navigation(constants.Paths):
 
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
+		print(self.get_current_position())
 		self.current_coordinates[0] = position_data.pose.pose.position.x
 		self.current_coordinates[1] = position_data.pose.pose.position.y
 		
@@ -182,8 +183,8 @@ class Navigation(constants.Paths):
 
 
 	def get_current_position(self):
-		xcurrent = current_coordinates[0]
-		ycurrent = current_coordinates[1]
+		xcurrent = self.current_coordinates[0]
+		ycurrent = self.current_coordinates[1]
 		pt = [xcurrent, ycurrent]
 
 		for rect in self.rect_list:
