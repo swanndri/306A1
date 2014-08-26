@@ -182,8 +182,13 @@ class Navigation(constants.Paths):
 
 
 	def get_current_position(self):
+		xcurrent = current_coordinates[0]
+		ycurrent = current_coordinates[1]
+		pt = [xcurrent, ycurrent]
 
-
+		for (rect in self.rect_list):
+			if(rect.contains(pt)):
+				return rect.name
 
 	''' ----------------------------------Init----------------------------------'''
 
