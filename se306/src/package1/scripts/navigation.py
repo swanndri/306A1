@@ -11,6 +11,7 @@ import math
 import TurnHelp
 import constants
 import tf.transformations
+import Rectangle
 
 from tf.transformations import euler_from_quaternion
 
@@ -35,7 +36,7 @@ class Navigation(constants.Paths):
 			immediate_infront = min(lazer_beamz.ranges[45:136])		
 			distance_to_waypoint = self.get_distance_to_target(targetx, targety)
 
-			if(distance_infront < distance_to_waypoint / 2):
+			if(distance_infront < distance_to_waypoint / 2 and self.col_other_robot == False):
 				self.current_path.insert(0,self.target_coordinate)
 
 				perp = self.normalize(math.degrees(self.current_direction))
@@ -54,6 +55,7 @@ class Navigation(constants.Paths):
 				self.col_other_robot = True
 
 			if(immediate_infront == min(lazer_beamz.ranges[45:136]) < 0.2):
+				print("still to implement")
 				self.collision = True
 			else:
 				self.collision = False			
@@ -105,7 +107,7 @@ class Navigation(constants.Paths):
 					self.facing_correct_direction = True
 
 				# Linear movement
-				if (self.facing_correct_direction == True and self.not_at_target == True) or (self.not_at_target and self.col_other_robot):
+				if (self.facing_correct_direction == True and self.not_at_target == True):
 					self.move_cmd.linear.x = self.movement_speed
 				else:
 					self.move_cmd.linear.x = 0
@@ -178,6 +180,11 @@ class Navigation(constants.Paths):
 		rotation_speed = (((difference - old_min) * new_range) / old_range) + new_min
 		return rotation_speed
 
+
+	def get_current_position(self):
+
+
+
 	''' ----------------------------------Init----------------------------------'''
 
 	''' Robots are initialized with a name which is passed in as a parameter. This allows us
@@ -186,7 +193,7 @@ class Navigation(constants.Paths):
 	'''
 	def __init__(self, robot_name):
 		self.robot_name = robot_name		
-		self.movement_speed = 0.4
+		self.movement_speed = 0.7
 
 		self.col_other_robot = False
 		self.collision = False
