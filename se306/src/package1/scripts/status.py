@@ -5,6 +5,7 @@ import std_msgs.msg
 import rospy
 import Tkinter as tk
 import ttk
+import constants
 
 class StatusGUI(tk.Tk):
 	def __init__(self, *args, **kwargs):
@@ -112,8 +113,8 @@ class StatusGUI(tk.Tk):
 		self.hygiene_progress["value"] = 100
 		self.bladder_progress["value"] = 100
 
-	def update_hunger_level(self,cur_health):
-		self.hunger_level = cur_health
+	def update_hunger_level(self,status_value):
+		self.hunger_level = status_value
 		self.hunger_progress["value"] = self.hunger_level
 
 rospy.init_node('status', anonymous=True)
@@ -122,53 +123,38 @@ rate = rospy.Rate(40)
 
 
 def callback(msg):
-	print (msg)
-	cur_health = int(msg.data.split()[1])
-	if cur_health > 100:
-		cur_health = 100
-	mGui.update_hunger_level(cur_health)
-	if cur_health <= 0:
+	#print (msg)
+
+	status_value = int(msg.data.split()[1])
+	status_type = msg.data.split()[0][:-1]
+
+	if (status_value>80):
+		pass
+	elif(status_value>50):
+		print constants.Statuses.mid[status_type]	
+	elif(status_value>20):
+		print constants.Statuses.low[status_type]	
+	elif(status_value>0):
+		print constants.Statuses.dangerous[status_type]	
+	else:
+		print "Something has gone terribly wrong"
+
+
+	if status_value> 100:
+		status_value = 100
+	mGui.update_hunger_level(status_value)
+	if status_value <= 0:
 		print ("0/100")
 	else:
 		print (msg.data + "/100")
+	
 
-def scheduler_callback(msg):
-	msg = str(msg)
-	status = ''
-	if (msg == 'data: Resident.wakeup'):
-		status = "Resident is currently waking up"
-		print(status)
-	elif (msg == 'data: Resident.eat_breakfast'):
-		status = "Resident is walking to the kitchen to eat breakfast"
-		print(status)
-	elif (msg == 'data: Resident.take_meds'):
-		status = "Resident is walking to the cupboard to get and take their medication"
-		print(status)
-	elif (msg == 'data: Resident.eat_lunch'):
-		status = "Resident is walking to the kitchen to eat lunch"
-		print(status)
-	elif (msg =='data: Resident.eat_dinner'):
-		status = "Resident is walking to the kitchen to eat dinner"
-		print(status)
-	elif (msg =='data: Resident.sleep'):
-		status = "Resident is walking to the bedroom to go to sleep"
-		print(status)
-
-	if (msg == 'data: Cook.cook_breakfast'):
-		status = "Cook robot is moving to the kitchen to cook breakfast"
-		print(status)
-	elif (msg == 'data: Cook.cook_lunch'):
-		status = "Cook robot is moving to the kitchen to cook lunch"
-		print(status)
-	elif (msg =='data: Cook.cook_dinner'):
-		status = "Cook robot is moving to the kitchen to cook dinner"
-		print(status)
 		
-	if (msg == 'data: Visitor.visit'):
-		status = "Visitor is visiting the residents house"
-		print(status)
+def scheduler_callback(msg):	
+	status = ''
+	#Search the dictionary (resident_statuses) in the Constants file for the correct status
+	status = constants.Statuses.resident_statuses[msg.data]
 	mGui.status_info["text"] = status
-	#print msg
 
 
 sub = rospy.Subscriber("human", std_msgs.msg.String, callback)

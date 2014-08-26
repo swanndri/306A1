@@ -49,6 +49,7 @@ roslib.load_manifest('package1')
 rospy.init_node('scheduler')
 
 rospy.Subscriber('/clock', rosgraph_msgs.msg.Clock, schedule_events)
+
 rospy.spin()
 
 

@@ -7,6 +7,7 @@ import rosgraph_msgs
 import std_msgs.msg
 import navigation
 import constants
+import os
 
 from std_msgs.msg import String
 
@@ -61,7 +62,6 @@ class Resident(navigation.Navigation):
 			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
 
 
-
 	def __init__(self):
 		self.fullness = 100
 		self.health = 100
@@ -89,6 +89,7 @@ class Resident(navigation.Navigation):
 			self.navigate.movement_publisher.publish(self.navigate.move_cmd)
 			# print statement for debugging path
 			print (self.task_list, self.status, self.navigate.target_coordinate)
+			
 			if (len(self.navigate.target_coordinate) == 0):
 				self.status = "idle"
 
@@ -98,7 +99,8 @@ class Resident(navigation.Navigation):
 
 			self.rate.sleep()	
 
-		
+
+
 	def callback(self, msg):
 		# Old hunger rate
 		# if ((int(msg.clock.secs) % 42 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0))
@@ -144,6 +146,8 @@ class Resident(navigation.Navigation):
 			if self.hygiene > 0:
 				self.hygiene -= 1
 				self.pub.publish("Hygiene: " + str(self.hygiene))
+
+
 				
 if __name__ == '__main__':
 	rospy.init_node('resident_robot')

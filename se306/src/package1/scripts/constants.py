@@ -1,5 +1,64 @@
 import math
 
+class Statuses(object):
+
+	#Resident Statuses
+
+	resident_statuses = {
+
+						"Resident.wakeup":"Resident is currently waking up",
+						"Resident.eat_breakfast":"Resident is walking to the kitchen to eat breakfast",
+						"Resident.take_meds":"Resident is walking to the cupboard to get and take their medication",
+						"Resident.eat_lunch":"Resident is walking to the kitchen to eat lunch",
+						"Resident.eat_dinner":"Resident is walking to the kitchen to eat dinner",
+						"Resident.sleep":"Resident is walking to the bedroom to go to sleep",
+						"Resident.idle":"Resident is currently doing nothing",
+						"Cook.cook_breakfast":"Cook robot is moving to the kitchen to cook breakfast",
+						"Cook.cook_lunch":"Cook robot is moving to the kitchen to cook lunch",
+						"Cook.cook_dinner":"Cook robot is moving to the kitchen to cook dinner",
+						"Visitor.visit":"Visitor is visiting the residents house"
+						
+						}
+
+	mid = {	
+
+			"Fullness":"#Testm",
+			"Health":"#Testm",
+			"Entertainment":"#Testm",
+			"Sanity":"#Testm",
+			"Fitness":"#Testm",
+			"Thirst":"#Testm",
+			"Hygiene":"#Testm"
+
+			}
+
+	low = {	
+
+			"Fullness":"#Testl",
+			"Health":"#Testl",
+			"Entertainment":"#Testl",
+			"Sanity":"#Testl",
+			"Fitness":"#Testl",
+			"Thirst":"#Testl",
+			"Hygiene":"#Testl"
+
+			}
+
+
+	dangerous = {	
+
+				"Fullness":"#Testd",
+				"Health":"#Testd",
+				"Entertainment":"#Testd",
+				"Sanity":"#Testd",
+				"Fitness":"#Testd",
+				"Thirst":"#Testd",
+				"Hygiene":"#Testd"
+
+				}
+
+
+
 class Paths(object):
 
 	""" The Paths calls of constants is used in the Navigation class.
