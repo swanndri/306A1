@@ -11,6 +11,8 @@ from std_msgs.msg import String
 simulation_time = 0
 pub = rospy.Publisher('scheduler', String, queue_size=10)
 
+queue = {0:[], 1:[], 2:[], 3:[]}
+
 scheduled_tasks = { 8: 'Resident.wakeup', 
 				 	45: 'Resident.eat_breakfast',
 				 	55: 'Resident.take_meds',
@@ -44,11 +46,14 @@ def schedule_events(time):
 		if (actionmsg is not None):
 			publish(actionmsg)
 		
+#def schedule_status_event(event):
+
 
 roslib.load_manifest('package1')
 rospy.init_node('scheduler')
 
 rospy.Subscriber('/clock', rosgraph_msgs.msg.Clock, schedule_events)
+rospy.Subscriber('human_status', String, schedule_status_event)
 
 rospy.spin()
 

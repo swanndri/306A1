@@ -131,11 +131,11 @@ def callback(msg):
 	if (status_value>80):
 		pass
 	elif(status_value>50):
-		print constants.Statuses.mid[status_type]	
+		stat_pub.publish(constants.Statuses.mid[status_type])
 	elif(status_value>20):
-		print constants.Statuses.low[status_type]	
+		stat_pub.publish(constants.Statuses.low[status_type])
 	elif(status_value>0):
-		print constants.Statuses.dangerous[status_type]	
+		stat_pub.publish(constants.Statuses.dangerous[status_type])
 	else:
 		print "Something has gone terribly wrong"
 
@@ -159,6 +159,8 @@ def scheduler_callback(msg):
 
 sub = rospy.Subscriber("human", std_msgs.msg.String, callback)
 sub = rospy.Subscriber("scheduler", std_msgs.msg.String, scheduler_callback)
+
+stat_pub = rospy.Publisher("human_status", String, queue_size = 10)
 
 mGui = StatusGUI()
 mGui.mainloop()

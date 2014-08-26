@@ -1,5 +1,28 @@
 import math
 
+class Priorities(object):
+
+						"""
+						"life_threatening":0,
+						"spec_scheduled":1,
+						"status_scheduled":2,
+						"clock_scheduled":3
+						"""
+	resident_statuses = {
+
+						"Resident.wakeup":3,
+						"Resident.eat_breakfast":3,
+						"Resident.take_meds":1,
+						"Resident.eat_lunch":3,
+						"Resident.eat_dinner":3,
+						"Resident.sleep":3,
+						"Resident.idle":3,
+						
+
+
+
+						}
+
 class Statuses(object):
 
 	#Resident Statuses
@@ -22,38 +45,38 @@ class Statuses(object):
 
 	mid = {	
 
-			"Fullness":"#Testm",
-			"Health":"#Testm",
-			"Entertainment":"#Testm",
-			"Sanity":"#Testm",
-			"Fitness":"#Testm",
-			"Thirst":"#Testm",
-			"Hygiene":"#Testm"
+			"Fullness":"Fullness: medium",
+			"Health":"Health: medium",
+			"Entertainment":"Entertainment: medium",
+			"Sanity":"Sanity: medium",
+			"Fitness":"Fitness: medium",
+			"Hydration":"Hydration: medium",
+			"Hygiene":"Hygiene: medium"
 
 			}
 
 	low = {	
 
-			"Fullness":"#Testl",
-			"Health":"#Testl",
-			"Entertainment":"#Testl",
-			"Sanity":"#Testl",
-			"Fitness":"#Testl",
-			"Thirst":"#Testl",
-			"Hygiene":"#Testl"
+			"Fullness":"#Fullness: low",
+			"Health":"Health: low",
+			"Entertainment":"Entertainment: low",
+			"Sanity":"Sanity: low",
+			"Fitness":"Fitness: low",
+			"Hydration":"Hydration: low",
+			"Hygiene":"Hygiene: low"
 
 			}
 
 
 	dangerous = {	
 
-				"Fullness":"#Testd",
-				"Health":"#Testd",
-				"Entertainment":"#Testd",
-				"Sanity":"#Testd",
-				"Fitness":"#Testd",
-				"Thirst":"#Testd",
-				"Hygiene":"#Testd"
+				"Fullness":"Fullness: dangerous",
+				"Health":"Health: dangerous",
+				"Entertainment":"Entertainment: dangerous",
+				"Sanity":"Sanity: dangerous",
+				"Fitness":"Fitness: dangerous",
+				"Hydration":"Hydration: dangerous",
+				"Hygiene":"Hygiene: dangerous"
 
 				}
 

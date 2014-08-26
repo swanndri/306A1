@@ -63,12 +63,12 @@ class Resident(navigation.Navigation):
 
 
 	def __init__(self):
-		self.fullness = 100
+		self.fullness = [100, 1]
 		self.health = 100
 		self.entertainment = 100
 		self.sanity = 100
 		self.fitness = 100
-		self.thirst = 100
+		self.hydration = 100
 		self.hygiene = 100
 
 		self.rate = rospy.Rate(constants.RosConstants.robot_rate)
@@ -106,9 +106,9 @@ class Resident(navigation.Navigation):
 		
 		#hunger/fullness
 		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):
-			if self.fullness > 0:
-				self.fullness -= 1
-				self.pub.publish("Fullness: " + str(self.fullness))
+			if self.fullness[0] > 0:
+				self.fullness[0] -= self.fullness[1]
+				self.pub.publish("Fullness: " + str(self.fullness[0]))
 		
 		#health		
 		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):
@@ -134,11 +134,11 @@ class Resident(navigation.Navigation):
 				self.fitness -= 1
 				self.pub.publish("Fitness: " + str(self.fitness))
 				
-		#thirst
+		#hydration
 		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):
-			if self.thirst > 0:
-				self.thirst -= 1
-				self.pub.publish("Thirst: " + str(self.thirst))
+			if self.hydration > 0:
+				self.hydration -= 1
+				self.pub.publish("Hydration: " + str(self.hydration))
 				
 		#hygiene
 		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):
