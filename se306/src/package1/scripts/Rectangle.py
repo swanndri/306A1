@@ -1,21 +1,23 @@
+#!/usr/bin/env python
 
-class Rect:
-    def __init__(self, pt1, pt2):
+class Rectangle:
+    def __init__(self, name, pt1, pt2):
         """Initialize a rectangle from two points."""
-        self.set_points(pt1, pt2)
-
-    def create_points(self, pt1, pt2):
-        """Reset the rectangle coordinates."""
-        (x1, y1) = pt1.as_tuple()
-        (x2, y2) = pt2.as_tuple()
-        self.left   = min(x1, x2)
-        self.top    = min(y1, y2)
-        self.right  = max(x1, x2)
-        self.bottom = max(y1, y2)
+        self.name = name
+        self.left = min(pt1[0], pt1[1])
+        self.top = min(pt2[0], pt2[1])
+        self.right  = max(pt1[0], pt1[1])
+        self.bottom = max(pt2[0], pt2[1])
 
     def contains(self, pt):
         """Return true if a point is inside the rectangle."""
-        x,y = pt.as_tuple()
-        return (self.left <= x <= self.right and
-                self.top <= y <= self.bottom)
-    
+        x = pt[0]
+        y = pt[1]
+        return ((self.left <= x <= self.right) and (self.top <= y <= self.bottom))
+
+
+if __name__ == '__main__':
+    print("Main is for testing purposes only")
+    r = Rectangle("Cuprboard", (-5, 5), (5, -5))
+    print(r.contains([5,9]))
+    print(r.name)

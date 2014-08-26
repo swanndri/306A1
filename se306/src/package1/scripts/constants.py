@@ -1,4 +1,5 @@
 import math
+import Rectangle
 
 class Statuses(object):
 
@@ -77,6 +78,7 @@ class Paths(object):
 	north = math.pi / 2.0
 	south = -math.pi / 2.0
 
+
 	# Invisible nodes/points within our house
 	cupboard = [-3.6, 4.2]
 	bedroom = [-3.6, 2.1]
@@ -94,6 +96,7 @@ class Paths(object):
 
 	living_room_entrance = [1, 0.45]
 	living_room_sofa = [1, -3]
+
 
 	# Furniture
 	bed = [-2.3, -1.1]
@@ -120,10 +123,22 @@ class Paths(object):
 	cook_path = [cook_idle, living_room_top_right, kitchen_entrance, kitchen, kitchen_entrance, living_room_top_right, cook_idle]
 
 
+	# Room rectangle list
+	rect_list = [	
+						Rectangle.Rectangle("Cupboard", [-5, 5], [-1.7, 3.6]),
+						Rectangle.Rectangle("Room", [-5, 3.6], [-1.7, 2.3]),
+						Rectangle.Rectangle("Bathroom", [-5, -2.3], [-1.7, -5]),
+						Rectangle.Rectangle("Hallway", [-1.7, 5], [-0.7, -5]),
+						Rectangle.Rectangle("Kitchen", [-0.7, 5], [5, 2.2]),
+						Rectangle.Rectangle("Living_room", [-0.7, 2.2], [5, -5]),
+						Rectangle.Rectangle("House", [-5, 5], [5, -5])
+					]
+
+
 class RosConstants(object):
 	""" ROS-specific constants, such as the rate at which the main loop will iterate. """
-
 	robot_rate = 10
+
 
 if __name__ == "__main__":
 	print "This was not intended to be run directly." 
