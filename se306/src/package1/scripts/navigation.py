@@ -51,6 +51,7 @@ class Navigation(constants.Paths):
 				new_coord = [x1 + x_adjust, y1 + y_adjust]
 				self.target_coordinate = new_coord 
 				self.facing_correct_direction = False
+				self.col_other_robot = True
 
 			if(immediate_infront == min(lazer_beamz.ranges[45:136]) < 0.2):
 				self.collision = True
@@ -77,6 +78,7 @@ class Navigation(constants.Paths):
 			#We have reached our target. 
 			else:
 				self.not_at_target = False
+				self.col_other_robot = False
 				self.move_cmd.linear.x = 0
 				self.move_cmd.angular.z = 0
 
@@ -103,7 +105,7 @@ class Navigation(constants.Paths):
 					self.facing_correct_direction = True
 
 				# Linear movement
-				if (self.facing_correct_direction == True and self.not_at_target == True):
+				if (self.facing_correct_direction == True and self.not_at_target == True) or (self.not_at_target and self.col_other_robot):
 					self.move_cmd.linear.x = self.movement_speed
 				else:
 					self.move_cmd.linear.x = 0
@@ -186,6 +188,7 @@ class Navigation(constants.Paths):
 		self.robot_name = robot_name		
 		self.movement_speed = 0.4
 
+		self.col_other_robot = False
 		self.collision = False
 		# Default path and direction
 		self.current_path = self.door_to_kitchen
