@@ -11,56 +11,97 @@ class StatusGUI(tk.Tk):
 		tk.Tk.__init__(self, *args, **kwargs)
 
 		#sets the dimensions and settings of thw window
-		self.geometry("400x350+700+100")
+		self.geometry("380x350+700+100")
 		self.title("Resident status")
+		self.satisfaction_frame = tk.Frame(self,bd=5)
+		self.leisure_frame = tk.Frame(self,bd=5)
+		self.cleanliness_frame = tk.Frame(self,bd=5)
+		self.vital_frame = tk.Frame(self,bd=5)
+		self.status_frame = tk.Frame(self,bd=10,highlightbackground="black")
 
-		#build the GUI components
-		self.hunger_label = ttk.Label(text="Hunger: ")
-		self.hunger_progress = ttk.Progressbar(self, orient="horizontal", 
-										length=200, mode="determinate")
-		self.health_label = ttk.Label(text="Health: ")
-		self.health_progress = ttk.Progressbar(self, orient="horizontal", 
-										length=200, mode="determinate")
-		self.entertainment_label = ttk.Label(text="Entertainment: ")
-		self.entertainment_progress = ttk.Progressbar(self, orient="horizontal", 
-										length=200, mode="determinate")
-		self.sanity_label = ttk.Label(text="Sanity: ")
-		self.sanity_progress = ttk.Progressbar(self, orient="horizontal", 
-										length=200, mode="determinate")
-		self.fitness_label = ttk.Label(text="Fitness: ")
-		self.fitness_progress = ttk.Progressbar(self, orient="horizontal", 
-										length=200, mode="determinate")
-		self.thirst_label = ttk.Label(text="Thirst: ")
-		self.thirst_progress = ttk.Progressbar(self, orient="horizontal", 
-										length=200, mode="determinate")
-		self.hygiene_label = ttk.Label(text="Hygiene: ")
-		self.hygiene_progress = ttk.Progressbar(self, orient="horizontal", 
-										length=200, mode="determinate")
-		self.bladder_label = ttk.Label(text="Bladder: ")
-		self.bladder_progress = ttk.Progressbar(self, orient="horizontal", 
-										length=200, mode="determinate")
-		self.status_label = ttk.Label(text="Status: ")
-		self.status_info = ttk.Label(width="100")
+		#build the GUI components:
+		#Satisfaction levels
+		self.satisfaction_title = ttk.Label(self.satisfaction_frame,text="Satisfaction",font="bold")
+		self.hunger_label = ttk.Label(self.satisfaction_frame,text="Hunger")
+		self.hunger_progress = ttk.Progressbar(self.satisfaction_frame, orient="horizontal", 
+										length=150, mode="determinate")
+		self.thirst_label = ttk.Label(self.satisfaction_frame,text="Thirst")
+		self.thirst_progress = ttk.Progressbar(self.satisfaction_frame, orient="horizontal", 
+										length=150, mode="determinate")
+
+		#Cleanliness levels
+		self.cleanliness_title = ttk.Label(self.cleanliness_frame, text="Cleanliness",font="bold")
+		self.hygiene_label = ttk.Label(self.cleanliness_frame, text="Hygiene")
+		self.hygiene_progress = ttk.Progressbar(self.cleanliness_frame, orient="horizontal", 
+										length=150, mode="determinate")
+		self.bladder_label = ttk.Label(self.cleanliness_frame,text="Bladder")
+		self.bladder_progress = ttk.Progressbar(self.cleanliness_frame,orient="horizontal", 
+										length=150, mode="determinate")
+
+		#Leisure levels
+		self.leisure_title = ttk.Label(self.leisure_frame,text="Leisure",font="bold")
+		self.entertainment_label = ttk.Label(self.leisure_frame,text="Enjoyment")
+		self.entertainment_progress = ttk.Progressbar(self.leisure_frame,orient="horizontal", 
+										length=150, mode="determinate")		
+		self.fitness_label = ttk.Label(self.leisure_frame,text="Fitness")
+		self.fitness_progress = ttk.Progressbar(self.leisure_frame,orient="horizontal", 
+										length=150, mode="determinate")
+
+		#Vital levels
+		self.vital_title = ttk.Label(self.vital_frame,text="Vitals system",font="bold")
+		self.health_label = ttk.Label(self.vital_frame,text="Health")
+		self.health_progress = ttk.Progressbar(self.vital_frame, orient="vertical", 
+										length=180, mode="determinate")
+		self.sanity_label = ttk.Label(self.vital_frame,text="Sanity")
+		self.sanity_progress = ttk.Progressbar(self.vital_frame, orient="vertical", 
+										length=180, mode="determinate")
+
+		#Status updates
+		self.status_label = ttk.Label(self.status_frame,text="Status:",font="bold")
+		self.status_info = ttk.Label(self.status_frame,width="100")
 		
-		#position the GUI components 
-		self.hunger_label.place(x=15,y=10,width=70)
-		self.hunger_progress.place(x=130,y=10)
-		self.health_label.place(x=15,y=40)
-		self.health_progress.place(x=130,y=40)
-		self.entertainment_label.place(x=15,y=70)
-		self.entertainment_progress.place(x=130,y=70)
-		self.sanity_label.place(x=15,y=100)
-		self.sanity_progress.place(x=130,y=100)
-		self.fitness_label.place(x=15,y=130)
-		self.fitness_progress.place(x=130,y=130)
-		self.thirst_label.place(x=15,y=160)
-		self.thirst_progress.place(x=130,y=160)
-		self.hygiene_label.place(x=15,y=190)
-		self.hygiene_progress.place(x=130,y=190)
-		self.bladder_label.place(x=15,y=220)
-		self.bladder_progress.place(x=130,y=220)
-		self.status_label.place(x=15,y=250)
-		self.status_info.place(x=50,y=270,bordermode="inside")
+		#position the GUI components:
+		#set up frames
+		self.satisfaction_frame.place(x=0,y=0,width=230,height=80)
+		self.cleanliness_frame.place(x=0,y=80,width=230,height=80) 
+		self.leisure_frame.place(x=0,y=160,width=230,height=80)
+		self.vital_frame.place(x=230,y=0,width=120,height=240)
+		self.status_frame.place(x=0,y=240,width=370,height=80)
+
+		#Satisfaction frame
+		self.satisfaction_frame.grid_columnconfigure(0,minsize=75)
+		self.satisfaction_title.grid(row=0,columnspan=2,sticky="w",pady=(0,5))
+		self.hunger_label.grid(row=1)
+		self.hunger_progress.grid(row=1,column=1)
+		self.thirst_label.grid(row=2)
+		self.thirst_progress.grid(row=2,column=1)
+
+		#Cleanliness frame
+		self.cleanliness_frame.grid_columnconfigure(0,minsize=75)
+		self.cleanliness_title.grid(row=0,columnspan=2,sticky="w",pady=(0,5))
+		self.hygiene_label.grid(row=1)
+		self.hygiene_progress.grid(row=1,column=1)
+		self.bladder_label.grid(row=2)
+		self.bladder_progress.grid(row=2,column=1)
+
+		#Leisure frame
+		self.leisure_frame.grid_columnconfigure(0,minsize=75)
+		self.leisure_title.grid(row=0,columnspan=2,sticky="w",pady=(0,5))
+		self.entertainment_label.grid(row=1)
+		self.entertainment_progress.grid(row=1,column=1)
+		self.fitness_label.grid(row=2)
+		self.fitness_progress.grid(row=2,column=1)
+
+		#Vital levels frame
+		self.vital_title.grid(row=0,columnspan=2,pady=(0,5),padx=(10,0))
+		self.health_label.grid(row=2,padx=(10,0))
+		self.health_progress.grid(row=1,padx=(10,0))
+		self.sanity_label.grid(row=2,column=1)
+		self.sanity_progress.grid(row=1,column=1)
+
+		#status frame
+		self.status_label.grid(row=0,sticky="w")
+		self.status_info.grid(row=1,rowspan=2, padx=10)
 
 		self.hunger_progress["value"] = 100
 		self.health_progress["value"] = 100
