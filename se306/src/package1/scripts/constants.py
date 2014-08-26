@@ -26,8 +26,8 @@ class Paths:
 	hallway_bot		=	[-1.2, -3.7]
 	door			=	[-1.2, -6]
 	kitchen			=	[2.05, 3.5]
-	kitchen_entrance = [2.05, 1.7]
-	living_room_top_right = [4.5, 1.7]
+	kitchen_entrance = [2.05, 1.6]
+	living_room_top_right = [4.5, 1.6]
 	living_room_middle	=	[2.05, 0.45]
 	cook_idle		= 	[4.5, -1.85]
 	idle			=	[12,4]
@@ -39,6 +39,13 @@ class Paths:
 	bed = [-2.3, -1.1]
 	kitchen_stove = []
 	sofa = [0.3, -3]
+	gym = [-4.450, 2.850]
+	sofa2 = [1.500, -4.250]
+	toilet = [-4.350, -4.500]
+	sink = [-3.300, -3.400]
+	bathttub = [-4.350, -3.250]
+	fridge = [0.500, 3.000]
+	dishwasher = [3.750, 3.500]
 
 
 	# Paths robots can take

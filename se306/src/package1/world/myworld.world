@@ -119,15 +119,20 @@ floorplan
 #  pose [ 8 8 0 0 ]
 )
 # throw in a robot
-myRobot( pose [ -1.200 -10.00 0.600 90.000 ] name "cook" color "yellow")
+myRobot( pose [ -1.200 -10.000 0.600 90.000 ] name "visitor" color "yellow")
 myRobot( pose [ -2.300 -1.100 0.600 0.000 ] name "resident" color "green")
-myRobot( pose [ 4.5 -1.850 0.600 90.000 ] name "visitor" color "black")
+myRobot( pose [ 4.5 -1.850 0.600 90.000 ] name "cook" color "black")
+# myRobot( pose [ 6 -6.000 0.600 90.000 ] name "nurse" color "pink")
+# myRobot( pose [ 6 -7.500 0.600 90.000 ] name "doctor" color "gray")
+# myRobot( pose [ 4.5 -4.50 0.600 180.000 ] name "entertainment" color "red")
+# myRobot( pose [ -4.5 -1.850 0.600 90.000 ] name "companionship" color "magenta")
+# myRobot( pose [ -6 -6.000 0.600 90.000 ] name "caregiver" color "cyan")
 
 # Living Room
 myRobotFurniture( pose [ 4.300 -3.010 0.000 -90.000 ] name "rTV" color "black" bitmap "images/tv2.png")
 myRobotFurniture( pose [ 0.150 -3.010 0.000 90.000 ] name "rCouch" color "black" bitmap "images/Couch.png")
 myRobotFurniture( pose [ 1.500 -4.250 0.000 180.000 ] name "rCouch2" color "black" bitmap "images/Couch.png")
-myRobotTable( pose [ 3.450 0.250 0.000 90.000 ] name "rTable" color "black" bitmap "images/table.png")
+myRobotTable( pose [ 3.450 0.100 0.000 90.000 ] name "rTable" color "black" bitmap "images/table.png")
 myRobotPiano( pose [ 0.150 -1.150 0.000 90.000 ] name "rPiano" color "black" bitmap "images/piano.png")
 
 
