@@ -88,7 +88,7 @@ class Resident(navigation.Navigation):
 		while not rospy.is_shutdown():
 			self.navigate.movement_publisher.publish(self.navigate.move_cmd)
 			# print statement for debugging path
-			print (self.task_list, self.status, self.navigate.target_coordinate)
+			#print (self.task_list, self.status, self.navigate.target_coordinate)
 			if (len(self.navigate.target_coordinate) == 0):
 				self.status = "idle"
 
