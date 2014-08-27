@@ -32,6 +32,14 @@ define myRobot position
   # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is direction facing
 )
 
+define myAmbulanceRobot position
+(
+  size [2.5 1.5 .500]
+  drive "diff"
+
+  mylaser(pose [ 0.15 0.00 -0.20 0.00 ]) 
+)
+
 
 # ========================================= Define furniture models =================================================
 # Non-Collidable Furniture - This furniture the robot's interact with e.g. resident sits on sofa or on bed so
@@ -142,6 +150,9 @@ myRobot( pose [ 4.000 -1.900 0.001 90.000 ] name "visitor" color "black")
 # myRobot( pose [ 4.5 -4.50 0.600 180.000 ] name "entertainment" color "red")
 # myRobot( pose [ -4.5 -1.850 0.600 90.000 ] name "companionship" color "magenta")
 # myRobot( pose [ -6 -6.000 0.600 90.000 ] name "caregiver" color "cyan")
+
+myRobot( pose [ -7 -7.000 0.600 90.000 ] name "medication" color "violet")
+myAmbulanceRobot( pose [ 7 -7.000 0.600 180.000 ] name "ambulance" color "black" bitmap "images/ambulance.png")
 
 
 # ========================================= Living Room ==================================================
