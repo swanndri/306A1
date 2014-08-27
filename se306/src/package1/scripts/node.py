@@ -36,7 +36,7 @@ class Node(object):
 	def _assign_next_job(self):
 		try:
 			self._process_job(self.jobs.get_nowait())
-		raise Queue.Empty:
+		except Queue.Empty:
 			self.current_job = None
 			self.status = Node.IDLE
 
