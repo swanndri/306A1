@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import constants
 import math
 
@@ -83,8 +85,8 @@ class Search:
 
 # Tests to show finding the correct path
 search = Search()
-path = search.find_path("door","dishwasher")
+path = search.find_path("hallway_bot","hallway_top")
 print("path of door to dishwasher: ",path)
+print("")
 path = search.find_path("cupboard","cook_idle")
 print("path of cupboard to cook_idle: ",path)
-	

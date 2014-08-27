@@ -160,7 +160,7 @@ def scheduler_callback(msg):
 sub = rospy.Subscriber("human", std_msgs.msg.String, callback)
 sub = rospy.Subscriber("scheduler", std_msgs.msg.String, scheduler_callback)
 
-stat_pub = rospy.Publisher("human_status", String, queue_size = 10)
+stat_pub = rospy.Publisher("human_status", std_msgs.msg.String, queue_size = 10)
 
 mGui = StatusGUI()
 mGui.mainloop()

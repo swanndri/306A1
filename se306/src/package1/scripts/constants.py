@@ -1,15 +1,8 @@
 import math
 
 class Priorities(object):
-
-						"""
-						"life_threatening":0,
-						"spec_scheduled":1,
-						"status_scheduled":2,
-						"clock_scheduled":3
-						"""
+	""" life_threatening:0, spec_scheduled:1,status_scheduled:2, clock_scheduled:3 """
 	resident_statuses = {
-
 						"Resident.wakeup":3,
 						"Resident.eat_breakfast":3,
 						"Resident.take_meds":1,
@@ -17,10 +10,6 @@ class Priorities(object):
 						"Resident.eat_dinner":3,
 						"Resident.sleep":3,
 						"Resident.idle":3,
-						
-
-
-
 						}
 
 class Statuses(object):
