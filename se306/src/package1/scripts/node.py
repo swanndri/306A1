@@ -125,4 +125,4 @@ class Human(Node):
 		# loop through all attributes
 		for attribute, value in self.levels:
 			# publish them
-			self.publisher.publish("%s: %d" % (attribute, value)
+			self.publisher.publish("%s: %d" % (attribute, value))
