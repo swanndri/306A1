@@ -123,6 +123,6 @@ class Human(Node):
 					self.levels['hygene'] -= 1
 
 		# loop through all attributes
-		for attribute, value in self.levels:
+		for attribute, value in self.levels.iteritems():
 			# publish them
 			self.publisher.publish("%s: %d" % (attribute, value))
