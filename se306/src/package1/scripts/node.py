@@ -14,7 +14,7 @@ class Node(object):
 
 	def __init__(self, name):
 		self.name = name
-		self.status = IDLE
+		self.status = Node.IDLE
 		self.navigator = navigation.Navigator()
 		self.jobs = Queue.PriorityQueue()
 		self.current_job = None
