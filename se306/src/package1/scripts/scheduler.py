@@ -46,8 +46,8 @@ def schedule_events(time):
 		if (actionmsg is not None):
 			publish(actionmsg)
 		
-#def schedule_status_event(event):
-
+def schedule_status_event(event):
+	pass
 
 roslib.load_manifest('package1')
 rospy.init_node('scheduler')
