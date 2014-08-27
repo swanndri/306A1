@@ -83,10 +83,11 @@ class Search:
 
 		return None		#returns None if failed to find path
 
-# Tests to show finding the correct path
-search = Search()
-path = search.find_path("hallway_bot","hallway_top")
-print("path of door to dishwasher: ",path)
-print("")
-path = search.find_path("cupboard","cook_idle")
-print("path of cupboard to cook_idle: ",path)
+if __name__ == '__main__':
+	# Tests to show finding the correct path
+	search = Search()
+	path = search.find_path("hallway_bot","kitchen")
+	print("path of door to dishwasher: ",path)
+	print("")
+	path = search.find_path("cupboard","cook_idle")
+	print("path of cupboard to cook_idle: ",path)

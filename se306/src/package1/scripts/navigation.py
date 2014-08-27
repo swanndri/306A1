@@ -12,6 +12,7 @@ import TurnHelp
 import constants
 import tf.transformations
 import Rectangle
+import search
 
 from tf.transformations import euler_from_quaternion
 
@@ -232,8 +233,31 @@ class Navigation(constants.Paths):
 	# Method currently is unused and has no real function yet. Need current position for this method
 	# to be useful
 	def move (self, room):
-		self.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
+		current_node = self.get_current_position()
+		s = search.Search()
+		nodes_path = s.find_path(current_node, room)
+		# rev = list(nodes_path)
+		# print(nodes_path)
+		# rev.reverse()
+		# print(rev)
+	
+		# nodes_path = nodes_path + rev
+
+		self.current_path = self.convert_path(nodes_path)
+
 		self.target_coordinate = self.current_path.pop(0)
+
+
+		# self.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
+		# self.target_coordinate = self.current_path.pop(0)
+
+	def convert_path(self, nodes_path):
+		path = []
+		for i in nodes_path:
+			path.append(self.points[i])
+			# print(i,self.points[i])
+		return path
+
 
 if __name__ == "__main__":
 	print "This was not intended to be run directly."
