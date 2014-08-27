@@ -11,5 +11,5 @@ class Cook(node.Robot):
 			self.jobs.put(tuple(msg.data.split()))
 
 if __name__ == '__main__':
-	rospy.init_node('%s_%s' % (self.__class__.__name__.lower(), self.__class__.__bases__[0].lower()))
+	rospy.init_node('cook_robot')
 	cook = Cook()
