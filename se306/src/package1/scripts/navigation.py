@@ -11,6 +11,7 @@ import math
 import TurnHelp
 import constants
 import tf.transformations
+import Rectangle
 
 from tf.transformations import euler_from_quaternion
 
@@ -25,7 +26,6 @@ class Navigation(constants.Paths):
 	''' -----------------------------Call Backs-----------------------------'''
 
 	def process_range_data(self, lazer_beamz):
-		"""
 		if (self.target_coordinate != [] and self.facing_correct_direction == True):
 			adjust_distance = 0.7
 
@@ -36,7 +36,7 @@ class Navigation(constants.Paths):
 			immediate_infront = min(lazer_beamz.ranges[45:136])		
 			distance_to_waypoint = self.get_distance_to_target(targetx, targety)
 
-			if(distance_infront < distance_to_waypoint / 2):
+			if(distance_infront < distance_to_waypoint / 2 and self.col_other_robot == False):
 				self.current_path.insert(0,self.target_coordinate)
 
 				perp = self.normalize(math.degrees(self.current_direction))
@@ -52,16 +52,19 @@ class Navigation(constants.Paths):
 				new_coord = [x1 + x_adjust, y1 + y_adjust]
 				self.target_coordinate = new_coord 
 				self.facing_correct_direction = False
+				self.col_other_robot = True
 
 			if(immediate_infront == min(lazer_beamz.ranges[45:136]) < 0.2):
+				print("still to implement")
 				self.collision = True
 			else:
 				self.collision = False			
-		"""
 			
 
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
+		print(self.get_current_position())
+
 		self.current_coordinates[0] = position_data.pose.pose.position.x
 		self.current_coordinates[1] = position_data.pose.pose.position.y
 		
@@ -79,6 +82,7 @@ class Navigation(constants.Paths):
 			#We have reached our target. 
 			else:
 				self.not_at_target = False
+				self.col_other_robot = False
 				self.move_cmd.linear.x = 0
 				self.move_cmd.angular.z = 0
 
@@ -178,6 +182,17 @@ class Navigation(constants.Paths):
 		rotation_speed = (((difference - old_min) * new_range) / old_range) + new_min
 		return rotation_speed
 
+
+	def get_current_position(self):
+		xcurrent = self.current_coordinates[0]
+		ycurrent = self.current_coordinates[1]
+		pt = [xcurrent, ycurrent]
+		print(pt)
+		for rect in self.rect_list:
+			if(rect.contains(pt)):
+				return rect.name
+		return "Outside"
+
 	''' ----------------------------------Init----------------------------------'''
 
 	''' Robots are initialized with a name which is passed in as a parameter. This allows us
@@ -186,8 +201,9 @@ class Navigation(constants.Paths):
 	'''
 	def __init__(self, robot_name):
 		self.robot_name = robot_name		
-		self.movement_speed = 0.4
+		self.movement_speed = 0.7
 
+		self.col_other_robot = False
 		self.collision = False
 		# Default path and direction
 		self.current_path = self.door_to_kitchen
