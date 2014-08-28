@@ -187,8 +187,9 @@ def callback(msg):
 		print "Something has gone terribly wrong"
 
 
-	if status_value> 100:
-		status_value = 100
+	# if status_value > 100:
+	# 	status_value = 100
+	status_type = status_name[:-1]
 	mGui.update_status_level(status_type,status_value)
 	if status_value <= 0:
 		print ("0/100")

@@ -325,7 +325,7 @@ class Database(object):
 
 	LEVELS = (
 			'Fullness', 'Health', 'Entertainment', 'Sanity',
-			'Fitness', 'Hydration', 'Hygene', 'Relief'
+			'Fitness', 'Hydration', 'Hygiene', 'Relief'
 	)
 	
 	# tasks run by the scheduler
