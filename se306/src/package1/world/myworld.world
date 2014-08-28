@@ -16,18 +16,22 @@ define myRobot position
 (
   block
     (
-      points 4
-      point[0] [0 0.5]
-      point[1] [0.3 1]
-      point[2] [1 0.5]
-      point[3] [0.3 0]
+      points 8
+      point[0] [0 0.8]
+      point[1] [0.2 1]
+      point[2] [0.8 1]
+      point[3] [1 0.8]
+      point[4] [1 0.2]
+      point[5] [0.8 0]
+      point[6] [0.2 0]
+      point[7] [0 0.2]
       z [0 1]
     )
   #fit shape to this size in meters
   size [0.350 0.350 0.500]
   drive "diff"
 
-  mylaser(pose [ 0.150 0.000 -0.200 0.000 ]) 
+  mylaser(pose [ 0.0 0.000 -0.200 0.000 ]) 
   
   # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is direction facing
 )
