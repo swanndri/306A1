@@ -133,6 +133,7 @@ class Human(Node):
 			print self.levels[level]
 
 		self.type = "Human"
+		self.human_pub = rospy.Publisher("human", std_msgs.msg.String, queue_size=10)
 		super(Human, self).__init__(name)
 
 	def _clock_tick_callback(self, msg):
@@ -149,11 +150,11 @@ class Human(Node):
 					self.levels['Sanity'] -= 1
 					self.levels['Fitness'] -= 1
 					self.levels['Hydration'] -= 1
-					self.levels['Hygene'] -= 1
+					self.levels['Hygiene'] -= 1
 					self.levels['Relief'] -= 1
 
 		# loop through all attributes
 		for attribute, value in self.levels.iteritems():
 			# publish them
-			self.publisher.publish("%s: %d" % (attribute, value))
-			# print attribute, value
+			self.human_pub.publish("%s: %d" % (attribute, value))
+			print attribute, value

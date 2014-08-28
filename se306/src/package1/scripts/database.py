@@ -149,6 +149,12 @@ class Database(object):
 			'destination': 'kitchen',
 			'duration': 100
 		},
+		'Resident.eat_snack': {						#generated event for innovation
+			'explanation': 'Resident is eating a snack',
+			'priority': 1,
+			'destination': 'fridge',
+			'duration': 10
+		},
 		'Resident.take_meds': {
 			'explanation': 'Resident is taking medication',
 			'priority': 1,
@@ -333,7 +339,7 @@ class Database(object):
 
 	LEVELS = (
 			'Fullness', 'Health', 'Entertainment', 'Sanity',
-			'Fitness', 'Hydration', 'Hygene', 'Relief'
+			'Fitness', 'Hydration', 'Hygiene', 'Relief'
 	)
 	
 	# tasks run by the scheduler
