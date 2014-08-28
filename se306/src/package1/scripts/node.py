@@ -140,18 +140,16 @@ class Human(Node):
 		# if this isn't the very first clock tick
 		if int(msg.clock.secs) > 0:
 			# if the clock tick is divisible evenly by 4
-			if int(msg.clock.secs) % 4 == 0:
-				# on a 50% chance
-				if random.random() > 0.5:
-					# reduce attribute levels by one unit
-					self.levels['Fullness'] -= 1
-					self.levels['Health'] -= 1
-					self.levels['Entertainment'] -= 1
-					self.levels['Sanity'] -= 1
-					self.levels['Fitness'] -= 1
-					self.levels['Hydration'] -= 1
-					self.levels['Hygiene'] -= 1
-					self.levels['Relief'] -= 1
+			if ((int(msg.clock.secs) % 4 == 0) and (int(msg.clock.nsecs)==0)):
+				# reduce attribute levels by one unit
+				self.levels['Fullness'] -= 1
+				self.levels['Health'] -= 1
+				self.levels['Entertainment'] -= 1
+				self.levels['Sanity'] -= 1
+				self.levels['Fitness'] -= 1
+				self.levels['Hydration'] -= 1
+				self.levels['Hygiene'] -= 1
+				self.levels['Relief'] -= 1
 
 		# loop through all attributes
 		for attribute, value in self.levels.iteritems():
