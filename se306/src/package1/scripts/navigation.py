@@ -28,7 +28,7 @@ class Navigation(constants.Paths):
 
 		#If we are headed somewhere and we are facing the correct direction.
 		if (self.target_coordinate != [] and self.facing_correct_direction == True) or self.collision_mode == True:
-			
+
 			if(self.collision_mode == False):				
 				angle_list = list(range(45, 135))
 				collision_imminent = False
@@ -41,14 +41,13 @@ class Navigation(constants.Paths):
 
 			if(self.collision_mode == True):
 				all_clear = True
-				angle_list = list(range(50, 130))
+				angle_list = list(range(55, 125))
 				for angle in angle_list:
 					distance_to_collision = lazer_beamz.ranges[angle]
-					if (distance_to_collision < 0.45):	
+					if (distance_to_collision < 0.5):	
 						all_clear = False
 						break
 				if(all_clear):
-
 					theta = self.normalize(int(math.degrees(self.current_direction)))
 					x_adjust = math.cos(math.radians(theta)) * 0.7
 					y_adjust = math.sin(math.radians(theta)) * 0.7
@@ -66,21 +65,23 @@ class Navigation(constants.Paths):
 					current_place = self.get_current_position()
 
 					self.current_path.insert(0,self.target_coordinate)
-
 					print(self.current_col_nodes_added)
-					if(self.current_col_nodes_added == 0):
-						print("test")
-						self.original_path = self.current_path					
-					
 					print(self.original_path)
+
+					if(self.current_col_nodes_added == 0):
+						self.original_path = list(self.current_path)					
+					
+					print("CURRENT")
+					print(self.current_path)
+					print(self.target_coordinate)
+					print("END LOOP")
 					
 					if(str(current_place) == str(place)):		
-						if(self.current_col_nodes_added == 2):
+						if(self.current_col_nodes_added == 3):
 							self.current_path = self.original_path
 							self.target_coordinate = self.current_path.pop(0)
 							self.current_col_nodes_added = 0
 						else:			
-							self.current_path.insert(0,self.target_coordinate)
 							self.target_coordinate = new_coord							
 							self.current_col_nodes_added += 1
 
@@ -342,7 +343,8 @@ class Navigation(constants.Paths):
 		self.target_coordinate 		= []
 		self.target_direction 		= None
 		self.current_coordinates 	= [0,0]		
-		
+		self.original_path 			= []
+
 		self.current_col_nodes_added = 0
 		self.waypoint_blocked 		= False
 		self.collision_mode 		= False
