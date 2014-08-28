@@ -100,24 +100,24 @@ class Robot(Node):
 
 	def __init__(self, name):
 		super(Robot, self).__init__(name)
-#!/usr/bin/python
+# #!/usr/bin/python
 
-import rospy
-import node
-import database
+# import rospy
+# import node
+# import database
 
-class Resident(node.Human):
+# class Resident(node.Human):
 	
-	def __init__(self, name):
-		super(Resident, self).__init__(name)
+# 	def __init__(self, name):
+# 		super(Resident, self).__init__(name)
 
-	def _scheduler_event_callback(self, msg):
-		if msg.data.split()[1].startswith(self.__class__.__name__):
-			self.jobs.put(tuple(msg.data.split()))
+# 	def _scheduler_event_callback(self, msg):
+# 		if msg.data.split()[1].startswith(self.__class__.__name__):
+# 			self.jobs.put(tuple(msg.data.split()))
 
-if __name__ == '__main__':
-	rospy.init_node('robot_1')
-	resident = Resident('robot_1')
+# if __name__ == '__main__':
+# 	rospy.init_node('robot_1')
+# 	resident = Resident('robot_1')
 class Human(Node):
 	levels = {}
 
@@ -150,4 +150,4 @@ class Human(Node):
 		for attribute, value in self.levels.iteritems():
 			# publish them
 			self.publisher.publish("%s: %d" % (attribute, value))
-			print attribute, valuel
+			print attribute, value

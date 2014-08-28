@@ -31,12 +31,9 @@ class Scheduler(object):
 				
 				self.publisher.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
 				print "EVENT: %s" % database.Database.SCHEDULED_TASKS[self.simulation_time]
-"""	
 			#Should add in here for random events happening
 			else:
-
-
-"""
+				pass
 	def _human_status_event(self, event):
 		task = database.Database.STATUS_TASKS.get(event.data)
 		if task is not None:
