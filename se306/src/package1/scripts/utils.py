@@ -1,9 +1,21 @@
-#!/usr/bin/env python
+class Rectangle(object):
+	
+	def __init__(self, name, pt1, pt2):
+		x1, y1 = pt1
+		x2, y2 = pt2
 
-import constants
-import math
+		self.left = min(x1, x2)
+		self.right = max(x1, x2)
+		self.top = max(y1, y2)
+		self.bottom = min(y1, y2)
 
-class Search:
+	def contains(self, pt3):
+		x3, y3 = pt3
+		return self.left <= x3 <= self.right and self.bottom <= y3 <= self.top
+
+
+class Search(object):
+
 	def __init__(self):
 		self.graph = constants.Paths.graph		#graph of world (dict)
 		self.points = constants.Paths.points 	#co-ordinates of all nodes (dict)
@@ -83,10 +95,42 @@ class Search:
 
 		return None		#returns None if failed to find path
 
-# Tests to show finding the correct path
-search = Search()
-path = search.find_path("hallway_bot","hallway_top")
-print("path of door to dishwasher: ",path)
-print("")
-path = search.find_path("cupboard","cook_idle")
-print("path of cupboard to cook_idle: ",path)
+
+class Angle(object):
+	
+	def __init__(self, current, target):
+		""" Convert input rads to degrees """
+
+		current = math.degrees(current)
+		target = math.degrees(target)
+		self.angle_from = self.normalize(current)
+		self.angle_to = self.normalize(target)
+	
+	
+	def check(self):
+		""" Check which direction is best to rotate based on current heading. """
+
+		# -1 is anti-clockwise
+		#  1 is clockwise
+
+		move_angle = self.angle_to - self.angle_from
+		
+		if (move_angle > 0):
+			if (abs(move_angle) > 180):
+				return -1
+			else:
+				return 1
+		else:
+			if (abs(move_angle) > 180):
+				return 1
+			else:
+				return -1
+
+	def normalize(self, input_angle):
+		""" Normalise input angle """
+
+		new_angle = int(input_angle)
+		if new_angle < 0:
+			new_angle += 360
+			
+		return new_angle
