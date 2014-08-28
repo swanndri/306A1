@@ -2,12 +2,15 @@ import math
 
 class Database(object):
 
+		# how to judge orientation
 		ORIENTATION = {
-			'east': 0.0
-			'west': math.pi
-			'north': math.pi / 2.0
+			'east': 0.0,
+			'west': math.pi,
+			'north': math.pi / 2.0,
 			'south': -math.pi / 2.0
 		}
+
+		# where everything is
 		POINTS = {
 			'cupboard': (-3.6, 4.2),
 			'bedroom': (-3.6, 2.1),
@@ -35,21 +38,22 @@ class Database(object):
 			'dishwasher': (3.750, 3.500)
 		}
 
+		# connected graph of points showing neighbours
 		GRAPH = {
 			'cupboard': ['bedroom'],
-			'bedroom': ['bed','cupboard','gym','hallway_top'],
-			'bathroom': ['bathtub','hallway_bot','sink','toilet'],
-			'hallway_top': ['bedroom','hallway_mid'],
-			'hallway_mid': ['hallway_bot','hallway_top','living_room_entrance'],
-			'hallway_bot': ['bathroom','door','hallway_mid'],
+			'bedroom': ['bed', 'cupboard', 'gym', 'hallway_top'],
+			'bathroom': ['bathtub', 'hallway_bot', 'sink', 'toilet'],
+			'hallway_top': ['bedroom', 'hallway_mid'],
+			'hallway_mid': ['hallway_bot', 'hallway_top', 'living_room_entrance'],
+			'hallway_bot': ['bathroom', 'door', 'hallway_mid'],
 			'door': ['hallway_bot'],
-			'kitchen': ['dishwasher','fridge','kitchen_entrance','living_room_middle'],
-			'kitchen_entrance': ['kitchen','living_room_middle','living_room_top_right'],
-			'living_room_top_right': ['cook_idle','kitchen_entrance'],
-			'living_room_middle': ['kitchen','kitchen_entrance','living_room_entrance','living_room_top_right'],
+			'kitchen': ['dishwasher', 'fridge', 'kitchen_entrance', 'living_room_middle'],
+			'kitchen_entrance': ['kitchen', 'living_room_middle', 'living_room_top_right'],
+			'living_room_top_right': ['cook_idle', 'kitchen_entrance'],
+			'living_room_middle': ['kitchen', 'kitchen_entrance', 'living_room_entrance', 'living_room_top_right'],
 			'cook_idle': ['living_room_top_right'],
-			'living_room_entrance': ['hallway_mid','living_room_sofa','living_room_middle'],
-			'living_room_sofa': ['sofa','sofa2'],
+			'living_room_entrance': ['hallway_mid', 'living_room_sofa', 'living_room_middle'],
+			'living_room_sofa': ['sofa', 'sofa2'],
 			'bed': ['bedroom'],
 			'sofa': ['living_room_sofa'],
 			'gym': ['bedroom'],
@@ -59,4 +63,20 @@ class Database(object):
 			'bathtub': ['bathroom'],
 			'fridge': ['kitchen'],
 			'dishwasher': ['kitchen']
+		}
+
+		EVENTS = {
+			'Resident.wakeup': {
+				'explanation': "Resident is currently waking up",
+				'priority': 1,
+				'warn_medium': '',
+				'warn_low': '',
+				'warn_dangerous': ''
+			},
+			'Resident.eat_breakfast': {
+				'explanation': '',
+				'priority': 1,
+				...
+				...
+			}
 		}
