@@ -109,6 +109,14 @@ class Database(object):
 		'piano': ['living_room_sofa']
 	}
 
+	# assigning the names of each robot to their idle positions (robot_0 = cook_robot)
+	ROBOT_IDLES = {
+
+		'robot_0' : 'visitor_idle',		#visitor
+		'robot_2' : 'cook_idle'
+
+	}
+
 	# scheduled events, their priorities and warning messages
 	EVENTS = {
 		'Resident.wakeup': {
