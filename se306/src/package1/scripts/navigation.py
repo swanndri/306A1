@@ -65,25 +65,28 @@ class Navigation(constants.Paths):
 							break
 					current_place = self.get_current_position()
 
-					#if(self.current_col_nodes_added == 0):
-					#	self.original_path = self.current_path
-					#	self.original_path.insert(0,self.target_coordinate)
-					#print(self.original_path)
+					self.current_path.insert(0,self.target_coordinate)
+
+					print(self.current_col_nodes_added)
+					if(self.current_col_nodes_added == 0):
+						print("test")
+						self.original_path = self.current_path					
+					
+					print(self.original_path)
 					
 					if(str(current_place) == str(place)):		
-						#if(self.current_col_nodes_added == 2):
-						#	self.current_path = self.original_path
-						#	self.target_coordinate = self.current_path.pop(0)
-						#	self.current_col_nodes_added = 0
-						#else:			
-
-						self.current_path.insert(0,self.target_coordinate)
-						self.target_coordinate = new_coord
-						
-						#self.current_col_nodes_added =+ 1
+						if(self.current_col_nodes_added == 2):
+							self.current_path = self.original_path
+							self.target_coordinate = self.current_path.pop(0)
+							self.current_col_nodes_added = 0
+						else:			
+							self.current_path.insert(0,self.target_coordinate)
+							self.target_coordinate = new_coord							
+							self.current_col_nodes_added += 1
 
 						self.collision_mode = False
-
+					else:
+						self.target_coordinate = self.current_path.pop(0)
 
 			#DONT DELETE THIS STUFF UNTIL NAV FINIALISED PLZ
 
