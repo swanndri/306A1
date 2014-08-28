@@ -129,7 +129,12 @@ class Human(Node):
 	def __init__(self, name):
 
 		for level in database.Database.LEVELS:
-			self.levels[level] = [100, 1]		#status = (value,rate)
+			self.levels[level] = [100, 0.5]		#status = (value,rate)
+			if level == 'Sanity' or level == 'Health':
+				self.levels[level][1] = 0.1
+			elif level == 'Fullness' or level == 'Relief':
+				self.levels[level][1] = 1
+
 			print self.levels[level]
 
 		self.type = "Human"
