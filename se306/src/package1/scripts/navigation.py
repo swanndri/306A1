@@ -17,7 +17,6 @@ import search
 from tf.transformations import euler_from_quaternion
 
 """ This class handles all navigation for robots.
-
 It is meant to supplement other robot classes and provide them with the navigation
 functionality. It utilises the `constants.Paths` class for its path variables.
 """
@@ -25,45 +24,7 @@ functionality. It utilises the `constants.Paths` class for its path variables.
 class Navigation(constants.Paths):
 	
 	''' -----------------------------Call Backs-----------------------------'''
-
 	def process_range_data(self, lazer_beamz):
-		'''if (self.target_coordinate != [] and self.facing_correct_direction == True):
-			adjust_distance = 0.7
-
-			targetx = self.target_coordinate[0]
-			targety = self.target_coordinate[1]
-
-			distance_infront = min(lazer_beamz.ranges[89:92])	
-			immediate_infront = min(lazer_beamz.ranges[45:136])		
-
-			distance_to_waypoint = self.get_distance_to_target(targetx, targety)
-
-			if(distance_infront < distance_to_waypoint / 2 and self.col_other_robot == False):
-				self.current_path.insert(0,self.target_coordinate)
-
-				#get current direction
-				perp = self.normalize(math.degrees(self.current_direction))
-				#add 90 degrees to angle to make perpindicular
-				perp = perp + 90
-				perp = self.normalize(perp)
-
-				x_adjust = math.cos(math.radians(perp)) * adjust_distance
-				y_adjust = math.sin(math.radians(perp)) * adjust_distance
-
-				x1 = ((targetx - self.current_coordinates[0]) / 2) + self.current_coordinates[0]
-				y1 = ((targety - self.current_coordinates[1]) / 2) + self.current_coordinates[1]
-
-				new_coord = [x1 + x_adjust, y1 + y_adjust]
-				self.target_coordinate = new_coord 
-				self.facing_correct_direction = False
-				self.col_other_robot = True
-
-			if(immediate_infront == min(lazer_beamz.ranges[45:136]) < 0.2):
-				print("still to implement")
-				self.collision = True
-			else:
-				self.collision = False'''
-		
 		#If we are headed somewhere and we are facing the correct direction.
 		if (self.target_coordinate != [] and self.facing_correct_direction == True):
 			
@@ -82,7 +43,6 @@ class Navigation(constants.Paths):
 			This for loop checks every ranger distance against the ranger angle to see if there will be enough 
 			space for the robot to go past the obstacle.
 			'''
-
 			#this variable is made for concurrency reasons.
 			#waypoint_blocked is accessed in two threads. We need to set this variable to false to check if
 			#stuff is still being blocked but if we did that to the global variable then for a split second the
@@ -158,7 +118,7 @@ class Navigation(constants.Paths):
 				'''------------------------------------------------'''
 				'''^^^^^^^^^^^Avoid collision stuff goes ^^^^^^^^^^'''	
 
-
+			#DONT DELETE THIS STUFF UNTIL NAV FINIALISED PLZ
 
 			'''#distance infront of robot within a 16 degree buffer
 			distance_infront = min(lazer_beamz.ranges[82:99])
@@ -349,17 +309,12 @@ class Navigation(constants.Paths):
 		angle = math.radians(angle)
 		return angle
 
-	#returns a distance from target to current coordinates
-
 	def get_distance_to_target(self, targetx, targety):
+		#returns a distance from targetx, targety to current coordinates
 		x_squared = pow((targetx - self.current_coordinates[0]), 2)
 		y_squared = pow((targety - self.current_coordinates[1]), 2)
 		return math.sqrt(x_squared + y_squared)
 
-	''' This method is used to let a robot rotate at a high speed when it is not 
-	close to the target angle it is rotating to, while also allowing it to slow
-	down as it approaches it's target
-	'''	
 	def get_rotation_speed(self):
 		""" This method is used to let a robot rotate at a high speed when it is not 
 		close to the target angle it is rotating to, while also allowing it to slow
@@ -394,32 +349,28 @@ class Navigation(constants.Paths):
 		return "visitor_idle"
 
 	''' ----------------------------------Init----------------------------------'''
-
 	''' Robots are initialized with a name which is passed in as a parameter. This allows us
 	to use this class to publish and subscribe with many different robots inheriting from this
 	class
 	'''
 	def __init__(self, robot_name):
+
+		#init all our used variables
 		self.robot_name = robot_name		
-		self.movement_speed = 0.7
+		self.movement_speed = 0.5
 
-		self.waypoint_blocked = False
-		
-		# Default path and direction
-		self.current_path = self.door_to_kitchen
-		self.current_direction	= self.north
-
-		# Default target path and direction
+		self.current_path = []
+		self.current_direction	= None
 		self.target_coordinate = []
-		self.target_direction = self.west
-
-		self.current_coordinates = [0,0]
-
+		self.target_direction = None
+		self.current_coordinates = [0,0]		
+		
+		self.waypoint_blocked = False
 		self.not_at_target = True		
 		self.facing_correct_direction = False
 
+		#init publishers and subscribesr
 		self.move_cmd = geometry_msgs.msg.Twist()
-
 		subscribe_to = "/" + robot_name + "/base_pose_ground_truth"
 		self.test = rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, self.process_position)
 
@@ -429,25 +380,13 @@ class Navigation(constants.Paths):
 		subscribe_to = "/" + robot_name + "/base_scan"
 		rospy.Subscriber(subscribe_to, sensor_msgs.msg.LaserScan, self.process_range_data)
 
-	def move (self, room):
+	def move (self, room):		
 		self.facing_correct_direction = False
 		current_node = self.get_current_position()
 		s = search.Search()
 		nodes_path = s.find_path(current_node, room)
-		# rev = list(nodes_path)
-		# print(nodes_path)
-		# rev.reverse()
-		# print(rev)
-	
-		# nodes_path = nodes_path + rev
-
 		self.current_path = self.convert_path(nodes_path)
-
 		self.target_coordinate = self.current_path.pop(0)
-
-
-		# self.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
-		# self.target_coordinate = self.current_path.pop(0)
 
 	def convert_path(self, nodes_path):
 		path = []
@@ -455,7 +394,3 @@ class Navigation(constants.Paths):
 			path.append(self.points[i])
 			# print(i,self.points[i])
 		return path
-
-
-if __name__ == "__main__":
-	print "This was not intended to be run directly."
