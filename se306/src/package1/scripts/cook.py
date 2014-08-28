@@ -46,8 +46,8 @@ class Cook(navigation.Navigation):
 		self.status = "active" 
 
 		if ("Cook.cook_" in task):
-			self.navigate.current_path = list(self.cook_path)
-			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
+			self.navigate.move("kitchen")
+			# self.navigate.current_path = list(self.cook_path)
 
 if __name__ == '__main__':
 	rospy.init_node('cook_robot')
