@@ -108,9 +108,56 @@ class Navigation(constants.Paths):
 
 			self.waypoint_blocked = temp_waypoint_blocked			
 
-			if(not self.waypoint_blocked and collision_imminent):
+			if( self.waypoint_blocked == False and collision_imminent):
+				print("Test")
+				'''-------Avoid collision stuff goes here---------'''				
+				'''-----------------------------------------------'''
+
 				#store the current target back on the current_path list
 				self.current_path.insert(0,self.target_coordinate)
+
+				#####Headless Chikcen Routine#########
+				headless_distance = 0.7
+
+				angle_list = list(range(30, 150))
+				
+				intersects = []
+				for check_angle in reversed(angle_list):
+					if(lazer_beamz.ranges[check_angle] > headless_distance):
+						intersects.append(True)
+					else:
+						intersects.append(False)
+				lambda_angle = self.get_consecutive_good_angles(intersects, angle_list)
+
+				print("lambda angle: " + str(lambda_angle))
+				if(lambda_angle is not None):
+					
+					theta = self.normalize(int(math.degrees(self.current_direction)))
+					print("theta: " + str(theta))
+					new_angle = (theta + 90 - lambda_angle)
+					print("new angle: " + str(new_angle))
+					hypoteneuse = 0.2 / math.cos(math.radians(abs(90-lambda_angle)))
+					print("hypoteneuse: " + str(hypoteneuse))
+
+					x_adjust = math.cos(math.radians(new_angle)) * hypoteneuse
+					y_adjust = math.sin(math.radians(new_angle)) * hypoteneuse
+
+					print("xadjust:  " + str(x_adjust))
+					print("yadjust:  " + str(y_adjust))
+
+					x1 = self.current_coordinates[0]
+					y1 = self.current_coordinates[1]
+
+					new_coord = [x1 + x_adjust, y1 + y_adjust]
+					print(new_coord)
+
+					self.target_coordinate = new_coord 
+					self.facing_correct_direction = False
+				else:
+					print("We are stuck in a corner")
+				'''------------------------------------------------'''
+				'''^^^^^^^^^^^Avoid collision stuff goes ^^^^^^^^^^'''	
+
 
 
 			'''#distance infront of robot within a 16 degree buffer
@@ -210,7 +257,6 @@ class Navigation(constants.Paths):
 			else:
 				self.not_at_target = False
 				self.facing_correct_direction = False
-				self.col_other_robot = False
 				self.move_cmd.linear.x = 0
 				self.move_cmd.angular.z = 0
 
@@ -262,8 +308,8 @@ class Navigation(constants.Paths):
 		for truth in intersects:
 			if(truth):
 				consecutive_count += 1
-				if(consecutive_count > 1):
-					return angle_list[iteration_count - (consec_buffer /2)]
+				if(consecutive_count > 30):
+					return angle_list[iteration_count - 30]
 			else:
 				consecutive_count = 0
 			iteration_count += 1
@@ -357,8 +403,8 @@ class Navigation(constants.Paths):
 		self.robot_name = robot_name		
 		self.movement_speed = 0.7
 
-		self.col_other_robot = False
 		self.waypoint_blocked = False
+		
 		# Default path and direction
 		self.current_path = self.door_to_kitchen
 		self.current_direction	= self.north
