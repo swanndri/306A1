@@ -21,7 +21,7 @@ It is meant to supplement other robot classes and provide them with the navigati
 functionality. It utilises the `constants.Paths` class for its path variables.
 """
 
-class Navigation(constants.Paths):
+class Navigator(constants.Paths):
 	
 	''' -----------------------------Call Backs-----------------------------'''
 

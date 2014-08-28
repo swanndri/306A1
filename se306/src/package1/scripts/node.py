@@ -15,7 +15,7 @@ class Node(object):
 	def __init__(self, name):
 		self.name = name
 		self.status = Node.IDLE
-		self.navigator = navigation.Navigator()
+		self.navigator = navigation.Navigator(name)
 		self.jobs = Queue.PriorityQueue()
 		self.current_job = None
 		self.publisher = rospy.Publisher(name, std_msgs.msg.String, queue_size=10)
@@ -24,6 +24,8 @@ class Node(object):
 		rospy.Subscriber('clock', rosgraph_msgs.msg.Clock, self._clock_tick_callback)
 		rospy.Subscriber('scheduler', std_msgs.msg.String, self._scheduler_event_callback)
 
+		self._loop()
+
 	def _get_status(self):
 		pass
 
@@ -31,9 +33,9 @@ class Node(object):
 		self.current_job = job
 		
 		# request the node to move to new target coordinates
-		pass
+		self.navigator.navigate()
 
-	def _assign_next_job(self):
+	def _assign_next_job_if_available(self):
 		try:
 			self._process_job(self.jobs.get_nowait())
 		except Queue.Empty:
@@ -72,13 +74,13 @@ class Node(object):
 					else:
 						# out of time, job effectively completed
 						# if there is another job in the queue, process it now
-						self._assign_next_job()
+						self._assign_next_job_if_available()
 						continue
 				
 				self.status = Node.RESPONDING
 				continue
 
-			self._assign_next_job()
+			self._assign_next_job_if_available()
 			continue
 
 	def _clock_tick_callback(self, msg):
@@ -89,13 +91,13 @@ class Node(object):
 
 class Robot(Node):
 
-	def __init__(self):
-		super(self.__class__.__bases__[0], self).__init__()
+	def __init__(self, name):
+		super(self.__class__.__bases__[0], self).__init__(name)
 
 class Human(Node):
 
-	def __init__(self):
-		super(self.__class__.__bases__[0], self).__init__()
+	def __init__(self, name):
+		super(self.__class__.__bases__[0], self).__init__(name)
 		self.levels = {
 			'fullness': 100,
 			'health': 100,
