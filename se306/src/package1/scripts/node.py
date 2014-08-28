@@ -129,7 +129,7 @@ class Human(Node):
 	def __init__(self, name):
 
 		for level in database.Database.LEVELS:
-			self.levels[level] = 100
+			self.levels[level] = [100, 1]		#status = (value,rate)
 			print self.levels[level]
 
 		self.type = "Human"
@@ -142,17 +142,17 @@ class Human(Node):
 			# if the clock tick is divisible evenly by 4
 			if ((int(msg.clock.secs) % 4 == 0) and (int(msg.clock.nsecs)==0)):
 				# reduce attribute levels by one unit
-				self.levels['Fullness'] -= 1
-				self.levels['Health'] -= 1
-				self.levels['Entertainment'] -= 1
-				self.levels['Sanity'] -= 1
-				self.levels['Fitness'] -= 1
-				self.levels['Hydration'] -= 1
-				self.levels['Hygiene'] -= 1
-				self.levels['Relief'] -= 1
+				self.levels['Fullness'][0] -= self.levels['Fullness'][1]
+				self.levels['Health'][0] -= self.levels['Health'][1]
+				self.levels['Entertainment'][0] -= self.levels['Entertainment'][1]
+				self.levels['Sanity'][0] -= self.levels['Sanity'][1]
+				self.levels['Fitness'][0] -= self.levels['Fitness'][1]
+				self.levels['Hydration'][0] -= self.levels['Hydration'][1]
+				self.levels['Hygiene'][0] -= self.levels['Hygiene'][1]
+				self.levels['Relief'][0] -= self.levels['Relief'][1]
 
 		# loop through all attributes
 		for attribute, value in self.levels.iteritems():
 			# publish them
-			self.human_pub.publish("%s: %d" % (attribute, value))
-			print attribute, value
+			self.human_pub.publish("%s: %d" % (attribute, value[0]))
+			print attribute, value[0]
