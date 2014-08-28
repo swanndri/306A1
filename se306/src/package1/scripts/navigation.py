@@ -88,9 +88,15 @@ class Navigation(constants.Paths):
 						collision_imminent = True
 						
 						#0.15 is offset of laser on the robot itself.
-						if((lazer_beamz.ranges[angle]+0.15) < distance_to_waypoint) and 
-							(lazer_beamz.ranges[angle]+0.15) > (distance_to_waypoint - CONSTANT_ROBOT_WIDTH):
+						#if there is something between the robot and the waypoint and that something is on the waypoint
+						if((lazer_beamz.ranges[angle]+0.15 < distance_to_waypoint and lazer_beamz.ranges[angle]+0.15 > distance_to_waypoint - CONSTANT_ROBOT_WIDTH) 
+							or 
+							(lazer_beamz.ranges[angle]+0.15 > distance_to_waypoint and lazer_beamz.ranges[angle]+0.15 < distance_to_waypoint + CONSTANT_ROBOT_WIDTH /2)):
 							print("Something on waypoint")
+							waypoint_blocked = True
+						else:
+							waypoint_blocked = False
+							
 						print("There will be a collision somwhere")
 						print("range" + str(lazer_beamz.ranges[angle]) + "angle" + str(angle))
 
