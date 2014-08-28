@@ -140,8 +140,9 @@ class Human(Node):
 		# if this isn't the very first clock tick
 		if int(msg.clock.secs) > 0:
 			# if the clock tick is divisible evenly by 4
-			if ((int(msg.clock.secs) % 4 == 0) and (int(msg.clock.nsecs)==0)):
+			if ((int(msg.clock.secs) % 3 == 0) and (int(msg.clock.nsecs)==0)):
 				# reduce attribute levels by one unit
+<<<<<<< HEAD
 				self.levels['Fullness'][0] -= self.levels['Fullness'][1]
 				self.levels['Health'][0] -= self.levels['Health'][1]
 				self.levels['Entertainment'][0] -= self.levels['Entertainment'][1]
@@ -150,6 +151,25 @@ class Human(Node):
 				self.levels['Hydration'][0] -= self.levels['Hydration'][1]
 				self.levels['Hygiene'][0] -= self.levels['Hygiene'][1]
 				self.levels['Relief'][0] -= self.levels['Relief'][1]
+=======
+
+				self.levels['Fullness'] -= 1
+				self.levels['Health'] -= 1
+				self.levels['Entertainment'] -= 1
+				self.levels['Sanity'] -= 1
+				self.levels['Fitness'] -= 1
+				self.levels['Hydration'] -= 1
+				self.levels['Hygiene'] -= 1
+				self.levels['Relief'] -= 1
+>>>>>>> 3b1744fbefbc130411a60ab0ed21af606d2762ef
+
+				for levels in self.levels:
+					if (self.levels[levels]>100):
+						self.levels[levels] = 100
+					if (self.levels[levels]<=0):
+						self.levels[levels] = 0
+
+
 
 		# loop through all attributes
 		for attribute, value in self.levels.iteritems():
