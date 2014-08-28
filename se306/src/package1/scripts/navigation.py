@@ -223,27 +223,35 @@ class Navigation(constants.Paths):
 
 			if(self.target_coordinate != []):
 				self.target_direction = self.calculate_heading()
-				# Find optimal direction to rotate
-				clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
-				# Finding optimal speed to rotate
-				rotation_speed = self.get_rotation_speed()
-
-				# Rotation
-				if(abs(self.current_direction - self.target_direction) >  math.radians(2)):
-					self.move_cmd.angular.z = clockwise * rotation_speed
-					self.facing_correct_direction = False
-				else:
-					self.move_cmd.angular.z = 0
-					self.facing_correct_direction = True
-
-				# Linear movement
-				if (self.facing_correct_direction == True and self.not_at_target == True):
-					self.move_cmd.linear.x = self.movement_speed
-				else:
-					self.move_cmd.linear.x = 0
+				
+				self.rotate_to_direction(self.target_direction)
+				self.move_to_target()
 
 		if(self.waypoint_blocked == True):
 			self.move_cmd.linear.x = 0	
+
+
+	def rotate_to_direction(self, ros_angle):
+		# Find optimal direction to rotate
+		clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
+		# Finding optimal speed to rotate
+		rotation_speed = self.get_rotation_speed()
+
+		# Rotation
+		if(abs(self.current_direction - self.target_direction) >  math.radians(2)):
+			self.move_cmd.angular.z = clockwise * rotation_speed
+			self.facing_correct_direction = False
+		else:
+			self.move_cmd.angular.z = 0
+			self.facing_correct_direction = True
+
+
+	def move_to_target(self):
+		# Linear movement
+		if (self.facing_correct_direction == True and self.not_at_target == True):
+			self.move_cmd.linear.x = self.movement_speed
+		else:
+			self.move_cmd.linear.x = 0
 
 	''' -----------------------------Helper Methods-----------------------------'''
 
