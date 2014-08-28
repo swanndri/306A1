@@ -134,7 +134,7 @@ window
 floorplan
 ( 
   name "house"
-  bitmap "house.png"
+  bitmap "house2.png"
   size [10.000 10.000 3.000]
 #  pose [ 8 8 0 0 ]
 )
