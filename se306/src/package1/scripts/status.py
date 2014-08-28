@@ -66,11 +66,6 @@ class StatusGUI(tk.Tk):
 		
 		#position the GUI components:
 		#set up frames
-		# self.satisfaction_frame.place(x=0,y=0,width=230,height=80)
-		# self.cleanliness_frame.place(x=0,y=80,width=230,height=80) 
-		# self.leisure_frame.place(x=0,y=160,width=230,height=80)
-		# self.vital_frame.place(x=230,y=0,width=120,height=240)
-		# self.status_frame.place(x=0,y=240,width=370,height=80)
 		self.all_bars_frame.pack()
 		self.horizontal_bars_frame.pack(side="left")
 		self.satisfaction_frame.pack(padx=(0,10),pady=10)
