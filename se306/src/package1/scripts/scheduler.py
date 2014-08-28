@@ -3,49 +3,43 @@
 import roslib
 import rospy
 import rosgraph_msgs
-import constants
+import std_msgs.msg
 
-from std_msgs.msg import String
+class Scheduler(object):
 
-#time_publisher = rospy.Publisher('/clock', rosgraph_msgs.msg.Clock, queue_size=100)
+	SCHEDULED_TASKS = {
+		8: 'Resident.wakeup',
+		23: 'Visitor.visit',
+		30: 'Cook.cook_breakfast',
+		45: 'Resident.eat_breakfast',
+		55: 'Resident.take_meds',
+		70: 'Cook.cook_lunch',
+		85: 'Resident.eat_lunch',
+		100: 'Resident.idle',
+		120: 'Visitor.visit',
+		150: 'Cook.cook_dinner',
+		170: 'Resident.eat_dinner',
+		200: 'Resident.sleep'
+	}
 
-simulation_time = 0
-pub = rospy.Publisher('scheduler', String, queue_size=10)
+	def __init__(self):
+		self.simulation_time = 0
+		self.publisher = rospy.Publisher('scheduler', std_msgs.msg.String, queue_size=10)
 
-def publish(actionmsg):        
-        pub.publish(actionmsg)
-        print(actionmsg)
+		rospy.Subscriber('/clock', rosgraph_msgs.msg.Clock, self._clock_tick_event)
 
+	def _clock_tick_event(self, time):
+		if not time.clock.nsecs:
+			print "Simulation time: %d" % self.simulation_time
+			self.simulation_time = time.clock.secs % 420
+			if self.simulation_time in Scheduler.SCHEDULED_TASKS:
+				self.publisher.publish(Scheduler.SCHEDULED_TASKS[self.simulation_time])
+				print "EVENT: %s" % Scheduler.SCHEDULED_TASKS[self.simulation_time]
 
-def schedule_events(time):
-	#1440 because there are 1440 minutes in a day therefore 1 minute simulation = 1 second real time
-	#0 = 12:00am (midnight). 
-	#480 = 8:00am
-	simulation_time  = time.clock.secs % 420
-	actionmsg = None
-	if ( time.clock.nsecs == 100000000 ):
-		actionmsg = constants.Tasks.scheduled_tasks.get(simulation_time)
-		print(simulation_time)
-		
-		if (actionmsg is not None):
-			publish(actionmsg)
-		
-def schedule_status_event(event):
-	#print  constants.Tasks.status_based_tasks[event.data]
-	
-	task = constants.Tasks.status_based_tasks[event.data]
-	if (task is not None):
-		publish(task)
+if __name__ == '__main__':
+	roslib.load_manifest('package1')
+	rospy.init_node('scheduler')
 
-	
-roslib.load_manifest('package1')
-rospy.init_node('scheduler')
+	scheduler = Scheduler()
 
-rospy.Subscriber('/clock', rosgraph_msgs.msg.Clock, schedule_events)
-rospy.Subscriber('human_status', String, schedule_status_event)
-
-rospy.spin()
-
-
-
-#jak gittest
+	rospy.spin()
