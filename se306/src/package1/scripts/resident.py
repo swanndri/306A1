@@ -70,6 +70,7 @@ class Resident(navigation.Navigation):
 		self.fitness = 100
 		self.hydration = 100
 		self.hygiene = 100
+		self.relief = 100
 
 		self.rate = rospy.Rate(constants.RosConstants.robot_rate)
 		self.task_list = []
@@ -145,6 +146,12 @@ class Resident(navigation.Navigation):
 			if self.hygiene > 0:
 				self.hygiene -= 1
 				self.pub.publish("Hygiene: " + str(self.hygiene))
+
+		#Relief
+		if ((int(msg.clock.secs) % 4 == 0) and (not int(msg.clock.secs) == 0) and ((int(msg.clock.nsecs)) == 0)):
+			if self.relief > 0:
+				self.relief -= 1
+				self.pub.publish("Relief: " + str(self.relief))
 
 
 				
