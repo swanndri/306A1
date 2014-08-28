@@ -13,35 +13,35 @@ class Database(object):
 
 	# single points defining the 'centre' of an object or room that nodes will travel to
 	POINTS = {
-		'cupboard': (-3.6, 4.2),
+		'cupboard': (-3.6, 4.0),
 		'bedroom': (-3.6, 2.1),
 		'bathroom': (-3.6, -3.7),
-		'hallway_top': (-1.2, 1.9),
-		'hallway_mid': (-1.2, 0.45),
-		'hallway_bot': (-1.2, -3.7),
+		'hallway_top': (-1.5, 1.9),
+		'hallway_mid': (-1.5, 0.45),
+		'hallway_bot': (-1.5, -3.7),
 		'door': (-1.2, -6),
-		'kitchen': (2.05, 3.5),
+		'kitchen': (2.05, 3),
 #			'kitchen_entrance': (2.05, 1.6),
 #			'living_room_top_right': (4.5, 1.6),
 		'living_room_middle': (2.05, 0.45),
-		'living_room_entrance': (1, 0.45),
+		'living_room_entrance': (1.5, 0.45),
 		'living_room_sofa': (1, -3),
 
 		# robot starting positions
-		'cook_idle': (4.5, -1.85),
-		'medication_idle': (-3.5, 4.4),
-		'entertainment_idle': (4.5, -4.5),
-		'companionship_idle': (-4.5, -1.85),
+		'cook_idle': (0, 3),
+		'medication_idle': (-4.2, 4.4),
+		'entertainment_idle': (-2.2, -10),
+		'companionship_idle': (-0.2, -10),
 
 		# human starting positions
 		'visitor_idle': (-1.2, -10),
-		'nurse_idle': (6, -6),
-		'doctor_idle': (6, -7.5),
-		'caregiver_idle': (-6, -6),
+		'nurse_idle': (0.8, -10),
+		'doctor_idle': (1.8, -10),
+		'caregiver_idle': (2.8, -10),
 
 		'idle': (12, 4),
 
-		'bed': (-2.3, -1.1),
+		'bed': (-2.8, -1.1),
 		'kitchen_stove': (2.05, 3.5),
 		'sofa': (0.3, -3),
 		'gym': (-4.450, 2.850),

@@ -4,6 +4,7 @@ import rospy
 import node
 import database
 
+
 class Resident(node.Human):
 	
 	def __init__(self, name):
