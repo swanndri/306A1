@@ -16,5 +16,5 @@ class CareGiver(node.Robot):
 			self.jobs.put(tuple(msg.data.split()))
 
 if __name__ == '__main__':
-	rospy.init_node('robot_3')
-	careGiver = CareGiver('robot_3')
+	rospy.init_node('robot_4')
+	careGiver = CareGiver('robot_4')
