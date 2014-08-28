@@ -5,7 +5,7 @@ import std_msgs.msg
 import rospy
 import Tkinter as tk
 import ttk
-import constants
+import database
 
 class StatusGUI(tk.Tk):
 	def __init__(self, *args, **kwargs):
@@ -136,6 +136,12 @@ class StatusGUI(tk.Tk):
 			print("Should publish new event - doctor.doctor.emergency")		#example
 		elif selected_event == "Eat":
 			#publish new message to robots
+			task = database.Database.EVENTS.get('Resident.eat_snack')
+			event_priority = task.get('priority')
+			event_name = 'Resident.eat_snack'
+			event_duration = task.get('duration')
+			event_destination = task.get('destination')
+			event_pub.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
 			print("Should publish new event - ",selected_event)
 		elif selected_event == "Exercise":
 			#publish new message to robots
@@ -187,8 +193,9 @@ def callback(msg):
 		print "Something has gone terribly wrong"
 
 
-	# if status_value > 100:
+	# if status_value > 100:		entering this loop for some reason
 	# 	status_value = 100
+
 	status_type = status_name[:-1]
 	mGui.update_status_level(status_type,status_value)
 	if status_value <= 0:
@@ -199,7 +206,7 @@ def callback(msg):
 
 		
 def scheduler_callback(msg):	
-
+	print(msg)
 	if ("status" in msg.data):
 		task = msg.data[:-4]
 	else:
@@ -207,7 +214,10 @@ def scheduler_callback(msg):
 
 	status = ''
 	#Search the dictionary (resident_statuses) in the Constants file for the correct status
-	status = constants.Statuses.resident_statuses[task.split()[1]]
+	print(task.split())
+	temp = database.Database.EVENTS.get(task.split()[1])
+	print(temp)
+	status = temp.get('explanation')
 	mGui.status_info["text"] = status
 	
 
@@ -215,6 +225,7 @@ sub = rospy.Subscriber("human", std_msgs.msg.String, callback)
 sub = rospy.Subscriber("scheduler", std_msgs.msg.String, scheduler_callback)
 
 stat_pub = rospy.Publisher("human_status", std_msgs.msg.String, queue_size = 10)
+event_pub = rospy.Publisher('scheduler', std_msgs.msg.String, queue_size=10)
 
 mGui = StatusGUI()
 mGui.mainloop()

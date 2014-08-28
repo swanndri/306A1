@@ -135,5 +135,6 @@ class Human(Node):
 		# loop through all attributes
 		for attribute, value in self.levels.iteritems():
 			# publish them
+
 			self.human_pub.publish("%s: %d" % (attribute, value))
 			print attribute, value
