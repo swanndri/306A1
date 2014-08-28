@@ -63,71 +63,114 @@ class Navigation(constants.Paths):
 				self.collision = True
 			else:
 				self.collision = False'''
-		'''
+		
 		#If we are headed somewhere and we are facing the correct direction.
 		if (self.target_coordinate != [] and self.facing_correct_direction == True):
-			angle_list = list(range(45, 135))
+			
+			#detection angles
+			#angle_list = list(range(45, 135))
+			angle_list = list(range(0, 180))
+			CONSTANT_ROBOT_WIDTH = 0.350
 
-			#ff there is something in the way:
 			targetx = self.target_coordinate[0]
 			targety = self.target_coordinate[1]
 
+			distance_to_waypoint = self.get_distance_to_target(targetx, targety)			
+			collision_imminent = False
+			
+			'''
+			This for loop checks every ranger distance against the ranger angle to see if there will be enough 
+			space for the robot to go past the obstacle.
+			'''
+			for angle in angle_list:
+				if (abs(lazer_beamz.ranges[angle] * math.cos(math.radians(angle)))) < (CONSTANT_ROBOT_WIDTH / 2):
+					if(distance_to_waypoint > lazer_beamz.ranges[angle]):
+						collision_imminent = True
+						
+						#0.15 is offset of laser on the robot itself.
+						if((lazer_beamz.ranges[angle]+0.15) < distance_to_waypoint) and 
+							(lazer_beamz.ranges[angle]+0.15) > (distance_to_waypoint - CONSTANT_ROBOT_WIDTH):
+							print("Something on waypoint")
+						print("There will be a collision somwhere")
+						print("range" + str(lazer_beamz.ranges[angle]) + "angle" + str(angle))
+
+
+			'''#distance infront of robot within a 16 degree buffer
 			distance_infront = min(lazer_beamz.ranges[82:99])
+
 			distance_to_waypoint = self.get_distance_to_target(targetx, targety)
 			half_distance_to_waypoint = distance_to_waypoint / 2
 
 			#check if there is something in the way ( this check distance infront of robot measured to 90% of the distance to the waypoint)
-			if(distance_infront < distance_to_waypoint * .90):			
-				self.current_path.insert(0,self.target_coordinate)
-				print("Target Coordinate: " + str(self.target_coordinate))
-					#check path left of it and compare with the path to the right of it.
-					#whichever path intersects with line perpindicular to path. If they both do choose left path.
-					#get intersection line
+			print("distance infront: " + str(distance_infront) + str(type(distance_infront)))
+			print("distance to waypoint" + str(distance_to_waypoint) + str(type(distance_to_waypoint)))
 
-				#for each angle check if it intersects with halfway point.
-				#creates an array with true or false values to check for a valid pathway
-				intersects = []
-				for check_angle in reversed(angle_list):
-					hypot_length = half_distance_to_waypoint / math.sin(math.radians(check_angle))
 
-					if(lazer_beamz.ranges[check_angle] > hypot_length):
-						intersects.append(True)
-					else:
-						intersects.append(False)
-
-				print(intersects)
-				
-				#lambda_angle is the new angle relative to the robot that the robot needs to turn
-				lambda_angle = self.get_consecutive_good_angles(intersects, angle_list)
-
-				print("Angle for new direction: " + str(lambda_angle))
-				if(lambda_angle is not None):
-					self.collision = False
-					#get current facing angle in degrees
-					theta = self.normalize(int(math.degrees(self.current_direction)))
-					#angle_prime from perspective of world
-					print("Theta:" + str(theta))
-
-					new_angle = (theta + 90 - lambda_angle)
-					print("New Angle:" + str(new_angle))
-					print("Half Dist:" + str(half_distance_to_waypoint))
-					hypoteneuse = half_distance_to_waypoint / math.cos(math.radians(abs(90-lambda_angle)))
-
-					print("Hyp" + str(hypoteneuse))
-					x_adjust = math.cos(math.radians(new_angle)) * hypoteneuse
-					y_adjust = math.sin(math.radians(new_angle)) * hypoteneuse
-
-					x1 = self.current_coordinates[0]
-					y1 = self.current_coordinates[1]
-
-					new_coord = [x1 + x_adjust, y1 + y_adjust]
-					print(new_coord)
-
-					self.target_coordinate = new_coord 
-					self.facing_correct_direction = False
-					self.col_other_robot = True
+			if(abs(distance_to_waypoint - distance_infront) > 0 and abs(distance_to_waypoint - distance_infront) < 0.4):
+				self.waypoint_blocked = False
+			
+			if(distance_infront < (distance_to_waypoint * .80)):	
+				#check if waypoint is blocked
+				print("nothing")
+				if(abs(distance_to_waypoint - distance_infront) > 0 and abs(distance_to_waypoint - distance_infront) < 0.4):
+					self.waypoint_blocked = True
+					print("waypoint_blocked")
+					print("still to implement")
 				else:
-					self.collision = True'''
+					self.waypoint_blocked = False
+					print("waypoint unblocked")
+					self.current_path.insert(0,self.target_coordinate)
+					print("Target Coordinate: " + str(self.target_coordinate))
+						#check path left of it and compare with the path to the right of it.
+						#whichever path intersects with line perpindicular to path. If they both do choose left path.
+						#get intersection line
+
+					#for each angle check if it intersects with halfway point.
+					#creates an array with true or false values to check for a valid pathway
+					intersects = []
+					for check_angle in reversed(angle_list):
+						hypot_length = half_distance_to_waypoint / math.sin(math.radians(check_angle))
+
+						if(lazer_beamz.ranges[check_angle] > hypot_length):
+							intersects.append(True)
+						else:
+							intersects.append(False)
+
+					print(intersects)
+					
+					#lambda_angle is the new angle relative to the robot that the robot needs to turn
+					lambda_angle = self.get_consecutive_good_angles(intersects, angle_list)
+
+					print("Angle for new direction: " + str(lambda_angle))
+					if(lambda_angle is not None):
+						self.collision = False
+						#get current facing angle in degrees
+						theta = self.normalize(int(math.degrees(self.current_direction)))
+						#angle_prime from perspective of world
+						print("Theta:" + str(theta))
+
+						new_angle = (theta + 90 - lambda_angle)
+						print("New Angle:" + str(new_angle))
+						print("Half Dist:" + str(half_distance_to_waypoint))
+						hypoteneuse = half_distance_to_waypoint / math.cos(math.radians(abs(90-lambda_angle)))
+
+						print("Hyp" + str(hypoteneuse))
+						x_adjust = math.cos(math.radians(new_angle)) * hypoteneuse
+						y_adjust = math.sin(math.radians(new_angle)) * hypoteneuse
+
+						x1 = self.current_coordinates[0]
+						y1 = self.current_coordinates[1]
+
+						new_coord = [x1 + x_adjust, y1 + y_adjust]
+						print(new_coord)
+
+						self.target_coordinate = new_coord 
+						self.facing_correct_direction = False
+						self.col_other_robot = True
+					else:
+						print("Lamba = None")
+						print("still to implement")
+						self.collision = True'''
 
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
@@ -181,7 +224,7 @@ class Navigation(constants.Paths):
 				else:
 					self.move_cmd.linear.x = 0
 
-		if(self.collision == True):
+		if(self.collision == True or self.waypoint_blocked == True):
 			self.move_cmd.linear.x = 0	
 
 	''' -----------------------------Helper Methods-----------------------------'''
@@ -291,6 +334,7 @@ class Navigation(constants.Paths):
 
 		self.col_other_robot = False
 		self.collision = False
+		self.waypoint_blocked = False
 		# Default path and direction
 		self.current_path = self.door_to_kitchen
 		self.current_direction	= self.north
