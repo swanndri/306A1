@@ -17,15 +17,16 @@ class Resident(navigation.Navigation):
 	relevant to this object. If so, take the neccessary action
 	'''
 	def process_event(self, action_msg):
-		message = str(action_msg).split("data: ")[1]
-		
-		if ("Resident.eat" in message):
-			self.task_list.append(message)
-			self.fullness += 30
-			if (self.fullness > 100):
-				self.fullness = 100
-		elif ("Resident" in message):
-			self.task_list.append(message)
+
+		task = action_msg.data		
+		print task
+		if ("Resident.eat" in task):
+			self.task_list.append(task)
+			self.fullness[0] += 30
+			if (self.fullness[0] > 100):
+				self.fullness[0] = 100
+		elif ("Resident" in task):
+			self.task_list.append(task)
 		# print("Message", message)
 		# print("Fullness", self.fullness)
 

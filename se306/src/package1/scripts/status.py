@@ -187,11 +187,17 @@ def callback(msg):
 
 		
 def scheduler_callback(msg):	
+
+	if ("status" in msg.data):
+		task = msg.data[:-4]
+	else:
+		task = msg.data
+
 	status = ''
 	#Search the dictionary (resident_statuses) in the Constants file for the correct status
-	status = constants.Statuses.resident_statuses[msg.data]
+	status = constants.Statuses.resident_statuses[task]
 	mGui.status_info["text"] = status
-
+	
 
 sub = rospy.Subscriber("human", std_msgs.msg.String, callback)
 sub = rospy.Subscriber("scheduler", std_msgs.msg.String, scheduler_callback)

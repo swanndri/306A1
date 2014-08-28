@@ -3,6 +3,7 @@
 import roslib
 import rospy
 import rosgraph_msgs
+import constants
 
 from std_msgs.msg import String
 
@@ -10,23 +11,6 @@ from std_msgs.msg import String
 
 simulation_time = 0
 pub = rospy.Publisher('scheduler', String, queue_size=10)
-
-queue = {0:[], 1:[], 2:[], 3:[]}
-
-scheduled_tasks = { 8: 'Resident.wakeup', 
-				 	45: 'Resident.eat_breakfast',
-				 	55: 'Resident.take_meds',
-				 	85: 'Resident.eat_lunch',
-				 	100: 'Resident.idle',
-				 	170:'Resident.eat_dinner',
-				 	200:'Resident.sleep',
-
-				 	30: 'Cook.cook_breakfast',
-					70:'Cook.cook_lunch',
-					150:'Cook.cook_dinner',	
-
-					23: 'Visitor.visit',
-					120: 'Visitor.visit'}
 
 def publish(actionmsg):        
         pub.publish(actionmsg)
@@ -40,15 +24,20 @@ def schedule_events(time):
 	simulation_time  = time.clock.secs % 420
 	actionmsg = None
 	if ( time.clock.nsecs == 100000000 ):
-		actionmsg = scheduled_tasks.get(simulation_time)
+		actionmsg = constants.Tasks.scheduled_tasks.get(simulation_time)
 		print(simulation_time)
 		
 		if (actionmsg is not None):
 			publish(actionmsg)
 		
 def schedule_status_event(event):
-	pass
+	#print  constants.Tasks.status_based_tasks[event.data]
+	
+	task = constants.Tasks.status_based_tasks[event.data]
+	if (task is not None):
+		publish(task)
 
+	
 roslib.load_manifest('package1')
 rospy.init_node('scheduler')
 

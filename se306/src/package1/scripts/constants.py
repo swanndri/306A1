@@ -11,6 +11,28 @@ class Priorities(object):
 						"Resident.eat_dinner":3,
 						"Resident.sleep":3,
 						"Resident.idle":3,
+						"Resident.status_eat_med":3,
+						"Resident.status_eat_low":2,
+						"Resident.status_eat_dan":1,
+						"Resident.status_med_med":3,
+						"Resident.status_med_low":2,
+						"Resident.status_med_dan":1,
+						"Resident.status_ent_med":3,
+						"Resident.status_ent_low":2,
+						"Resident.status_ent_dan":1,
+						"Resident.status_san_med":3,
+						"Resident.status_san_low":2,
+						"Resident.status_san_dan":1,
+						"Resident.status_fit_med":3,
+						"Resident.status_fit_low":2,
+						"Resident.status_fit_dan":1,
+						"Resident.status_hyd_med":3,
+						"Resident.status_hyd_low":2,
+						"Resident.status_hyd_dan":1,
+						"Resident.status_hyg_med":3,
+						"Resident.status_hyg_low":2,
+						"Resident.status_hyg_dan":1
+
 						}
 
 class Statuses(object):
@@ -29,7 +51,15 @@ class Statuses(object):
 						"Cook.cook_breakfast":"Cook robot is moving to the kitchen to cook breakfast",
 						"Cook.cook_lunch":"Cook robot is moving to the kitchen to cook lunch",
 						"Cook.cook_dinner":"Cook robot is moving to the kitchen to cook dinner",
-						"Visitor.visit":"Visitor is visiting the residents house"
+						"Visitor.visit":"Visitor is visiting the residents house",
+						"Resident.status_eat":"Resident is going to eat",
+						"Resident.status_med":"Resident is going to take meds",
+						"Resident.status_ent":"Resident is going to entertain himself ;)",
+						"Resident.status_san":"Resident is going to have some one over, these robots are driving him nuts",
+						"Resident.status_fit":"Resident is going to excersise",
+						"Resident.status_hyd":"Resident is going to hydrate, maybe hes been entertaining himself to much",
+						"Resident.status_hyg":"Resident is going to wash"
+						
 						
 						}
 
@@ -47,7 +77,7 @@ class Statuses(object):
 
 	low = {	
 
-			"Fullness":"#Fullness: low",
+			"Fullness":"Fullness: low",
 			"Health":"Health: low",
 			"Entertainment":"Entertainment: low",
 			"Sanity":"Sanity: low",
@@ -220,6 +250,55 @@ class Paths(object):
 class RosConstants(object):
 	""" ROS-specific constants, such as the rate at which the main loop will iterate. """
 	robot_rate = 10
+
+class Tasks(object):
+
+	scheduled_tasks = { 8: 'Resident.wakeup', 
+				 	45: 'Resident.eat_breakfast',
+				 	55: 'Resident.take_meds',
+				 	85: 'Resident.eat_lunch',
+				 	100: 'Resident.idle',
+				 	170:'Resident.eat_dinner',
+				 	200:'Resident.sleep',
+
+				 	30: 'Cook.cook_breakfast',
+					70:'Cook.cook_lunch',
+					150:'Cook.cook_dinner',	
+
+					23: 'Visitor.visit',
+					120: 'Visitor.visit'}
+
+	status_based_tasks = {	
+
+							"Fullness: medium": "Resident.status_eat_med",
+							"Fullness: low": "Resident.status_eat_low",
+							"Fullness: dangerous": "Resident.status_eat_dan",
+
+							"Health: medium": "Resident.status_med_med",
+							"Health: low": "Resident.status_med_low",
+							"Health: dangerous": "Resident.status_med_dan",
+
+							"Entertainment: medium":"Resident.status_ent_med",
+							"Entertainment: low":"Resident.status_ent_low",
+							"Entertainment: dangerous":"Resident.status_ent_dan",
+
+							"Sanity: medium":"Resident.status_san_med",
+							"Sanity: low":"Resident.status_san_low",
+							"Sanity: dangerous":"Resident.status_san_dan",
+
+							"Fitness: medium":"Resident.status_fit_med",
+							"Fitness: low":"Resident.status_fit_low",
+							"Fitness: dangerous":"Resident.status_fit_dan",
+
+							"Hydration: medium":"Resident.status_hyd_med",
+							"Hydration: low":"Resident.status_hyd_low",
+							"Hydration: dangerous":"Resident.status_hyd_dan",
+
+							"Hygiene: medium":"Resident.status_hyg_med",
+							"Hygiene: low":"Resident.status_hyg_low",
+							"Hygiene: dangerous":"Resident.status_hyg_dan"
+						}
+
 
 
 if __name__ == "__main__":
