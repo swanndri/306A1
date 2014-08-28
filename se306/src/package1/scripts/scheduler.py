@@ -28,12 +28,18 @@ class Scheduler(object):
 
 		rospy.Subscriber('/clock', rosgraph_msgs.msg.Clock, self._clock_tick_event)
 
-	def _clock_tick_event(time):
-		self.simulation_time = time.clock.secs % 420
-		if simulation_time in Scheduler.SCHEDULED_TASKS:
-			self.publisher.publish(SCHEDULED_TASKS[simulation_time])
+	def _clock_tick_event(self, time):
+		if not time.clock.nsecs:
+			print "Simulation time: %d" % self.simulation_time
+			self.simulation_time = time.clock.secs % 420
+			if self.simulation_time in Scheduler.SCHEDULED_TASKS:
+				self.publisher.publish(Scheduler.SCHEDULED_TASKS[self.simulation_time])
+				print "EVENT: %s" % Scheduler.SCHEDULED_TASKS[self.simulation_time]
 
 if __name__ == '__main__':
 	roslib.load_manifest('package1')
 	rospy.init_node('scheduler')
+
+	scheduler = Scheduler()
+
 	rospy.spin()

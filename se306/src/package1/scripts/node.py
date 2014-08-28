@@ -5,6 +5,7 @@ import std_msgs.msg
 import navigation
 import Queue
 import random
+import database
 
 class Node(object):
 
@@ -98,15 +99,8 @@ class Human(Node):
 
 	def __init__(self, name):
 		super(self.__class__.__bases__[0], self).__init__(name)
-		self.levels = {
-			'fullness': 100,
-			'health': 100,
-			'entertainment': 100,
-			'sanity': 100,
-			'fitness': 100,
-			'hydration': 100,
-			'hygene': 100
-		}
+		for level in database.LEVELS:
+			self.levels[level] = 100
 
 	def _clock_tick_callback(self, msg):
 		# if this isn't the very first clock tick

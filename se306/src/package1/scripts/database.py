@@ -79,16 +79,25 @@ class Database(object):
 		# scheduled events, their priorities and warning messages
 		EVENTS = {
 			'Resident.wakeup': {
-				'explanation': "Resident is currently waking up",
-				'priority': 1,
-				'warn_medium': '',
-				'warn_low': '',
-				'warn_dangerous': ''
+				'explanation': 'Resident is currently waking up',
+				'priority': 1
 			},
 			'Resident.eat_breakfast': {
-				'explanation': '',
-				'priority': 1,
-				...
-				...
+				'explanation': 'Resident is eating breakfast',
+				'priority': 1
 			}
+		}
+
+		LEVELS = {
+			'fullness': {
+				'warn_medium': 'resident getting a bit hungry',
+				'warn_low': 'resident pretty damn hungry right now man',
+				'warn_dangerous': 'resident starving now...'
+			}
+			'health': {},
+			'entertainment': {},
+			'sanity': {},
+			'fitness': {},
+			'hydration': {},
+			'hygene': {}
 		}

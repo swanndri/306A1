@@ -8,69 +8,66 @@ import std_msgs.msg
 import nav_msgs.msg
 
 import math
-import TurnHelp
-import constants
+import utils
+import database
 import tf.transformations
-import Rectangle
 
-from tf.transformations import euler_from_quaternion
+class Navigation(constants.Paths):
 
-""" This class handles all navigation for robots.
+	""" This class handles all navigaself.cution for robots.
 
-It is meant to supplement other robot classes and provide them with the navigation
-functionality. It utilises the `constants.Paths` class for its path variables.
-"""
+	It is meant to supplement other robot classes and provide them with the navigation
+	functionality. It utilises the `constants.Paths` class for its path variables.
+	"""
 
-class Navigator(constants.Paths):
+	def __init__(self, robot_name):
+		""" Robots are initialized with a name which is passed in as a parameter. This allows us
+		to use this class to publish and subscribe with many different robots inheriting from this class
+		"""
+
+		self.robot_name = robot_name
+		self.movement_speed = 0.7
+
+		self.col_other_robot = False
+		self.collision = False
+		# Default path and direction
+		self.current_path = self.door_to_kitchen
+		self.current_direction	= self.north
+
+		# Default target path and direction
+		self.target_coordinate = []
+		self.target_direction = self.west
+
+		self.current_coordinates = [0,0]
+
+		self.not_at_target = True		
+		self.facing_correct_direction = False
+
+		self.move_cmd = geometry_msgs.msg.Twist()
+
+		subscribe_to = "/" + robot_name + "/base_pose_ground_truth"
+		rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, self.process_position)
+
+		publish_to = "/" + robot_name + "/cmd_vel"		
+		self.movement_publisher = rospy.Publisher(publish_to, geometry_msgs.msg.Twist, queue_size=10)		
+		
+		subscribe_to = "/" + robot_name + "/base_scan"
+		# rospy.Subscriber(subscribe_to, sensor_msgs.msg.LaserScan, self.process_range_data)
 	
 	''' -----------------------------Call Backs-----------------------------'''
 
-	def process_range_data(self, lazer_beamz):
-		if (self.target_coordinate != [] and self.facing_correct_direction == True):
-			adjust_distance = 0.7
-
-			targetx = self.target_coordinate[0]
-			targety = self.target_coordinate[1]
-
-			distance_infront = min(lazer_beamz.ranges[89:92])	
-			immediate_infront = min(lazer_beamz.ranges[45:136])		
-			distance_to_waypoint = self.get_distance_to_target(targetx, targety)
-
-			if(distance_infront < distance_to_waypoint / 2 and self.col_other_robot == False):
-				self.current_path.insert(0,self.target_coordinate)
-
-				perp = self.normalize(math.degrees(self.current_direction))
-				perp = perp + 90
-				perp = self.normalize(perp)
-
-				x_adjust = math.cos(math.radians(perp)) * adjust_distance
-				y_adjust = math.sin(math.radians(perp)) * adjust_distance
-
-				x1 = ((targetx - self.current_coordinates[0]) / 2) + self.current_coordinates[0]
-				y1 = ((targety - self.current_coordinates[1]) / 2) + self.current_coordinates[1]
-
-				new_coord = [x1 + x_adjust, y1 + y_adjust]
-				self.target_coordinate = new_coord 
-				self.facing_correct_direction = False
-				self.col_other_robot = True
-
-			if(immediate_infront == min(lazer_beamz.ranges[45:136]) < 0.2):
-				print("still to implement")
-				self.collision = True
-			else:
-				self.collision = False			
-			
-
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
-		print(self.get_current_position())
+		print("Current room:",self.get_current_position())
+		print("Current path:",self.current_path)
+		print("Current target:", self.target_coordinate)
 
 		self.current_coordinates[0] = position_data.pose.pose.position.x
 		self.current_coordinates[1] = position_data.pose.pose.position.y
 		
 		quaternion = position_data.pose.pose.orientation
 		quaternionlist = [quaternion.x, quaternion.y, quaternion.z, quaternion.w]
-		self.current_direction = euler_from_quaternion(quaternionlist)[2]
+		self.current_direction = tf.transformations.euler_from_quaternion(quaternionlist)[2]
 
 		# Setup target direction
 		if (len(self.target_coordinate) > 0):		
@@ -93,29 +90,41 @@ class Navigator(constants.Paths):
 				else:
 					self.target_coordinate = []
 
+			# We are not at target, and there is another target coordinate
 			if(self.target_coordinate != []):
 				self.target_direction = self.calculate_heading()
-				# Find optimal direction to rotate
-				clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
-				# Finding optimal speed to rotate
-				rotation_speed = self.get_rotation_speed()
 
-				# Rotation
-				if(abs(self.current_direction - self.target_direction) >  math.radians(2)):
-					self.move_cmd.angular.z = clockwise * rotation_speed
-					self.facing_correct_direction = False
-				else:
-					self.move_cmd.angular.z = 0
-					self.facing_correct_direction = True
+				self.rotate_to_direction(self.target_direction)
 
-				# Linear movement
-				if (self.facing_correct_direction == True and self.not_at_target == True):
-					self.move_cmd.linear.x = self.movement_speed
-				else:
-					self.move_cmd.linear.x = 0
+				self.move_to_target()
 
-		if(self.collision == True):
-			self.move_cmd.linear.x = 0	
+		if (self.collision == True):
+			self.move_cmd.linear.x = 0
+
+	
+	def rotate_to_direction(self, ros_angle):
+		# Find optimal direction to rotate
+		clockwise = TurnHelp.Angle(self.current_direction, self.target_direction).check()
+		# Finding optimal speed to rotate
+		rotation_speed = self.get_rotation_speed()
+
+		# Rotation
+		if(abs(self.current_direction - self.target_direction) >  math.radians(2)):
+			self.move_cmd.angular.z = clockwise * rotation_speed
+			self.facing_correct_direction = False
+		else:
+			self.move_cmd.angular.z = 0
+			self.facing_correct_direction = True
+
+
+	def move_to_target(self):
+		# Linear movement
+		if (self.facing_correct_direction == True and self.not_at_target == True):
+			self.move_cmd.linear.x = self.movement_speed
+		else:
+			self.move_cmd.linear.x = 0
+
+
 	''' -----------------------------Helper Methods-----------------------------'''
 	def normalize(self, input_angle):
 		new_angle = int(input_angle)
@@ -125,6 +134,7 @@ class Navigator(constants.Paths):
 				new_angle += 360;
 		return new_angle
 
+	# Returns an angle, with ROS coordinates
 	def calculate_heading(self):
 		x_diff = self.target_coordinate[0] - self.current_coordinates[0]
 		y_diff = self.target_coordinate[1] - self.current_coordinates[1]
@@ -187,53 +197,30 @@ class Navigator(constants.Paths):
 		xcurrent = self.current_coordinates[0]
 		ycurrent = self.current_coordinates[1]
 		pt = [xcurrent, ycurrent]
-		print(pt)
-		for rect in self.rect_list:
-			if(rect.contains(pt)):
-				return rect.name
-		return "Outside"
+		# print(pt)
+		for object_name, (pt1, pt2) in database.OBJECTS.iteritems():
+			if utils.Rectangle(pt1, pt2).contains(pt):
+				return object_name
+		return "visitor_idle"
 
-	''' ----------------------------------Init----------------------------------'''
-
-	''' Robots are initialized with a name which is passed in as a parameter. This allows us
-	to use this class to publish and subscribe with many different robots inheriting from this
-	class
-	'''
-	def __init__(self, robot_name):
-		self.robot_name = robot_name		
-		self.movement_speed = 0.7
-
-		self.col_other_robot = False
-		self.collision = False
-		# Default path and direction
-		self.current_path = self.door_to_kitchen
-		self.current_direction	= self.north
-
-		# Default target path and direction
-		self.target_coordinate = []
-		self.target_direction = self.west
-
-		self.current_coordinates = [0,0]
-
-		self.not_at_target = True		
-		self.facing_correct_direction = False
-
-		self.move_cmd = geometry_msgs.msg.Twist()
-
-		subscribe_to = "/" + robot_name + "/base_pose_ground_truth"
-		rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, self.process_position)
-
-		publish_to = "/" + robot_name + "/cmd_vel"		
-		self.movement_publisher = rospy.Publisher(publish_to, geometry_msgs.msg.Twist, queue_size=10)		
-		
-		subscribe_to = "/" + robot_name + "/base_scan"
-		rospy.Subscriber(subscribe_to, sensor_msgs.msg.LaserScan, self.process_range_data)
-
-	# Method currently is unused and has no real function yet. Need current position for this method
-	# to be useful
+	# Enter the room node you wish to go to and this method will create a path using the A* algorithm
+	# and put it on as the current_path
 	def move (self, room):
-		self.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
+		current_node = self.get_current_position()
+		s = utils.Search()
+
+		nodes_path = s.find_path(current_node, room)
+		self.current_path = self.convert_path(nodes_path)
+
 		self.target_coordinate = self.current_path.pop(0)
+
+	def convert_path(self, nodes_path):
+		path = []
+		for i in nodes_path:
+			path.append(self.points[i])
+			# print(i,self.points[i])
+		return path
+
 
 if __name__ == "__main__":
 	print "This was not intended to be run directly."
