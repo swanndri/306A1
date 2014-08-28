@@ -76,30 +76,41 @@ class Navigation(constants.Paths):
 			targety = self.target_coordinate[1]
 
 			distance_to_waypoint = self.get_distance_to_target(targetx, targety)			
-			collision_imminent = False
+			
 			
 			'''
 			This for loop checks every ranger distance against the ranger angle to see if there will be enough 
 			space for the robot to go past the obstacle.
 			'''
-			for angle in angle_list:
-				if (abs(lazer_beamz.ranges[angle] * math.cos(math.radians(angle)))) < (CONSTANT_ROBOT_WIDTH / 2):
-					if(distance_to_waypoint > lazer_beamz.ranges[angle]):
-						collision_imminent = True
-						
-						#0.15 is offset of laser on the robot itself.
-						#if there is something between the robot and the waypoint and that something is on the waypoint
-						if((lazer_beamz.ranges[angle]+0.15 < distance_to_waypoint and lazer_beamz.ranges[angle]+0.15 > distance_to_waypoint - CONSTANT_ROBOT_WIDTH) 
-							or 
-							(lazer_beamz.ranges[angle]+0.15 > distance_to_waypoint and lazer_beamz.ranges[angle]+0.15 < distance_to_waypoint + CONSTANT_ROBOT_WIDTH /2)):
-							print("Something on waypoint")
-							waypoint_blocked = True
-						else:
-							waypoint_blocked = False
-							
-						print("There will be a collision somwhere")
-						print("range" + str(lazer_beamz.ranges[angle]) + "angle" + str(angle))
 
+			#this variable is made for concurrency reasons.
+			#waypoint_blocked is accessed in two threads. We need to set this variable to false to check if
+			#stuff is still being blocked but if we did that to the global variable then for a split second the
+			#robot thinks the path is clear when it may not be.
+
+			temp_waypoint_blocked = False
+			collision_imminent = False
+			
+			for angle in angle_list:
+				#check if the is something in the way
+				if ((abs(lazer_beamz.ranges[angle] * math.cos(math.radians(angle)))) < (CONSTANT_ROBOT_WIDTH / 2) and distance_to_waypoint > lazer_beamz.ranges[angle]):
+					collision_imminent = True	
+					distance_to_collision = lazer_beamz.ranges[angle]					
+					#0.15 is offset of laser on the robot itself.
+					#if there is something between the robot and the waypoint and that something is on the waypoint
+					if((lazer_beamz.ranges[angle]+0.15 < distance_to_waypoint and lazer_beamz.ranges[angle]+0.15 > distance_to_waypoint - CONSTANT_ROBOT_WIDTH) 
+						or 
+						(lazer_beamz.ranges[angle]+0.15 > distance_to_waypoint and lazer_beamz.ranges[angle]+0.15 < distance_to_waypoint + CONSTANT_ROBOT_WIDTH /2)):
+						print("Something on waypoint")
+						temp_waypoint_blocked = True
+					print("There will be a collision somwhere")
+					print("range" + str(lazer_beamz.ranges[angle]) + "angle" + str(angle))
+
+			self.waypoint_blocked = temp_waypoint_blocked			
+
+			if(not self.waypoint_blocked and collision_imminent):
+				#store the current target back on the current_path list
+				self.current_path.insert(0,self.target_coordinate)
 
 			'''#distance infront of robot within a 16 degree buffer
 			distance_infront = min(lazer_beamz.ranges[82:99])
@@ -230,7 +241,7 @@ class Navigation(constants.Paths):
 				else:
 					self.move_cmd.linear.x = 0
 
-		if(self.collision == True or self.waypoint_blocked == True):
+		if(self.waypoint_blocked == True):
 			self.move_cmd.linear.x = 0	
 
 	''' -----------------------------Helper Methods-----------------------------'''
@@ -339,7 +350,6 @@ class Navigation(constants.Paths):
 		self.movement_speed = 0.7
 
 		self.col_other_robot = False
-		self.collision = False
 		self.waypoint_blocked = False
 		# Default path and direction
 		self.current_path = self.door_to_kitchen
