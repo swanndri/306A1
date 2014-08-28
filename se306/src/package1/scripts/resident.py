@@ -92,10 +92,8 @@ class Resident(navigation.Navigation):
 			if (len(self.navigate.target_coordinate) == 0):
 				self.status = "idle"
 
-
 			if (len(self.task_list) > 0 and self.status == "idle"):
 				self.perform_task(self.task_list.pop(0))
-
 			self.rate.sleep()	
 
 

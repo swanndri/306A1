@@ -27,7 +27,7 @@ class Navigation(constants.Paths):
 	''' -----------------------------Call Backs-----------------------------'''
 
 	def process_range_data(self, lazer_beamz):
-		if (self.target_coordinate != [] and self.facing_correct_direction == True):
+		'''if (self.target_coordinate != [] and self.facing_correct_direction == True):
 			adjust_distance = 0.7
 
 			targetx = self.target_coordinate[0]
@@ -35,12 +35,15 @@ class Navigation(constants.Paths):
 
 			distance_infront = min(lazer_beamz.ranges[89:92])	
 			immediate_infront = min(lazer_beamz.ranges[45:136])		
+
 			distance_to_waypoint = self.get_distance_to_target(targetx, targety)
 
 			if(distance_infront < distance_to_waypoint / 2 and self.col_other_robot == False):
 				self.current_path.insert(0,self.target_coordinate)
 
+				#get current direction
 				perp = self.normalize(math.degrees(self.current_direction))
+				#add 90 degrees to angle to make perpindicular
 				perp = perp + 90
 				perp = self.normalize(perp)
 
@@ -59,13 +62,75 @@ class Navigation(constants.Paths):
 				print("still to implement")
 				self.collision = True
 			else:
-				self.collision = False			
-			
+				self.collision = False'''
+		'''
+		#If we are headed somewhere and we are facing the correct direction.
+		if (self.target_coordinate != [] and self.facing_correct_direction == True):
+			angle_list = list(range(45, 135))
+
+			#ff there is something in the way:
+			targetx = self.target_coordinate[0]
+			targety = self.target_coordinate[1]
+
+			distance_infront = min(lazer_beamz.ranges[82:99])
+			distance_to_waypoint = self.get_distance_to_target(targetx, targety)
+			half_distance_to_waypoint = distance_to_waypoint / 2
+
+			#check if there is something in the way ( this check distance infront of robot measured to 90% of the distance to the waypoint)
+			if(distance_infront < distance_to_waypoint * .90):			
+				self.current_path.insert(0,self.target_coordinate)
+				print("Target Coordinate: " + str(self.target_coordinate))
+					#check path left of it and compare with the path to the right of it.
+					#whichever path intersects with line perpindicular to path. If they both do choose left path.
+					#get intersection line
+
+				#for each angle check if it intersects with halfway point.
+				#creates an array with true or false values to check for a valid pathway
+				intersects = []
+				for check_angle in reversed(angle_list):
+					hypot_length = half_distance_to_waypoint / math.sin(math.radians(check_angle))
+
+					if(lazer_beamz.ranges[check_angle] > hypot_length):
+						intersects.append(True)
+					else:
+						intersects.append(False)
+
+				print(intersects)
+				
+				#lambda_angle is the new angle relative to the robot that the robot needs to turn
+				lambda_angle = self.get_consecutive_good_angles(intersects, angle_list)
+
+				print("Angle for new direction: " + str(lambda_angle))
+				if(lambda_angle is not None):
+					self.collision = False
+					#get current facing angle in degrees
+					theta = self.normalize(int(math.degrees(self.current_direction)))
+					#angle_prime from perspective of world
+					print("Theta:" + str(theta))
+
+					new_angle = (theta + 90 - lambda_angle)
+					print("New Angle:" + str(new_angle))
+					print("Half Dist:" + str(half_distance_to_waypoint))
+					hypoteneuse = half_distance_to_waypoint / math.cos(math.radians(abs(90-lambda_angle)))
+
+					print("Hyp" + str(hypoteneuse))
+					x_adjust = math.cos(math.radians(new_angle)) * hypoteneuse
+					y_adjust = math.sin(math.radians(new_angle)) * hypoteneuse
+
+					x1 = self.current_coordinates[0]
+					y1 = self.current_coordinates[1]
+
+					new_coord = [x1 + x_adjust, y1 + y_adjust]
+					print(new_coord)
+
+					self.target_coordinate = new_coord 
+					self.facing_correct_direction = False
+					self.col_other_robot = True
+				else:
+					self.collision = True'''
 
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
-		print(self.get_current_position())
-
 		self.current_coordinates[0] = position_data.pose.pose.position.x
 		self.current_coordinates[1] = position_data.pose.pose.position.y
 		
@@ -83,6 +148,7 @@ class Navigation(constants.Paths):
 			#We have reached our target. 
 			else:
 				self.not_at_target = False
+				self.facing_correct_direction = False
 				self.col_other_robot = False
 				self.move_cmd.linear.x = 0
 				self.move_cmd.angular.z = 0
@@ -117,7 +183,24 @@ class Navigation(constants.Paths):
 
 		if(self.collision == True):
 			self.move_cmd.linear.x = 0	
+
 	''' -----------------------------Helper Methods-----------------------------'''
+
+	def get_consecutive_good_angles(self, intersects, angle_list):
+		consecutive_count = 0
+		iteration_count = 0
+		consec_buffer = 8
+
+		for truth in intersects:
+			if(truth):
+				consecutive_count += 1
+				if(consecutive_count > consec_buffer):
+					return angle_list[iteration_count - (consec_buffer /2)]
+			else:
+				consecutive_count = 0
+			iteration_count += 1
+		return None
+
 	def normalize(self, input_angle):
 		new_angle = int(input_angle)
     		if (new_angle > 360):
@@ -126,6 +209,7 @@ class Navigation(constants.Paths):
 				new_angle += 360;
 		return new_angle
 
+	#returns current heading in ros coordinates
 	def calculate_heading(self):
 		x_diff = self.target_coordinate[0] - self.current_coordinates[0]
 		y_diff = self.target_coordinate[1] - self.current_coordinates[1]
@@ -150,6 +234,8 @@ class Navigation(constants.Paths):
 
 		angle = math.radians(angle)
 		return angle
+
+	#returns a distance from target to current coordinates
 
 	def get_distance_to_target(self, targetx, targety):
 		x_squared = pow((targetx - self.current_coordinates[0]), 2)
@@ -188,7 +274,6 @@ class Navigation(constants.Paths):
 		xcurrent = self.current_coordinates[0]
 		ycurrent = self.current_coordinates[1]
 		pt = [xcurrent, ycurrent]
-		print(pt)
 		for rect in self.rect_list:
 			if(rect.contains(pt)):
 				return rect.name
@@ -222,7 +307,7 @@ class Navigation(constants.Paths):
 		self.move_cmd = geometry_msgs.msg.Twist()
 
 		subscribe_to = "/" + robot_name + "/base_pose_ground_truth"
-		rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, self.process_position)
+		self.test = rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, self.process_position)
 
 		publish_to = "/" + robot_name + "/cmd_vel"		
 		self.movement_publisher = rospy.Publisher(publish_to, geometry_msgs.msg.Twist, queue_size=10)		
@@ -230,9 +315,8 @@ class Navigation(constants.Paths):
 		subscribe_to = "/" + robot_name + "/base_scan"
 		rospy.Subscriber(subscribe_to, sensor_msgs.msg.LaserScan, self.process_range_data)
 
-	# Method currently is unused and has no real function yet. Need current position for this method
-	# to be useful
 	def move (self, room):
+		self.facing_correct_direction = False
 		current_node = self.get_current_position()
 		s = search.Search()
 		nodes_path = s.find_path(current_node, room)
