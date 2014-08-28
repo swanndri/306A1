@@ -112,6 +112,7 @@ class Navigation(constants.Paths):
 				#store the current target back on the current_path list
 				self.current_path.insert(0,self.target_coordinate)
 
+
 			'''#distance infront of robot within a 16 degree buffer
 			distance_infront = min(lazer_beamz.ranges[82:99])
 
@@ -249,12 +250,11 @@ class Navigation(constants.Paths):
 	def get_consecutive_good_angles(self, intersects, angle_list):
 		consecutive_count = 0
 		iteration_count = 0
-		consec_buffer = 8
 
 		for truth in intersects:
 			if(truth):
 				consecutive_count += 1
-				if(consecutive_count > consec_buffer):
+				if(consecutive_count > 1):
 					return angle_list[iteration_count - (consec_buffer /2)]
 			else:
 				consecutive_count = 0
