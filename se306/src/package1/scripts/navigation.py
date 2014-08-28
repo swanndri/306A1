@@ -103,10 +103,10 @@ class Navigation(constants.Paths):
 						(lazer_beamz.ranges[angle]+0.15 > distance_to_waypoint and lazer_beamz.ranges[angle]+0.15 < distance_to_waypoint + CONSTANT_ROBOT_WIDTH /2)):
 						print("Something on waypoint")
 						temp_waypoint_blocked = True
-					print("There will be a collision somwhere")
-					print("range" + str(lazer_beamz.ranges[angle]) + "angle" + str(angle))
-
+					
 			self.waypoint_blocked = temp_waypoint_blocked			
+
+			print(str(self.waypoint_blocked) + str(collision_imminent))
 
 			if( self.waypoint_blocked == False and collision_imminent):
 				print("Test")
@@ -117,10 +117,10 @@ class Navigation(constants.Paths):
 				self.current_path.insert(0,self.target_coordinate)
 
 				#####Headless Chikcen Routine#########
-				headless_distance = 0.7
+				headless_distance = 1
 
 				angle_list = list(range(30, 150))
-				
+
 				intersects = []
 				for check_angle in reversed(angle_list):
 					if(lazer_beamz.ranges[check_angle] > headless_distance):
