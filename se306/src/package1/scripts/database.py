@@ -80,51 +80,47 @@ class Database(object):
 		EVENTS = {
 			'Resident.wakeup': {
 				'explanation': 'Resident is currently waking up',
-				'priority': 3
+				'priority': 3, 'sofa'
 			},
 			'Resident.sleep': {
 				'explanation': 'Resident is going to sleep',
-				'priority': 3
+				'priority': 3, 'bed'
 			},
 			'Resident.eat_breakfast': {
 				'explanation': 'Resident is eating breakfast',
-				'priority': 3
+				'priority': 3, 'kitchen'
 			},
 			'Resident.eat_lunch': {
 				'explanation': 'Resident is eating lunch',
-				'priority': 3
+				'priority': 3, 'kitchen'
 			},
 			'Resident.eat_dinner': {
 				'explanation': 'Resident is eating dinner',
-				'priority': 3
+				'priority': 3, 'kitchen'
 			},
 			'Resident.take_meds': {
 				'explanation': 'Resident is taking medication',
-				'priority': 1
+				'priority': 1, 'cupboard'
 			},
 			'Resident.idle': {
 				'explanation': 'Resident is not doing anything',
-				'priority': 3
+				'priority': 3, 'sofa'
 			},
 			'Cook.cook_breakfast': {
 				'explanation': 'Cook robot is cooking breakfast',
-				'priority': 1
+				'priority': 1, 'kitchen'
 			},
 			'Cook.cook_lunch': {
 				'explanation': 'Cook robot is cooking lunch',
-				'priority': 1
+				'priority': 1, 'kitchen'
 			},
 			'Cook.cook_dinner': {
 				'explanation': 'Cook robot is cooking dinner',
-				'priority': 1
-			},
-			'Resident.take_meds': {
-				'explanation': 'Resident is taking medication',
-				'priority': 1
+				'priority': 1, 'kitchen'
 			},
 			'Visitor.visit': {
 				'explanation': 'Someone is visiting the house',
-				'priority': 1
+				'priority': 1, 'living_room_middle'
 			}
 		}
 

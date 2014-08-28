@@ -16,7 +16,7 @@ class Node(object):
 	def __init__(self, name):
 		self.name = name
 		self.status = Node.IDLE
-		self.navigator = navigation.Navigator(name)
+		self.navigator = navigation.Navigation(name)
 		self.jobs = Queue.PriorityQueue()
 		self.current_job = None
 		self.publisher = rospy.Publisher(name, std_msgs.msg.String, queue_size=10)
@@ -32,13 +32,15 @@ class Node(object):
 
 	def _assign_job(self, job):
 		self.current_job = job
-		
+		destination = job[3]		
+		# (3, eating breakfast, )
+
 		# request the node to move to new target coordinates
-		self.navigator.navigate()
+		self.navigator.move(destination)
 
 	def _assign_next_job_if_available(self):
 		try:
-			self._process_job(self.jobs.get_nowait())
+			self._assign_job(self.jobs.get_nowait())
 		except Queue.Empty:
 			self.current_job = None
 			self.status = Node.IDLE
@@ -49,7 +51,7 @@ class Node(object):
 
 			self.rate.sleep()
 
-			curr_job_priority, curr_job_description, curr_job_time = self.current_job if self.current_job else (None, None, None)
+			curr_job_priority, curr_job_description, curr_job_time, curr_destination = self.current_job if self.current_job else (None, None, None)curr_
 
 			# get next job without altering the queue to check if there is a job requiring immediate attention
 			next_job_priority, next_job_description, next_job_time = self.jobs.queue[0] if self.jobs.qsize() else (None, None, None)
@@ -65,7 +67,8 @@ class Node(object):
 					continue
 
 				# check if the current position of the node matches the location where the job should take place at
-				if self.navigator.arrived(self.current_job):
+
+				if self.navigator.has_arrived(curr_destination):
 					# if the job has not yet completed
 					if curr_job_time > 0:
 						# reassign the job with less time to finish it, so to eventually complete
