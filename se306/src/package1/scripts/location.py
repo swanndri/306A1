@@ -1,45 +1,64 @@
-class Location:
+#!/usr/bin/env python
+
+import roslib
+import rospy
+import rosgraph_msgs
+import nav_msgs.msg
+
+from std_msgs.msg import String
+
+
+resident_coord = [None, None]
+visitor_coord = [None, None]
+cook_coord = [None, None]
+
+
+pub = rospy.Publisher("location", String, queue_size=10)
 
 
 
 
-def __init__(self, robot_name):
+def publish(actionmsg):		
+		pub.publish(actionmsg)
+		print(actionmsg)
 
-		self.resident_coord = []
-		self.visitor_coord = []
-		self.cook_coord = []
-
+			
 		
+def set_resident(location_data):
+	resident_coord[0] = location_data.pose.pose.position.x
+	resident_coord[1] = location_data.pose.pose.position.y
 
-		
+def set_visitor(location_data):
+	visitor_coord[0] = location_data.pose.pose.position.x
+	visitor_coord[1] = location_data.pose.pose.position.y
 
-		subscribe_to = "/" + "robot_0" + "/base_pose_ground_truth"
-		rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, self.resident)
+def set_cook(location_data):
+	cook_coord[0] = location_data.pose.pose.position.x
+	cook_coord[1] = location_data.pose.pose.position.y
 
-		subscribe_to = "/" + "robot_1" + "/base_pose_ground_truth"
-		rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, self.visitor)
+def find_location(actionmsg):
+	
+	response_msg = ""
+	message = str(actionmsg)
+	print(message)
 
-		subscribe_to = "/" + "robot_2" + "/base_pose_ground_truth"
-		rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, self.cook)
+	if "resident" in message:
+		response_msg = str(resident_coord[0]) + " " + str(resident_coord[1])
+		publish(response_msg)
 
 
 
+roslib.load_manifest('package1')
+rospy.init_node('location')
+
+subscribe_to = "location_request"
+rospy.Subscriber(subscribe_to, String, find_location)
+
+subscribe_to = "/" + "robot_1" + "/base_pose_ground_truth"
+rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, set_resident)
+
+subscribe_to = "/" + "robot_0" + "/base_pose_ground_truth"
+rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, set_visitor)
 
 
-
-		publish_to = "/" + "robot_1" + "/base_pose_ground_truth"		
-		self.movement_publisher = rospy.Publisher(publish_to, geometry_msgs.msg.Twist, queue_size=10)		
-		
-		
-def set_resident(self, location_data):
-	self.resident_coord[0] = position_data.pose.pose.position.x
-	self.resident_coord[1] = position_data.pose.pose.position.y
-
-def set_visitor(self, location_data):
-	self.visitor_coord[0] = position_data.pose.pose.position.x
-	self.visitor_coord[1] = position_data.pose.pose.position.y
-
-def set_cook(self, location_data):
-	self.cook_coord[0] = position_data.pose.pose.position.x
-	self.cook_coord[1] = position_data.pose.pose.position.y
-
+rospy.spin()

@@ -26,8 +26,14 @@ class Visitor(navigation.Navigation):
 		self.status = "active" 
 
 		if task =="Visitor.visit":
+			
+			self.pub.publish("Requesting resident co-ordinate")
 			self.navigate.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
 			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
+
+	# method to do something once the requested co-ordinate is returned
+	def receive_location(self, msg):
+		print (msg)
 
 
 
@@ -41,6 +47,9 @@ class Visitor(navigation.Navigation):
 		#Eventually we will make this input a variable instead of hardcoded
 		self.navigate = navigation.Navigation("robot_0")		
 		rospy.Subscriber("scheduler", String, self.process_event)
+
+		rospy.Subscriber("location", String, self.receive_location)
+		self.pub = rospy.Publisher("location_request", String, queue_size=10)
 
 		while not rospy.is_shutdown():
 			self.navigate.movement_publisher.publish(self.navigate.move_cmd)
