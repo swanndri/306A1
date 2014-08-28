@@ -99,11 +99,11 @@ class Paths(object):
 	hallway_mid = [-1.2, 0.45]
 	hallway_bot = [-1.2, -3.7]
 	door = [-1.2, -6]
-	kitchen = [2.05, 3.5]
+	kitchen = [2.05, 2.5]
 	kitchen_entrance = [2.05, 1.6]
-	living_room_top_right = [4.5, 1.6]
+	#living_room_top_right = [4.5, 1.6] - not used
 	living_room_middle = [2.05, 0.45]
-	cook_idle = [4.5, -1.85]
+	cook_idle = [4.5, 2.5]
 	idle = [12,4]
 
 	living_room_entrance = [1.5, 0.45]
@@ -112,7 +112,7 @@ class Paths(object):
 
 	# Furniture
 	bed = [-2.3, -1.1]
-	kitchen_stove = []
+	kitchen_stove = [2.05, 3.5]
 	sofa = [0.3, -3]
 	gym = [-4.450, 2.850]
 	sofa2 = [1.500, -4.250]
@@ -121,6 +121,7 @@ class Paths(object):
 	bathtub = [-4.350, -3.250]
 	fridge = [0.500, 3.000]
 	dishwasher = [3.750, 3.500]
+	piano = [1, -1.1]
 
 	points = {
 
@@ -132,11 +133,11 @@ class Paths(object):
 	"hallway_mid" : (-1.2, 0.45),
 	"hallway_bot" : (-1.2, -3.7),
 	"door" : (-1.2, -6),
-	"kitchen" : (2.05, 3.5),
+	"kitchen" : (2.05, 2.75),
 	"kitchen_entrance" : (2.05, 1.6),
-	"living_room_top_right" : (4.5, 1.6),
+	#"living_room_top_right" : (4.5, 1.6), - not used
 	"living_room_middle" : (2.05, 0.45),
-	"cook_idle" : (4.5, -1.85),
+	"cook_idle" : (4.5, 2.5),
 	"idle" : (12,4),
 
 	"living_room_entrance" : (1, 0.45),
@@ -144,7 +145,7 @@ class Paths(object):
 
 	# Furniture
 	"bed" : (-2.3, -1.1),
-	# kitchen_stove = []
+	"kitchen_stove" : (2.05, 3.5),
 	"sofa" : (0.3, -3),
 	"gym" : (-4.450, 2.850),
 	"sofa2" : (1.500, -4.250),
@@ -152,7 +153,8 @@ class Paths(object):
 	"sink" : (-3.300, -3.400),
 	"bathtub" : (-4.350, -3.250),
 	"fridge" : (0.500, 3.000),
-	"dishwasher" : (3.750, 3.500)
+	"dishwasher" : (3.750, 3.500),
+	"piano" : (1, -1.1)
 
 	}
 
@@ -167,17 +169,17 @@ class Paths(object):
 	"hallway_bot" : ["bathroom","door","hallway_mid"],
 	"door" : ["hallway_bot"],
 	"kitchen" : ["dishwasher","fridge","kitchen_entrance","living_room_middle"],	#can go straight to kitchen or through kitchen entrance
-	"kitchen_entrance" : ["kitchen","living_room_middle","living_room_top_right"],
-	"living_room_top_right" : ["cook_idle","kitchen_entrance"],
-	"living_room_middle" : ["kitchen","kitchen_entrance","living_room_entrance","living_room_top_right"],
-	"cook_idle" : ["living_room_top_right"],
+	"kitchen_entrance" : ["kitchen","living_room_middle"], # took out living room top right
+	#"living_room_top_right" : ["cook_idle","kitchen_entrance"],
+	"living_room_middle" : ["kitchen","kitchen_entrance","living_room_entrance"], # took out living room top right
+	"cook_idle" : ["kitchen"],
 
 	"living_room_entrance" : ["hallway_mid","living_room_sofa","living_room_middle"],	#take out living room middle? do we need it?
-	"living_room_sofa" : ["sofa","sofa2"],
+	"living_room_sofa" : ["sofa","sofa2", ],
 
 	# Furniture
 	"bed" : ["bedroom"],
-	# kitchen_stove = []
+	"kitchen_stove" : ["kitchen"],
 	"sofa" : ["living_room_sofa"],
 	"gym" : ["bedroom"],
 	"sofa2" : ["living_room_sofa"],
@@ -185,7 +187,8 @@ class Paths(object):
 	"sink" : ["bathroom"],
 	"bathtub" : ["bathroom"],
 	"fridge" : ["kitchen"],
-	"dishwasher" : ["kitchen"]	
+	"dishwasher" : ["kitchen"],
+	"piano" : ["living_room_sofa"]
 
 	}
 
@@ -199,7 +202,7 @@ class Paths(object):
 	cupboard_to_kitchen = [bedroom, hallway_top, hallway_mid, living_room_middle, kitchen]
 	door_to_living_room = [door, hallway_mid, living_room_middle]
 	kitchen_to_sofa = [kitchen, living_room_middle, living_room_sofa, sofa]
-	cook_path = [cook_idle, living_room_top_right, kitchen_entrance, kitchen, kitchen_entrance, living_room_top_right, cook_idle]
+	cook_path = [cook_idle, kitchen, kitchen_stove, kitchen, cook_idle]
 
 
 	# Room rectangle list
