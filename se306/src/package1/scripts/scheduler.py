@@ -4,37 +4,37 @@ import roslib
 import rospy
 import rosgraph_msgs
 import std_msgs.msg
+import database
 
 class Scheduler(object):
-
-	SCHEDULED_TASKS = {
-		8: 'Resident.wakeup',
-		23: 'Visitor.visit',
-		30: 'Cook.cook_breakfast',
-		45: 'Resident.eat_breakfast',
-		55: 'Resident.take_meds',
-		70: 'Cook.cook_lunch',
-		85: 'Resident.eat_lunch',
-		100: 'Resident.idle',
-		120: 'Visitor.visit',
-		150: 'Cook.cook_dinner',
-		170: 'Resident.eat_dinner',
-		200: 'Resident.sleep'
-	}
 
 	def __init__(self):
 		self.simulation_time = 0
 		self.publisher = rospy.Publisher('scheduler', std_msgs.msg.String, queue_size=10)
 
 		rospy.Subscriber('/clock', rosgraph_msgs.msg.Clock, self._clock_tick_event)
+		rospy.Subscriber('human_status', std_msgs.msg.String, self._human_status_event)
 
 	def _clock_tick_event(self, time):
 		if not time.clock.nsecs:
 			print "Simulation time: %d" % self.simulation_time
 			self.simulation_time = time.clock.secs % 420
-			if self.simulation_time in Scheduler.SCHEDULED_TASKS:
-				self.publisher.publish(Scheduler.SCHEDULED_TASKS[self.simulation_time])
-				print "EVENT: %s" % Scheduler.SCHEDULED_TASKS[self.simulation_time]
+			if self.simulation_time in database.Database.SCHEDULED_TASKS:
+				# (0, 'Resident.wake_up', 100, 'sofa')
+				event_name = database.Database.SCHEDULED_TASKS[self.simulation_time]
+				event_priority = database.Database.EVENTS[event_name]['priority']
+				event_duration = database.Database.EVENTS[event_name]['duration']
+				event_destination = database.Database.EVENTS[event_name]['destination']
+				
+				self.publisher.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
+				print "EVENT: %s" % database.Database.SCHEDULED_TASKS[self.simulation_time]
+
+	def _human_status_event(self, event):
+		task = database.Database.STATUS_TASKS.get(event.data)
+		if task is not None:
+			self.publisher.publish(task)
+		else:
+			raise Exception("event not found in status dict")
 
 if __name__ == '__main__':
 	roslib.load_manifest('package1')

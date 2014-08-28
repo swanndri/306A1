@@ -1,6 +1,9 @@
+import database
+import math
+
 class Rectangle(object):
 	
-	def __init__(self, name, pt1, pt2):
+	def __init__(self, pt1, pt2):
 		x1, y1 = pt1
 		x2, y2 = pt2
 
@@ -17,8 +20,8 @@ class Rectangle(object):
 class Search(object):
 
 	def __init__(self):
-		self.graph = constants.Paths.graph		#graph of world (dict)
-		self.points = constants.Paths.points 	#co-ordinates of all nodes (dict)
+		self.graph = database.Database.GRAPH		#graph of world (dict)
+		self.points = database.Database.POINTS 	#co-ordinates of all nodes (dict)
 
 	def get_distance(self,start_node,end_node):
 		start_points = self.points.get(start_node)

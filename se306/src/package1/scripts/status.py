@@ -123,19 +123,16 @@ rate = rospy.Rate(40)
 
 
 def callback(msg):
-	#print (msg)
-
-	status_value = int(msg.data.split()[1])
-	status_type = msg.data.split()[0][:-1]
+	status_name, status_value = msg.data.split()
 
 	if (status_value>80):
 		pass
 	elif(status_value>50):
-		stat_pub.publish(constants.Statuses.mid[status_type])
+		stat_pub.publish("%s %s" % (status_name, 'med'))
 	elif(status_value>20):
-		stat_pub.publish(constants.Statuses.low[status_type])
+		stat_pub.publish("%s %s" % (status_name, 'low'))
 	elif(status_value>0):
-		stat_pub.publish(constants.Statuses.dangerous[status_type])
+		stat_pub.publish("%s %s" % (status_name, 'dan'))
 	else:
 		print "Something has gone terribly wrong"
 
