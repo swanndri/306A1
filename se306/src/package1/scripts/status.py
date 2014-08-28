@@ -12,7 +12,7 @@ class StatusGUI(tk.Tk):
 		tk.Tk.__init__(self, *args, **kwargs)
 
 		#sets the dimensions and settings of thw window
-		self.geometry("380x370+700+100")
+		self.geometry("380x380+700+100")
 		self.title("Resident status")
 
 		self.build_frames()
@@ -41,23 +41,23 @@ class StatusGUI(tk.Tk):
 
 	def build_gui_components(self):
 		#Satisfaction levels
-		self.hunger_label = ttk.Label(self.satisfaction_frame,text="Hunger")
-		self.hunger_progress = ttk.Progressbar(self.satisfaction_frame, orient="horizontal", 
+		self.fullness_label = ttk.Label(self.satisfaction_frame,text="Fullness")
+		self.fullness_progress = ttk.Progressbar(self.satisfaction_frame, orient="horizontal", 
 										length=150, mode="determinate")
-		self.thirst_label = ttk.Label(self.satisfaction_frame,text="Thirst")
-		self.thirst_progress = ttk.Progressbar(self.satisfaction_frame, orient="horizontal", 
+		self.hydration_label = ttk.Label(self.satisfaction_frame,text="Hydration")
+		self.hydration_progress = ttk.Progressbar(self.satisfaction_frame, orient="horizontal", 
 										length=150, mode="determinate")
 
 		#Cleanliness levels
 		self.hygiene_label = ttk.Label(self.cleanliness_frame, text="Hygiene")
 		self.hygiene_progress = ttk.Progressbar(self.cleanliness_frame, orient="horizontal", 
 										length=150, mode="determinate")
-		self.bladder_label = ttk.Label(self.cleanliness_frame,text="Bladder")
-		self.bladder_progress = ttk.Progressbar(self.cleanliness_frame,orient="horizontal", 
+		self.relief_label = ttk.Label(self.cleanliness_frame,text="Relief")
+		self.relief_progress = ttk.Progressbar(self.cleanliness_frame,orient="horizontal", 
 										length=150, mode="determinate")
 
 		#Leisure levels
-		self.entertainment_label = ttk.Label(self.leisure_frame,text="Enjoyment")
+		self.entertainment_label = ttk.Label(self.leisure_frame,text="Enjoyment")	#this is entertainment
 		self.entertainment_progress = ttk.Progressbar(self.leisure_frame,orient="horizontal", 
 										length=150, mode="determinate")		
 		self.fitness_label = ttk.Label(self.leisure_frame,text="Fitness")
@@ -88,17 +88,17 @@ class StatusGUI(tk.Tk):
 
 		#Satisfaction frame
 		self.satisfaction_frame.grid_columnconfigure(0,minsize=75)
-		self.hunger_label.grid(row=0)
-		self.hunger_progress.grid(row=0,column=1)
-		self.thirst_label.grid(row=1)
-		self.thirst_progress.grid(row=1,column=1)
+		self.fullness_label.grid(row=0)
+		self.fullness_progress.grid(row=0,column=1)
+		self.hydration_label.grid(row=1)
+		self.hydration_progress.grid(row=1,column=1)
 
 		#Cleanliness frame
 		self.cleanliness_frame.grid_columnconfigure(0,minsize=75)
 		self.hygiene_label.grid(row=0)
 		self.hygiene_progress.grid(row=0,column=1)
-		self.bladder_label.grid(row=1)
-		self.bladder_progress.grid(row=1,column=1)
+		self.relief_label.grid(row=1)
+		self.relief_progress.grid(row=1,column=1)
 
 		#Leisure frame
 		self.leisure_frame.grid_columnconfigure(0,minsize=75)
@@ -117,14 +117,14 @@ class StatusGUI(tk.Tk):
 		self.status_info.grid(row=0,rowspan=2, columnspan=2, padx=10, pady=10)
 
 	def initialize_status_bars(self):
-		self.hunger_progress["value"] = 100
+		self.fullness_progress["value"] = 100
 		self.health_progress["value"] = 100
 		self.entertainment_progress["value"] = 100
 		self.sanity_progress["value"] = 100
 		self.fitness_progress["value"] = 100
-		self.thirst_progress["value"] = 100
+		self.hydration_progress["value"] = 100
 		self.hygiene_progress["value"] = 100
-		self.bladder_progress["value"] = 100
+		self.relief_progress["value"] = 100
 
 	def handle_selected(self, event):
 		print("generating event")
@@ -137,7 +137,7 @@ class StatusGUI(tk.Tk):
 		elif selected_event == "Eat":
 			#publish new message to robots
 			print("Should publish new event - ",selected_event)
-		elif selected_event == "Excercise":
+		elif selected_event == "Exercise":
 			#publish new message to robots
 			print("Should publish new event - ",selected_event)
 		elif selected_event == "Sleep":
@@ -145,13 +145,27 @@ class StatusGUI(tk.Tk):
 			print("Should publish new event - ",selected_event)
 
 	def combobox_set_up(self):
-		self.events = ('Heart Attack','Eat','Excercise','Sleep')
+		self.events = ('Heart Attack','Eat','Exercise','Sleep')
 		self.cb = ttk.Combobox(self.combo_frame, values=self.events, state='readonly')
 		self.cb.bind("<<ComboboxSelected>>", self.handle_selected)
 
-	def update_hunger_level(self,status_value):
-		self.hunger_level = status_value
-		self.hunger_progress["value"] = self.hunger_level
+	def update_status_level(self,status_type,status_value):
+		if status_type == "Fullness":
+			self.fullness_progress["value"] = status_value
+		elif status_type == "Health":
+			self.health_progress["value"] = status_value
+		elif status_type == "Entertainment":
+			self.entertainment_progress["value"] = status_value
+		elif status_type == "Sanity":
+			self.sanity_progress["value"] = status_value
+		elif status_type == "Fitness":
+			self.fitness_progress["value"] = status_value
+		elif status_type == "Hydration":
+			self.hydration_progress["value"] = status_value
+		elif status_type == "Hygiene":
+			self.hygiene_progress["value"] = status_value
+		elif status_type == "Relief":
+			self.relief_progress["value"] = status_value
 
 rospy.init_node('status', anonymous=True)
 
@@ -178,7 +192,7 @@ def callback(msg):
 
 	if status_value> 100:
 		status_value = 100
-	mGui.update_hunger_level(status_value)
+	mGui.update_status_level(status_type,status_value)
 	if status_value <= 0:
 		print ("0/100")
 	else:

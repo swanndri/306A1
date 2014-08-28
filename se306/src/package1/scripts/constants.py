@@ -71,7 +71,8 @@ class Statuses(object):
 			"Sanity":"Sanity: medium",
 			"Fitness":"Fitness: medium",
 			"Hydration":"Hydration: medium",
-			"Hygiene":"Hygiene: medium"
+			"Hygiene":"Hygiene: medium",
+			"Relief" : "Relief: medium"
 
 			}
 
@@ -83,7 +84,8 @@ class Statuses(object):
 			"Sanity":"Sanity: low",
 			"Fitness":"Fitness: low",
 			"Hydration":"Hydration: low",
-			"Hygiene":"Hygiene: low"
+			"Hygiene":"Hygiene: low",
+			"Relief" : "Relief: low"
 
 			}
 
@@ -96,7 +98,8 @@ class Statuses(object):
 				"Sanity":"Sanity: dangerous",
 				"Fitness":"Fitness: dangerous",
 				"Hydration":"Hydration: dangerous",
-				"Hygiene":"Hygiene: dangerous"
+				"Hygiene":"Hygiene: dangerous",
+				"Relief" :"Relief: dangerous"
 
 				}
 
@@ -122,7 +125,7 @@ class Paths(object):
 
 
 	# Invisible nodes/points within our house
-	cupboard = [-3.6, 4.2]
+	cupboard = [-3.6, 4.0]
 	bedroom = [-3.6, 2.1]
 	bathroom = [-3.6, -3.7]
 	hallway_top = [-1.2, 1.9]
@@ -156,7 +159,7 @@ class Paths(object):
 	points = {
 
 	# Invisible nodes/points within our house
-	"cupboard" : (-3.6, 4.2),
+	"cupboard" : (-3.6, 4.0),
 	"bedroom" : (-3.6, 2.1),
 	"bathroom" : (-3.6, -3.7),
 	"hallway_top" : (-1.2, 1.9),
@@ -164,14 +167,28 @@ class Paths(object):
 	"hallway_bot" : (-1.2, -3.7),
 	"door" : (-1.2, -6),
 	"kitchen" : (2.05, 2.75),
-	"kitchen_entrance" : (2.05, 1.6),
+	# "kitchen_entrance" : (2.05, 1.6), - not used
 	#"living_room_top_right" : (4.5, 1.6), - not used
 	"living_room_middle" : (2.05, 0.45),
-	"cook_idle" : (4.5, 2.5),
-	"idle" : (12,4),
-
 	"living_room_entrance" : (1, 0.45),
 	"living_room_sofa" : (1, -3),
+
+	# Robot starting positions
+	"cook_idle" : (4.5, 2.5),
+	"medication_idle" : (-3.5, 4.4),
+	"entertainment_idle" : (4.5, -4.5),
+	"companionship_idle" : (-4.5, -1.85),
+
+	#Human starting positions (excluding resident)
+	"visitor_idle" : (-1.2, -10),
+	"nurse_idle" : (6, -6),
+	"doctor_idle" : (6, -7.5),
+	"caregiver_idle" : (-6, -6),
+
+	#ambulance starting positions - not used yet
+	# "ambulance_idle" : (6, -8.5),
+	"idle" : (12,4),	#do we need this?
+
 
 	# Furniture
 	"bed" : (-2.3, -1.1),
@@ -191,21 +208,34 @@ class Paths(object):
 	graph = {
 
 	# Invisible nodes/points within our house
-	"cupboard" : ["bedroom"],
-	"bedroom" : ["bed","cupboard","gym","hallway_top"],
+	"cupboard" : ["bedroom","medication_idle"],
+	"bedroom" : ["bed","cupboard","gym","hallway_top","companionship_idle"],
 	"bathroom" : ["bathtub","hallway_bot","sink","toilet"],
 	"hallway_top" : ["bedroom","hallway_mid"],
 	"hallway_mid" : ["hallway_bot","hallway_top","living_room_entrance"],
 	"hallway_bot" : ["bathroom","door","hallway_mid"],
-	"door" : ["hallway_bot"],
-	"kitchen" : ["dishwasher","fridge","kitchen_entrance","living_room_middle"],	#can go straight to kitchen or through kitchen entrance
-	"kitchen_entrance" : ["kitchen","living_room_middle"], # took out living room top right
+	"door" : ["hallway_bot","visitor_idle","caregiver_idle","nurse_idle","doctor_idle"],
+	"kitchen" : ["dishwasher","fridge","living_room_middle","cook_idle","kitchen_stove"],	#can go straight to kitchen or through kitchen entrance - took out kitchen entrance also
+	# "kitchen_entrance" : ["kitchen","living_room_middle"], # took out living room top right - not used(cook_idle changed position)
 	#"living_room_top_right" : ["cook_idle","kitchen_entrance"],
-	"living_room_middle" : ["kitchen","kitchen_entrance","living_room_entrance"], # took out living room top right
-	"cook_idle" : ["kitchen"],
-
+	"living_room_middle" : ["kitchen","living_room_entrance","living_room_sofa"], # took out living room top right and kitchen entrance - not used
 	"living_room_entrance" : ["hallway_mid","living_room_sofa","living_room_middle"],	#take out living room middle? do we need it?
-	"living_room_sofa" : ["sofa","sofa2", ],
+	"living_room_sofa" : ["sofa","sofa2","piano","entertainment_idle","living_room_entrance","living_room_middle"],
+
+	#Robot idle positions
+	"cook_idle" : ["kitchen"],
+	"medication_idle" : ["cupboard"],
+	"entertainment_idle" : ["living_room_sofa"],
+	"companionship_idle" : ["bedroom"],
+
+	#Human starting positions (excluding resident)
+	"visitor_idle" : ["door"],
+	"nurse_idle" : ["door"],
+	"doctor_idle" : ["door"],
+	"caregiver_idle" : ["door"],
+
+	#ambulance starting position - not used yet
+	# "ambulance_idle" : [],
 
 	# Furniture
 	"bed" : ["bedroom"],
