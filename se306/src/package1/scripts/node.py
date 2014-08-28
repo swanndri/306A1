@@ -81,6 +81,9 @@ class Node(object):
 					else:
 						# out of time, job effectively completed
 						# if there is another job in the queue, process it now
+						if self.type == "Robot":
+							# return the robot to its idle position
+							self.jobs.put((0, 'robot.returning', 0, self.idle_position))
 						self._assign_next_job_if_available()
 						continue
 				
@@ -99,6 +102,8 @@ class Node(object):
 class Robot(Node):
 
 	def __init__(self, name):
+		self.type = "Robot"
+		self.idle_position = database.Database.ROBOT_IDLES.get(name)
 		super(Robot, self).__init__(name)
 
 class Human(Node):
@@ -110,6 +115,7 @@ class Human(Node):
 			self.levels[level] = 100
 			print self.levels[level]
 
+		self.type = "Human"
 		super(Human, self).__init__(name)
 
 	def _clock_tick_callback(self, msg):
@@ -133,4 +139,4 @@ class Human(Node):
 		for attribute, value in self.levels.iteritems():
 			# publish them
 			self.publisher.publish("%s: %d" % (attribute, value))
-			print attribute, value
+			# print attribute, value
