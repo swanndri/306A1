@@ -94,9 +94,7 @@ class Resident(navigation.Navigation):
 
 			if (len(self.task_list) > 0 and self.status == "idle"):
 				self.perform_task(self.task_list.pop(0))
-			self.rate.sleep()	
-
-
+			self.rate.sleep()
 
 	def callback(self, msg):
 		# Old hunger rate
