@@ -15,6 +15,21 @@ class StatusGUI(tk.Tk):
 		self.geometry("380x370+700+100")
 		self.title("Resident status")
 
+		self.build_frames()
+
+		self.combobox_set_up()
+		self.cb.pack()
+
+		#build the GUI components:
+		self.build_gui_components()
+		
+		#position the GUI components:
+		self.position_frames_and_components()
+
+		#initialize progress bar values
+		self.initialize_status_bars()
+
+	def build_frames(self):
 		self.all_bars_frame = tk.Frame(self)
 		self.horizontal_bars_frame = tk.Frame(self.all_bars_frame)
 		self.satisfaction_frame = ttk.Labelframe(self.horizontal_bars_frame,text="Satisfaction",padding=(0,0,10,10))
@@ -24,11 +39,7 @@ class StatusGUI(tk.Tk):
 		self.status_frame = ttk.Labelframe(self,text="Status")
 		self.combo_frame = ttk.Labelframe(self,text="Generate event")
 
-		events = ('Heart Attack','Eat','Excercise','Sleep')
-		cb = ttk.Combobox(self.combo_frame, values=events, state='readonly')
-		cb.pack()
-
-		#build the GUI components:
+	def build_gui_components(self):
 		#Satisfaction levels
 		self.hunger_label = ttk.Label(self.satisfaction_frame,text="Hunger")
 		self.hunger_progress = ttk.Progressbar(self.satisfaction_frame, orient="horizontal", 
@@ -63,8 +74,8 @@ class StatusGUI(tk.Tk):
 
 		#Status updates
 		self.status_info = ttk.Label(self.status_frame,width="40",wraplength=320)
-		
-		#position the GUI components:
+
+	def position_frames_and_components(self):
 		#set up frames
 		self.all_bars_frame.pack()
 		self.horizontal_bars_frame.pack(side="left")
@@ -105,6 +116,7 @@ class StatusGUI(tk.Tk):
 		#status frame
 		self.status_info.grid(row=0,rowspan=2, columnspan=2, padx=10, pady=10)
 
+	def initialize_status_bars(self):
 		self.hunger_progress["value"] = 100
 		self.health_progress["value"] = 100
 		self.entertainment_progress["value"] = 100
@@ -113,6 +125,29 @@ class StatusGUI(tk.Tk):
 		self.thirst_progress["value"] = 100
 		self.hygiene_progress["value"] = 100
 		self.bladder_progress["value"] = 100
+
+	def handle_selected(self, event):
+		print("generating event")
+		index = self.cb.current()
+		selected_event = self.events[index]
+		print(selected_event)
+		if selected_event == "Heart Attack":
+			#publish new message to robots
+			print("Should publish new event - doctor.doctor.emergency")		#example
+		elif selected_event == "Eat":
+			#publish new message to robots
+			print("Should publish new event - ",selected_event)
+		elif selected_event == "Excercise":
+			#publish new message to robots
+			print("Should publish new event - ",selected_event)
+		elif selected_event == "Sleep":
+			#publish new message to robots
+			print("Should publish new event - ",selected_event)
+
+	def combobox_set_up(self):
+		self.events = ('Heart Attack','Eat','Excercise','Sleep')
+		self.cb = ttk.Combobox(self.combo_frame, values=self.events, state='readonly')
+		self.cb.bind("<<ComboboxSelected>>", self.handle_selected)
 
 	def update_hunger_level(self,status_value):
 		self.hunger_level = status_value
