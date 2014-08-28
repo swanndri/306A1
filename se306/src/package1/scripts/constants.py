@@ -41,7 +41,8 @@ class Statuses(object):
 			"Sanity":"Sanity: medium",
 			"Fitness":"Fitness: medium",
 			"Hydration":"Hydration: medium",
-			"Hygiene":"Hygiene: medium"
+			"Hygiene":"Hygiene: medium",
+			"Relief" : "Relief: medium"
 
 			}
 
@@ -53,7 +54,8 @@ class Statuses(object):
 			"Sanity":"Sanity: low",
 			"Fitness":"Fitness: low",
 			"Hydration":"Hydration: low",
-			"Hygiene":"Hygiene: low"
+			"Hygiene":"Hygiene: low",
+			"Relief" : "Relief: low"
 
 			}
 
@@ -66,7 +68,8 @@ class Statuses(object):
 				"Sanity":"Sanity: dangerous",
 				"Fitness":"Fitness: dangerous",
 				"Hydration":"Hydration: dangerous",
-				"Hygiene":"Hygiene: dangerous"
+				"Hygiene":"Hygiene: dangerous",
+				"Relief" :"Relief: dangerous"
 
 				}
 
