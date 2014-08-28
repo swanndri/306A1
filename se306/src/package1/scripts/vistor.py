@@ -32,7 +32,9 @@ class Visitor(navigation.Navigation):
 			self.navigate.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
 			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
 
-	# method to do something once the requested co-ordinate is returned
+	
+	# callback method for when the requested co-ordinate comes back as a message
+	# sets the target of interest fields with the appropriate co-ords returned from message 
 	def receive_location(self, msg):
 		msg = str(msg).split("data: ")[1]
 		
@@ -46,7 +48,8 @@ class Visitor(navigation.Navigation):
 
 			
 		
-
+	# method for requesting location with the target passed and as string argument.
+	# returns a list with the target co-ordinates
 	def get_target_location(self, target):
 		self.pub.publish("Requesting " + target +" co-ordinate")
 		co_ord = []
@@ -72,7 +75,10 @@ class Visitor(navigation.Navigation):
 		self.navigate = navigation.Navigation("robot_0")		
 		rospy.Subscriber("scheduler", String, self.process_event)
 
+		#subcribing to the location channel which returns the requested co-ordinate
 		rospy.Subscriber("location", String, self.receive_location)
+
+		#setting up channel for location requests
 		self.pub = rospy.Publisher("location_request", String, queue_size=10)
 
 		while not rospy.is_shutdown():

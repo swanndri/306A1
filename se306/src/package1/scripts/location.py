@@ -9,8 +9,8 @@ from std_msgs.msg import String
 
 
 resident_coord = [None, None]
-visitor_coord = [None, None]
-cook_coord = [None, None]
+doctor_coord = [None, None]
+
 
 
 pub = rospy.Publisher("location", String, queue_size=10)
@@ -28,13 +28,11 @@ def set_resident(location_data):
 	resident_coord[0] = location_data.pose.pose.position.x
 	resident_coord[1] = location_data.pose.pose.position.y
 
-def set_visitor(location_data):
-	visitor_coord[0] = location_data.pose.pose.position.x
-	visitor_coord[1] = location_data.pose.pose.position.y
+def set_doctor(location_data):
+	doctor_coord[0] = location_data.pose.pose.position.x
+	doctor_coord[1] = location_data.pose.pose.position.y
 
-def set_cook(location_data):
-	cook_coord[0] = location_data.pose.pose.position.x
-	cook_coord[1] = location_data.pose.pose.position.y
+
 
 def find_location(actionmsg):
 	
@@ -46,7 +44,7 @@ def find_location(actionmsg):
 		response_msg = "resident: "+ str(resident_coord[0]) + " " + str(resident_coord[1])
 		publish(response_msg)
 
-	if "visitor" in message:
+	if "doctor" in message:
 		response_msg = "resident: "+ str(visitor_coord[0]) + " " + str(visitor_coord[1])
 		publish(response_msg)
 
@@ -61,6 +59,7 @@ rospy.Subscriber(subscribe_to, String, find_location)
 subscribe_to = "/" + "robot_1" + "/base_pose_ground_truth"
 rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, set_resident)
 
+# Need to subscribe to doctor when it gets implemented
 subscribe_to = "/" + "robot_0" + "/base_pose_ground_truth"
 rospy.Subscriber(subscribe_to, nav_msgs.msg.Odometry, set_visitor)
 
