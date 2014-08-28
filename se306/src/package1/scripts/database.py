@@ -10,7 +10,7 @@ class Database(object):
 			'south': -math.pi / 2.0
 		}
 
-		# where everything is
+		# single points defining the 'centre' of an object or room that nodes will travel to
 		POINTS = {
 			'cupboard': (-3.6, 4.2),
 			'bedroom': (-3.6, 2.1),
@@ -36,6 +36,17 @@ class Database(object):
 			'bathtub': (-4.350, -3.250),
 			'fridge': (0.500, 3.000),
 			'dishwasher': (3.750, 3.500)
+		}
+
+		# objects (mostly rooms) defined by their top left and bottom right points
+		OBJECTS = {
+			'cupboard': ((-5, 5), (-1.7, 3.6)),
+			'room': ((-5, 3.6), (-1.7, -5)),
+			'bathroom': ((-5, -2.3), (-1.7, -5)),
+			'hallway': ((-1.7, 5), (-0.7, -5)),
+			'kitchen': ((-0.7, 5), (5, 2.2)),
+			'living_room': ((-0.7, 2.2), (5, -5)),
+			'house': ((-5, 5), (5, -5))
 		}
 
 		# connected graph of points showing neighbours
@@ -65,6 +76,7 @@ class Database(object):
 			'dishwasher': ['kitchen']
 		}
 
+		# scheduled events, their priorities and warning messages
 		EVENTS = {
 			'Resident.wakeup': {
 				'explanation': "Resident is currently waking up",
