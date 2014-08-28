@@ -16,6 +16,7 @@ class Cook(navigation.Navigation):
 		self.rate = rospy.Rate(constants.RosConstants.robot_rate)
 		self.task_list = []
 		self.status = "idle"
+		self.at_idle = True
 
 		# Create a navigation object which will be used to manage all the calls
 		# relating to movement. Pass the robot's name so that the publisher 
@@ -35,6 +36,10 @@ class Cook(navigation.Navigation):
 
 			if (len(self.task_list) > 0 and self.status == "idle"):
 				self.perform_task(self.task_list.pop(0))
+			elif len(self.navigate.current_path) < 1 and self.navigate.not_at_target == False and self.at_idle == False:
+				# print("elif statement")
+				self.navigate.move("cook_idle")
+				self.at_idle = True
 
 			self.rate.sleep()
 
@@ -47,6 +52,7 @@ class Cook(navigation.Navigation):
 
 		if ("Cook.cook_" in task):
 			self.navigate.move("kitchen")
+			self.at_idle = False
 			# self.navigate.current_path = list(self.cook_path)
 
 if __name__ == '__main__':
