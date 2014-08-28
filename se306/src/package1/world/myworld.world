@@ -142,7 +142,7 @@ floorplan
 
 # ============================================ Robots ====================================================
 myRobot( pose [ -1.200 -10.000 0.001 90.000 ] name "cook" color "yellow")
-myRobot( pose [ -2.300 -1.100 0.001 0.000 ] name "resident" color "green")
+myRobot( pose [ -2.800 -1.100 0.001 0.000 ] name "resident" color "green")
 myRobot( pose [ 4.5 2.500 0.001 90.000 ] name "visitor" color "black")
 
 # myRobot( pose [ 6 -6.000 0.001 90.000 ] name "nurse" color "pink")
@@ -171,8 +171,8 @@ myRobotToilet( pose [ -4.350 -4.500 0.000 90.000 ] name "rToilet" color "black" 
 
 # ============================================ Bedroom ===================================================
 myRobotGym( pose [ -4.450 2.850 0.000 0.000 ] name "rGym" color "black" bitmap "images/gym.png")
-myRobotBed( pose [ -2.500 -1.500 0.000 90.000 ] name "rBed" color "black" bitmap "images/bed.png")
-myRobotBed( pose [ -2.500 -0.750 0.000 90.000 ] name "rBed2" color "black" bitmap "images/bed.png")
+myRobotBed( pose [ -3.000 -1.500 0.000 90.000 ] name "rBed" color "black" bitmap "images/bed.png")
+myRobotBed( pose [ -3.000 -0.750 0.000 90.000 ] name "rBed2" color "black" bitmap "images/bed.png")
 
 
 # =========================================== Kitchen ====================================================

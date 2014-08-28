@@ -128,9 +128,9 @@ class Paths(object):
 	cupboard = [-3.6, 4.0]
 	bedroom = [-3.6, 2.1]
 	bathroom = [-3.6, -3.7]
-	hallway_top = [-1.2, 1.9]
-	hallway_mid = [-1.2, 0.45]
-	hallway_bot = [-1.2, -3.7]
+	hallway_top = [-1.5, 1.9]
+	hallway_mid = [-1.5, 0.45]
+	hallway_bot = [-1.5, -3.7]
 	door = [-1.2, -6]
 	kitchen = [2.05, 2.5]
 	kitchen_entrance = [2.05, 1.6]
@@ -144,7 +144,7 @@ class Paths(object):
 
 
 	# Furniture
-	bed = [-2.3, -1.1]
+	bed = [-2.8, -1.1]
 	kitchen_stove = [2.05, 3.5]
 	sofa = [0.3, -3]
 	gym = [-4.450, 2.850]
@@ -162,9 +162,9 @@ class Paths(object):
 	"cupboard" : (-3.6, 4.0),
 	"bedroom" : (-3.6, 2.1),
 	"bathroom" : (-3.6, -3.7),
-	"hallway_top" : (-1.2, 1.9),
-	"hallway_mid" : (-1.2, 0.45),
-	"hallway_bot" : (-1.2, -3.7),
+	"hallway_top" : (-1.5, 1.9),
+	"hallway_mid" : (-1.5, 0.45),
+	"hallway_bot" : (-1.5, -3.7),
 	"door" : (-1.2, -6),
 	"kitchen" : (2.05, 2.75),
 	# "kitchen_entrance" : (2.05, 1.6), - not used
@@ -191,7 +191,7 @@ class Paths(object):
 
 
 	# Furniture
-	"bed" : (-2.3, -1.1),
+	"bed" : (-2.8, -1.1),
 	"kitchen_stove" : (2.05, 3.5),
 	"sofa" : (0.3, -3),
 	"gym" : (-4.450, 2.850),
