@@ -63,7 +63,7 @@ class Navigation(constants.Paths):
 
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
-		print(self.get_current_position())
+		# print(self.get_current_position())
 
 		self.current_coordinates[0] = position_data.pose.pose.position.x
 		self.current_coordinates[1] = position_data.pose.pose.position.y

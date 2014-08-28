@@ -27,19 +27,43 @@ class Visitor(navigation.Navigation):
 
 		if task =="Visitor.visit":
 			
-			self.pub.publish("Requesting resident co-ordinate")
+			co_ord = self.get_target_location("resident")
+			print(co_ord)
 			self.navigate.current_path = list(self.door_to_living_room) + (list(self.door_to_living_room[::-1]))
 			self.navigate.target_coordinate = self.navigate.current_path.pop(0)
 
 	# method to do something once the requested co-ordinate is returned
 	def receive_location(self, msg):
-		print (msg)
+		msg = str(msg).split("data: ")[1]
+		
 
+		if "resident" in msg:
+			message = str(msg).split(" ")
+			self.target_of_interest[0] = float(message[1])
+			self.target_of_interest[1] = float(message[2])
+			self.target_set = True
+			# print(self.target_of_interest)
+
+			
+		
+
+	def get_target_location(self, target):
+		self.pub.publish("Requesting " + target +" co-ordinate")
+		co_ord = []
+
+		while (True):
+			if(self.target_set == True):
+				co_ord=[self.target_of_interest[0], self.target_of_interest[1]]
+				break
+		self.target_set = False
+		return co_ord
 
 
 	def __init__(self):		
 		self.rate = rospy.Rate(constants.RosConstants.robot_rate)
 		self.task_list = []
+		self.target_of_interest = [None, None]
+		self.target_set = False
 		self.status = "idle"
 		# Create a navigation object which will be used to manage all the calls
 		# relating to movement. Passed the robot's name so that the publisher 

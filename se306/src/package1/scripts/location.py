@@ -39,11 +39,15 @@ def set_cook(location_data):
 def find_location(actionmsg):
 	
 	response_msg = ""
-	message = str(actionmsg)
+	message = str(actionmsg).split("data: ")[1]
 	print(message)
 
 	if "resident" in message:
-		response_msg = str(resident_coord[0]) + " " + str(resident_coord[1])
+		response_msg = "resident: "+ str(resident_coord[0]) + " " + str(resident_coord[1])
+		publish(response_msg)
+
+	if "visitor" in message:
+		response_msg = "resident: "+ str(visitor_coord[0]) + " " + str(visitor_coord[1])
 		publish(response_msg)
 
 
