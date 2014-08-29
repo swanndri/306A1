@@ -76,6 +76,8 @@ class Node(object):
 					if curr_job_time > 0:
 						# reassign the job with less time to finish it, so to eventually complete
 						self.current_job = (curr_job_priority, curr_job_description, int(curr_job_time)-1, curr_job_destination)
+
+						#dchanges the rate during events
 						if 'eat' in curr_job_description:
 							self.levels['Fullness'][1] = -2
 						self.status = Node.BUSY
@@ -83,7 +85,9 @@ class Node(object):
 					else:
 						# out of time, job effectively completed
 						# if there is another job in the queue, process it now
-
+						if 'eat' in curr_job_description:
+								self.levels['Fullness'][1] = 1
+								
 						if self.type == "Robot":
 							# return the robot to its idle position
 							self.jobs.put((0, 'robot.returning', 0, self.idle_position))
