@@ -133,6 +133,12 @@ class StatusGUI(tk.Tk):
 		print(selected_event)
 		if selected_event == "Heart Attack":
 			#publish new message to robots
+			task = database.Database.EVENTS.get('Resident.heart_attack')
+			event_priority = task.get('priority')
+			event_name = 'Resident.heart_attack'
+			event_duration = task.get('duration')
+			event_destination = task.get('destination')
+			event_pub.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
 			print("Should publish new event - doctor.doctor.emergency")		#example
 		elif selected_event == "Eat":
 			#publish new message to robots

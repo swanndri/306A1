@@ -98,6 +98,8 @@ class Node(object):
 						elif 'sleep' in curr_job_description:
 							self.levels['Health'][1] = -0.2
 							self.levels['Sanity'][1] = -0.2
+						elif 'heart_attack' in curr_job_description:
+							self.levels['Health'][1] = 15
 
 						self.status = Node.BUSY
 						continue
@@ -124,6 +126,8 @@ class Node(object):
 						elif 'sleep' in curr_job_description:
 							self.levels['Health'][1] = 0.1
 							self.levels['Sanity'][1] = 0.1
+						elif 'heart_attack' in curr_job_description:
+							self.levels['Health'][1] = 0.1
 
 						if self.type == "Robot":
 							# return the robot to its idle position
