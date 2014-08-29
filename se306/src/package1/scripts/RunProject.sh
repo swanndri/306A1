@@ -1,5 +1,8 @@
 #!/bin/bash
-# Run 306 project easily
+
+
+# Launch script for the ROS project
+
 
 killall xterm
 

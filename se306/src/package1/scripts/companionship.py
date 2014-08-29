@@ -5,9 +5,13 @@ import node
 import database
 
 class Companionship(node.Robot):
-	"""
+	''' 
+	Class for Companionship robot.
+	Inherits from Human class.
+	This and all other robot/human classes are similar as they all work
+	through inheritance
+	'''	
 
-	"""
 	def __init__(self, name):
 		super(Companionship, self).__init__(name)
 

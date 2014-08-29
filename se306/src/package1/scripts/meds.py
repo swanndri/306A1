@@ -5,9 +5,14 @@ import node
 import database
 
 class Meds(node.Robot):
-	"""
+	''' 
+	Class for medication robot.
+	Inherits from Human class.
+	
+	This robot is not supposed to move, it is essentially a dispensing
+	robot (vending machine)
+	'''	
 
-	"""
 	def __init__(self, name):
 		super(Meds, self).__init__(name)
 

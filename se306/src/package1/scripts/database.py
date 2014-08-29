@@ -3,14 +3,6 @@ import collections
 
 class Database(object):
 
-	# how to judge orientation
-	ORIENTATION = {
-		'east': 0.0,
-		'west': math.pi,
-		'north': math.pi / 2.0,
-		'south': -math.pi / 2.0
-	}
-
 	# single points defining the 'centre' of an object or room that nodes will travel to
 	POINTS = {
 		'cupboard': (-3.6, 4.0),
@@ -21,8 +13,6 @@ class Database(object):
 		'hallway_bot': (-1.5, -3.7),
 		'door': (-1.2, -6),
 		'kitchen': (2.05, 3),
-#			'kitchen_entrance': (2.05, 1.6),
-#			'living_room_top_right': (4.5, 1.6),
 		'living_room_middle': (2.05, 0.45),
 		'living_room_entrance': (1.5, 0.45),
 		'living_room_sofa': (1, -3),
@@ -39,6 +29,7 @@ class Database(object):
 		'nurse_idle': (6, -6),
 		'doctor_idle': (6, -7.5),
 		'caregiver_idle': (-6, -7.5),
+		'friend_idle' : (-6, -9),
 
 		'idle': (12, 4),
 
@@ -66,9 +57,10 @@ class Database(object):
 		('house', ((-5, 5), (5, -5))),
 		('visitor_idle', ((-4, -8), (-1, -11))),
 		('relative_idle', ((-3, -12), (-1, -14))),
-		('caregiver_idle', ((-8, 5), (5, -5))),
+		('caregiver_idle', ((-8, -6), (-4, -8))),
 		('doctor_idle', ((5, -6), (7, -7))),
-		('nurse_idle', ((5, -7), (8, -7)))
+		('nurse_idle', ((5, -7), (8, -7))),
+		('friend_idle', ((-8, -8), (-4, -11)))
 
 	])
 
@@ -82,12 +74,10 @@ class Database(object):
 		'hallway_top': ['bedroom','hallway_mid'],
 		'hallway_mid': ['hallway_bot','hallway_top','living_room_entrance'],
 		'hallway_bot': ['bathroom','door','hallway_mid'],
-		'door': ['hallway_bot','visitor_idle','caregiver_idle','nurse_idle','doctor_idle', 'relative_idle'],
-		'kitchen': ['dishwasher','fridge','living_room_middle','cook_idle','kitchen_stove'],	#can go straight to kitchen or through kitchen entrance - took out kitchen entrance also
-#		'kitchen_entrance': ['kitchen','living_room_middle'], # took out living room top right - not used(cook_idle changed position)
-#		'living_room_top_right': ['cook_idle','kitchen_entrance'],
-		'living_room_middle': ['kitchen','living_room_entrance','living_room_sofa', 'piano'], # took out living room top right and kitchen entrance - not used
-		'living_room_entrance': ['hallway_mid','living_room_sofa','living_room_middle'],	#take out living room middle? do we need it?
+		'door': ['hallway_bot','visitor_idle','caregiver_idle','nurse_idle','doctor_idle', 'relative_idle', 'friend_idle'],
+		'kitchen': ['dishwasher','fridge','living_room_middle','cook_idle','kitchen_stove'],
+		'living_room_middle': ['kitchen','living_room_entrance','living_room_sofa', 'piano'],
+		'living_room_entrance': ['hallway_mid','living_room_sofa','living_room_middle'],
 		'living_room_sofa': ['sofa','sofa2','piano','entertainment_idle','living_room_entrance','living_room_middle'],
 		
 		# Robot idle positions
@@ -102,7 +92,7 @@ class Database(object):
 		'doctor_idle': ['door'],
 		'caregiver_idle': ['door'],
 		'relative_idle': ['door'],
-
+		'friend_idle' : ['door'],
 		
 		# Furniture
 		'bed': ['bedroom'],
@@ -129,7 +119,8 @@ class Database(object):
 		'robot_6' : 'companionship_idle',
 		'robot_7' : 'caregiver_idle',
 		'robot_8' : 'relative_idle',
-		'robot_9' : 'medication_idle'
+		'robot_9' : 'friend_idle',
+		'robot_10' : 'medication_idle'
 
 	}
 
@@ -165,7 +156,7 @@ class Database(object):
 			'destination': 'kitchen',
 			'duration': 100
 		},
-		'Resident.eat_snack': {						#generated event for innovation
+		'Resident.eat_snack': {						# generated event for innovation
 			'explanation': 'Resident is eating a snack',
 			'priority': 1,
 			'destination': 'kitchen',

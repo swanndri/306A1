@@ -4,7 +4,13 @@ import rospy
 import node
 
 class Cook(node.Robot):
-	
+	''' 
+	Class for Cook robot.
+	Inherits from Human class.
+	This and all other robot/human classes are similar as they all work
+	through inheritance
+	'''	
+
 	def __init__(self, name):
 		super(Cook, self).__init__(name)
 

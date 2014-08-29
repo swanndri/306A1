@@ -163,6 +163,7 @@ myRobot( pose [ 4.5 -4.50 0.001 180.000 ] name "entertainment" color "red")
 myRobot( pose [ -4.5 -1.850 0.001 90.000 ] name "companionship" color "magenta")
 myRobot( pose [ -6 -6.000 0.001 90.000 ] name "caregiver" color "cyan")
 myRobot( pose [ -1.9 -13.000 0.001 90.000 ] name "relative" color "orange")
+myRobot( pose [ -6 -9 0.001 90.000 ] name "friend" color "brown")
 
 myRobot( pose [ -3.500 4.400 0.001 -90.000 ] name "medication" color "violet")
 myAmbulanceRobot( pose [ 6.000 -8.500 0.600 180.000 ] name "ambulance" color "black" bitmap "images/ambulance.png")

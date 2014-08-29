@@ -5,9 +5,13 @@ import node
 import database
 
 class CareGiver(node.Robot):
-	"""
+	''' 
+	Class for CareGiver robot.
+	Inherits from Human class.
+	This and all other robot/human classes are similar as they all work
+	through inheritance
+	'''	
 
-	"""
 	def __init__(self, name):
 		super(CareGiver, self).__init__(name)
 
