@@ -237,7 +237,8 @@ class Navigation(object):
 		for name, (p1, p2) in database.Database.OBJECTS.iteritems():
 			if utils.Rectangle(p1, p2).contains(pt):
 				return name
-		return "visitor_idle"
+		# return "visitor_idle"
+		return None
 
 	''' ----------------------------------Init----------------------------------'''
 	''' Robots are initialized with a name which is passed in as a parameter. This allows us
