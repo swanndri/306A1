@@ -144,6 +144,12 @@ class StatusGUI(tk.Tk):
 			event_pub.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
 			print("Should publish new event - ",selected_event)
 		elif selected_event == "Exercise":
+			task = database.Database.EVENTS.get('Resident.gym')
+			event_priority = task.get('priority')
+			event_name = 'Resident.gym'
+			event_duration = task.get('duration')
+			event_destination = task.get('destination')
+			event_pub.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
 			#publish new message to robots
 			print("Should publish new event - ",selected_event)
 		elif selected_event == "Sleep":

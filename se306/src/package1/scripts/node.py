@@ -80,14 +80,41 @@ class Node(object):
 						#dchanges the rate during events
 						if 'eat' in curr_job_description:
 							self.levels['Fullness'][1] = -2
+							self.levels['Hydration'][1] = -1
+						elif 'meds' in curr_job_description:
+							self.levels['Health'][1] = -0.5
+						elif 'Resident.idle' in curr_job_description:
+							self.levels['Entertainment'][1] = -1
+						elif 'gym' in curr_job_description:
+							self.levels['Fitness'][1] = -5
+							self.levels['Hydration'][1] = 2
+						elif 'toilet' in curr_job_description:
+							self.levels['Relief'][1] = -10
+						elif 'bath' in curr_job_description:
+							self.levels['Hygiene'][1] = -5
+							self.levels['Sanity'][1] = -2
+
 						self.status = Node.BUSY
 						continue
 					else:
 						# out of time, job effectively completed
 						# if there is another job in the queue, process it now
 						if 'eat' in curr_job_description:
-								self.levels['Fullness'][1] = 1
-								
+							self.levels['Fullness'][1] = 1
+							self.levels['Hydration'][1] = 0.5
+						elif 'meds' in curr_job_description:
+							self.levels['Health'][1] = 0.1
+						elif 'Resident.idle' in curr_job_description:
+							self.levels['Entertainment'][1] = 0.5
+						elif 'gym' in curr_job_description:
+							self.levels['Fitness'][1] = 0.5
+							self.levels['Hydration'][1] = 0.5
+						elif 'toilet' in curr_job_description:
+							self.levels['Relief'][1] = 0.5
+						elif 'bath' in curr_job_description:
+							self.levels['Hygiene'][1] = 0.5
+							self.levels['Sanity'][1] = 0.1
+
 						if self.type == "Robot":
 							# return the robot to its idle position
 							self.jobs.put((0, 'robot.returning', 0, self.idle_position))

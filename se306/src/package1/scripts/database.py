@@ -167,6 +167,24 @@ class Database(object):
 			'destination': 'sofa',
 			'duration': 100
 		},
+		'Resident.gym': {
+			'explanation': 'Resident is exercising',
+			'priority': 1,
+			'destination': 'gym',
+			'duration': 100
+		},
+		'Resident.toilet': {
+			'explanation': 'Resident is going toilet',
+			'priority': 1,
+			'destination': 'toilet',
+			'duration': 100
+		},
+		'Resident.bath': {
+			'explanation': 'Resident is having a bath',
+			'priority': 1,
+			'destination': 'bathtub',
+			'duration': 100
+		},
 		'Cook.cook_breakfast': {
 			'explanation': 'Cook robot is cooking breakfast',
 			'priority': 1,
