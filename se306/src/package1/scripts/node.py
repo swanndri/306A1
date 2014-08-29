@@ -16,6 +16,7 @@ class Node(object):
 	def __init__(self, name):
 		self.name = name
 		self.status = Node.IDLE
+		self.idled = True
 		self.navigator = navigation.Navigation(name)
 		self.jobs = Queue.PriorityQueue()
 		self.current_job = None
@@ -36,6 +37,7 @@ class Node(object):
 
 		# request the node to move to new target coordinates
 		self.navigator.move(job[3])
+
 
 	def _assign_next_job_if_available(self):
 		try:
@@ -79,14 +81,20 @@ class Node(object):
 						if 'eat' in curr_job_description:
 							self.levels['Fullness'][1] = -2
 						self.status = Node.BUSY
+						self.idled = False
 						continue
 					else:
 						# out of time, job effectively completed
 						# if there is another job in the queue, process it now
 
-						if self.type == "Robot":
+						if self.type == "Robot" and self.navigator.has_arrived() and not(self.idled):
 							# return the robot to its idle position
 							self.jobs.put((0, 'robot.returning', 0, self.idle_position))
+							
+							if self.navigator.has_arrived():
+								self.idled = True
+							# print("Self.idled in loop = ", self.idled)
+
 						self._assign_next_job_if_available()
 						continue
 				
