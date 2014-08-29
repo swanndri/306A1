@@ -36,9 +36,9 @@ class Database(object):
 		# human starting positions
 		'visitor_idle': (-1.2, -10),
 		'relative_idle': (-1.9, -13),
-		'nurse_idle': (0.8, -10),
-		'doctor_idle': (1.8, -10),
-		'caregiver_idle': (2.8, -10),
+		'nurse_idle': (6, -6),
+		'doctor_idle': (6, -7.5),
+		'caregiver_idle': (-6, -7.5),
 
 		'idle': (12, 4),
 
@@ -63,7 +63,13 @@ class Database(object):
 		('hallway_mid', ((-2.2, 5), (-0.7, -5))),
 		('kitchen', ((-0.7, 5), (5, 2.2))),
 		('living_room_middle', ((-0.7, 2.2), (5, -5))),
-		('house', ((-5, 5), (5, -5)))
+		('house', ((-5, 5), (5, -5))),
+		('visitor_idle', ((-4, -8), (-1, -11))),
+		('relative_idle', ((-3, -12), (-1, -14))),
+		('caregiver_idle', ((-8, 5), (5, -5))),
+		('doctor_idle', ((5, -6), (7, -7))),
+		('nurse_idle', ((5, -7), (8, -7)))
+
 	])
 
 	# connected graph of points showing neighbours]
@@ -76,7 +82,7 @@ class Database(object):
 		'hallway_top': ['bedroom','hallway_mid'],
 		'hallway_mid': ['hallway_bot','hallway_top','living_room_entrance'],
 		'hallway_bot': ['bathroom','door','hallway_mid'],
-		'door': ['hallway_bot','visitor_idle','caregiver_idle','nurse_idle','doctor_idle'],
+		'door': ['hallway_bot','visitor_idle','caregiver_idle','nurse_idle','doctor_idle', 'relative_idle'],
 		'kitchen': ['dishwasher','fridge','living_room_middle','cook_idle','kitchen_stove'],	#can go straight to kitchen or through kitchen entrance - took out kitchen entrance also
 #		'kitchen_entrance': ['kitchen','living_room_middle'], # took out living room top right - not used(cook_idle changed position)
 #		'living_room_top_right': ['cook_idle','kitchen_entrance'],
@@ -95,6 +101,8 @@ class Database(object):
 		'nurse_idle': ['door'],
 		'doctor_idle': ['door'],
 		'caregiver_idle': ['door'],
+		'relative_idle': ['door'],
+
 		
 		# Furniture
 		'bed': ['bedroom'],
