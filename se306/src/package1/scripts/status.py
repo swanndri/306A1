@@ -127,10 +127,10 @@ class StatusGUI(tk.Tk):
 		self.relief_progress["value"] = 100
 
 	def handle_selected(self, event):
-		print("generating event")
+		#print("generating event")
 		index = self.cb.current()
 		selected_event = self.events[index]
-		print(selected_event)
+		#print(selected_event)
 		if selected_event == "Heart Attack":
 			#publish new message to robots
 			print("Should publish new event - doctor.doctor.emergency")		#example
@@ -149,6 +149,7 @@ class StatusGUI(tk.Tk):
 		elif selected_event == "Sleep":
 			#publish new message to robots
 			print("Should publish new event - ",selected_event)
+			
 
 	def combobox_set_up(self):
 		self.events = ('Heart Attack','Eat','Exercise','Sleep')
@@ -180,7 +181,7 @@ rate = rospy.Rate(40)
 
 def callback(msg):
 	status_name, status_value = msg.data.split()
-
+	status_value = int(status_value)
 	if (status_value>80):
 		pass
 	elif(status_value>50):
@@ -192,33 +193,26 @@ def callback(msg):
 	else:
 		print "Something has gone terribly wrong"
 
-
-	# if status_value > 100:		entering this loop for some reason
-	# 	status_value = 100
-
 	status_type = status_name[:-1]
 	mGui.update_status_level(status_type,status_value)
+	
 	if status_value <= 0:
 		print ("0/100")
 	else:
 		print (msg.data + "/100")
 	
-
 		
 def scheduler_callback(msg):	
-	print(msg)
-	if ("status" in msg.data):
-		task = msg.data[:-4]
-	else:
-		task = msg.data
-
+	task = msg.data
+	print task
+	task = task.split()[1]
 	status = ''
 	#Search the dictionary (resident_statuses) in the Constants file for the correct status
-	print(task.split())
-	temp = database.Database.EVENTS.get(task.split()[1])
-	print(temp)
+	temp = database.Database.EVENTS.get(task)
+	print temp
 	status = temp.get('explanation')
 	mGui.status_info["text"] = status
+	
 	
 
 sub = rospy.Subscriber("human", std_msgs.msg.String, callback)
