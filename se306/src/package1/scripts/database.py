@@ -13,35 +13,36 @@ class Database(object):
 
 	# single points defining the 'centre' of an object or room that nodes will travel to
 	POINTS = {
-		'cupboard': (-3.6, 4.2),
+		'cupboard': (-3.6, 4.0),
 		'bedroom': (-3.6, 2.1),
 		'bathroom': (-3.6, -3.7),
-		'hallway_top': (-1.2, 1.9),
-		'hallway_mid': (-1.2, 0.45),
-		'hallway_bot': (-1.2, -3.7),
+		'hallway_top': (-1.5, 1.9),
+		'hallway_mid': (-1.5, 0.45),
+		'hallway_bot': (-1.5, -3.7),
 		'door': (-1.2, -6),
-		'kitchen': (2.05, 3.5),
+		'kitchen': (2.05, 3),
 #			'kitchen_entrance': (2.05, 1.6),
 #			'living_room_top_right': (4.5, 1.6),
 		'living_room_middle': (2.05, 0.45),
-		'living_room_entrance': (1, 0.45),
+		'living_room_entrance': (1.5, 0.45),
 		'living_room_sofa': (1, -3),
 
 		# robot starting positions
-		'cook_idle': (4.5, -1.85),
-		'medication_idle': (-3.5, 4.4),
+		'cook_idle': (0, 3),
+		'medication_idle': (-4.2, 4.4),
 		'entertainment_idle': (4.5, -4.5),
-		'companionship_idle': (-4.5, -1.85),
+		'companionship_idle': (-0.2, -10),
 
 		# human starting positions
 		'visitor_idle': (-1.2, -10),
-		'nurse_idle': (6, -6),
-		'doctor_idle': (6, -7.5),
-		'caregiver_idle': (-6, -6),
+		'relative_idle': (-1.9, -13),
+		'nurse_idle': (0.8, -10),
+		'doctor_idle': (1.8, -10),
+		'caregiver_idle': (2.8, -10),
 
 		'idle': (12, 4),
 
-		'bed': (-2.3, -1.1),
+		'bed': (-2.8, -1.1),
 		'kitchen_stove': (2.05, 3.5),
 		'sofa': (0.3, -3),
 		'gym': (-4.450, 2.850),
@@ -51,15 +52,15 @@ class Database(object):
 		'bathtub': (-4.350, -3.250),
 		'fridge': (0.500, 3.000),
 		'dishwasher': (3.750, 3.500),
-		'piano': (1, -1.1)
+		'piano': (0.8, -1.1)
 	}
 
 	# objects (mostly rooms) defined by their top left and bottom right points
 	OBJECTS = collections.OrderedDict([
-		('cupboard', ((-5, 5), (-1.7, 3.6))),
-		('bedroom', ((-5, 3.6), (-1.7, -5))),
-		('bathroom', ((-5, -2.3), (-1.7, -5))),
-		('hallway_mid', ((-1.7, 5), (-0.7, -5))),
+		('cupboard', ((-5, 5), (-2.2, 3.6))),
+		('bedroom', ((-5, 3.6), (-2.2, -2.3))),
+		('bathroom', ((-5, -2.3), (-2.2, -5))),
+		('hallway_mid', ((-2.2, 5), (-0.7, -5))),
 		('kitchen', ((-0.7, 5), (5, 2.2))),
 		('living_room_middle', ((-0.7, 2.2), (5, -5))),
 		('house', ((-5, 5), (5, -5)))
@@ -79,14 +80,14 @@ class Database(object):
 		'kitchen': ['dishwasher','fridge','living_room_middle','cook_idle','kitchen_stove'],	#can go straight to kitchen or through kitchen entrance - took out kitchen entrance also
 #		'kitchen_entrance': ['kitchen','living_room_middle'], # took out living room top right - not used(cook_idle changed position)
 #		'living_room_top_right': ['cook_idle','kitchen_entrance'],
-		'living_room_middle': ['kitchen','living_room_entrance','living_room_sofa'], # took out living room top right and kitchen entrance - not used
+		'living_room_middle': ['kitchen','living_room_entrance','living_room_sofa', 'piano'], # took out living room top right and kitchen entrance - not used
 		'living_room_entrance': ['hallway_mid','living_room_sofa','living_room_middle'],	#take out living room middle? do we need it?
 		'living_room_sofa': ['sofa','sofa2','piano','entertainment_idle','living_room_entrance','living_room_middle'],
 		
 		# Robot idle positions
 		'cook_idle': ['kitchen'],
 		'medication_idle': ['cupboard'],
-		'entertainment_idle': ['living_room_sofa'],
+		'entertainment_idle': ['living_room_middle'],
 		'companionship_idle': ['bedroom'],
 		
 		# Human starting positions (excluding resident)
@@ -113,7 +114,9 @@ class Database(object):
 	ROBOT_IDLES = {
 
 		'robot_0' : 'visitor_idle',		#visitor
-		'robot_2' : 'cook_idle'
+		'robot_2' : 'cook_idle',
+		'robot_5' : 'entertainment_idle',
+		'robot_8' : 'relative_idle'
 
 	}
 
@@ -152,8 +155,8 @@ class Database(object):
 		'Resident.eat_snack': {						#generated event for innovation
 			'explanation': 'Resident is eating a snack',
 			'priority': 1,
-			'destination': 'fridge',
-			'duration': 10
+			'destination': 'kitchen',
+			'duration': 100
 		},
 		'Resident.take_meds': {
 			'explanation': 'Resident is taking medication',
@@ -166,6 +169,30 @@ class Database(object):
 			'priority': 3,
 			'destination': 'sofa',
 			'duration': 100
+		},
+		'Resident.gym': {
+			'explanation': 'Resident is exercising',
+			'priority': 1,
+			'destination': 'gym',
+			'duration': 100
+		},
+		'Resident.toilet': {
+			'explanation': 'Resident is going toilet',
+			'priority': 1,
+			'destination': 'toilet',
+			'duration': 100
+		},
+		'Resident.bath': {
+			'explanation': 'Resident is having a bath',
+			'priority': 1,
+			'destination': 'bathtub',
+			'duration': 100
+		},
+		'Resident.heart_attack': {
+			'explanation': 'Resident is having a heart_attack',
+			'priority': 0,
+			'destination': 'bed',
+			'duration': 200
 		},
 		'Cook.cook_breakfast': {
 			'explanation': 'Cook robot is cooking breakfast',
@@ -189,7 +216,7 @@ class Database(object):
 			'explanation': 'Someone is visiting the house',
 			'priority': 1,
 			'destination': 'living_room_middle',
-			'duration': 100
+			'duration': 20
 		},
 		'Resident.status_eat_med':  {
 			'explanation': 'Resident is eating',
@@ -334,7 +361,14 @@ class Database(object):
 			'priority': 1,
 			'destination': 'bathroom',
 			'duration': 100
+		},
+		'Entertain.entertain_play_piano': {
+			'explanation': 'Entertainment robot is playing the piano',
+			'priority': 2,
+			'destination': 'piano',
+			'duration': 100
 		}
+
 	}
 
 	LEVELS = (
@@ -345,6 +379,7 @@ class Database(object):
 	# tasks run by the scheduler
 	SCHEDULED_TASKS = {
 		8: 'Resident.wakeup',
+		10: 'Entertain.entertain_play_piano',
 		23: 'Visitor.visit',
 		30: 'Cook.cook_breakfast',
 		45: 'Resident.eat_breakfast',

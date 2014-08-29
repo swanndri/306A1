@@ -13,7 +13,7 @@ class Meds(node.Robot):
 
 	def _scheduler_event_callback(self, msg):
 		if msg.data.split()[1].startswith(self.__class__.__name__):
-			self.jobs.put(tuple(msg.data.split()))
+			self.jobs.append(tuple(msg.data.split()))
 
 if __name__ == '__main__':
 	rospy.init_node('robot_6')

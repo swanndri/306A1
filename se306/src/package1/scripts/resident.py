@@ -13,20 +13,32 @@ class Resident(node.Human):
 		if msg.data.split()[1].startswith(self.__class__.__name__):
 			priority,task_name,duration,destination = tuple(msg.data.split())
 
-			if "status" in new_job[1]:
+			appended = False
+
+			if "status" in task_name:
 				task_name = task_name[:-4]
 
 			#For every job in the queue:
+			for job in self.jobs:
+				print "A job: %s" % str(job)
 				#If the job name contains that same status_*** of the new job: Ie there is a status_eat of any value in the queue
+				if(task_name in job[1]):
+					print "The task name is in job %s == %s" % (task_name, job[1])
 					#  If the job priorities are the same:
-						#Do nothing, we dont need to replace the job, as it is the same job/priority
-					# Else if the priority is lower in the new job than in the original job (the one in the queue):
+					if(int(priority) < int(job[0])):
+						print "Priority is lower"
 						#Delete the old job
 						#Insert the new job
-				#Else they are different job types:
-					#Do not replace
-
-			self.jobs.put()
+						appended = True
+						self.jobs.remove(job)
+						self.jobs.append((priority,task_name,duration,destination))
+						break
+				
+			#Else they are different job types:
+			if not appended:
+				print "Appended is false, do not replace"
+				#Do not replace
+				self.jobs.append((priority,task_name,duration,destination))
 
 if __name__ == '__main__':
 	rospy.init_node('robot_1')

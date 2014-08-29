@@ -12,6 +12,7 @@ import database
 import tf.transformations
 import utils
 
+
 """ This class handles all navigation for robots.
 It is meant to supplement other robot classes and provide them with the navigation
 functionality. It utilises the `constants.Paths` class for its path variables.
@@ -22,177 +23,63 @@ class Navigation(object):
 	''' -----------------------------Call Backs-----------------------------'''
 	def process_range_data(self, lazer_beamz):
 		#If we are headed somewhere and we are facing the correct direction.
-		if (self.target_coordinate != [] and self.facing_correct_direction == True):
-			
-			#detection angles
-			#angle_list = list(range(45, 135))
-			angle_list = list(range(0, 180))
-			CONSTANT_ROBOT_WIDTH = 0.350
+		if (self.target_coordinate != [] and self.facing_correct_direction == True) or self.collision_mode == True:
 
-			targetx = self.target_coordinate[0]
-			targety = self.target_coordinate[1]
-
-			distance_to_waypoint = self.get_distance_to_target(targetx, targety)			
-			
-			
-			'''
-			This for loop checks every ranger distance against the ranger angle to see if there will be enough 
-			space for the robot to go past the obstacle.
-			'''
-			#this variable is made for concurrency reasons.
-			#waypoint_blocked is accessed in two threads. We need to set this variable to false to check if
-			#stuff is still being blocked but if we did that to the global variable then for a split second the
-			#robot thinks the path is clear when it may not be.
-
-			temp_waypoint_blocked = False
-			collision_imminent = False
-			
-			for angle in angle_list:
-				#check if the is something in the way
-				if ((abs(lazer_beamz.ranges[angle] * math.cos(math.radians(angle)))) < (CONSTANT_ROBOT_WIDTH / 2) and distance_to_waypoint > lazer_beamz.ranges[angle]):
-					collision_imminent = True	
-					distance_to_collision = lazer_beamz.ranges[angle]					
-					#0.15 is offset of laser on the robot itself.
-					#if there is something between the robot and the waypoint and that something is on the waypoint
-					if((lazer_beamz.ranges[angle]+0.15 < distance_to_waypoint and lazer_beamz.ranges[angle]+0.15 > distance_to_waypoint - CONSTANT_ROBOT_WIDTH) 
-						or 
-						(lazer_beamz.ranges[angle]+0.15 > distance_to_waypoint and lazer_beamz.ranges[angle]+0.15 < distance_to_waypoint + CONSTANT_ROBOT_WIDTH /2)):
-						print("Something on waypoint")
-						temp_waypoint_blocked = True
-					
-			self.waypoint_blocked = temp_waypoint_blocked			
-
-			#print(str(self.waypoint_blocked) + str(collision_imminent))
-
-			if( self.waypoint_blocked == False and collision_imminent):
-				#print("Test")
-				'''-------Avoid collision stuff goes here---------'''				
-				'''-----------------------------------------------'''
-
-				#store the current target back on the current_path list
-				self.current_path.insert(0,self.target_coordinate)
-
-				#####Headless Chikcen Routine#########
-				headless_distance = 1
-
-				angle_list = list(range(30, 150))
-
-				intersects = []
-				for check_angle in reversed(angle_list):
-					if(lazer_beamz.ranges[check_angle] > headless_distance):
-						intersects.append(True)
-					else:
-						intersects.append(False)
-				lambda_angle = self.get_consecutive_good_angles(intersects, angle_list)
-
-				#rint("lambda angle: " + str(lambda_angle))
-				if(lambda_angle is not None):
-					
+			if(self.collision_mode == False):				
+				angle_list = list(range(45, 135))
+				collision_imminent = False
+				for angle in angle_list:
+					distance_to_collision = lazer_beamz.ranges[angle]
+					if (distance_to_collision < 0.4):	
+						collision_imminent = True
+						break
+				self.collision_mode = collision_imminent
+			if(self.collision_mode == True):
+				all_clear = True
+				angle_list = list(range(55, 125))
+				for angle in angle_list:
+					distance_to_collision = lazer_beamz.ranges[angle]
+					if (distance_to_collision < 0.5):	
+						all_clear = False
+						break
+				if(all_clear):
 					theta = self.normalize(int(math.degrees(self.current_direction)))
-					#print("theta: " + str(theta))
-					new_angle = (theta + 90 - lambda_angle)
-					#print("new angle: " + str(new_angle))
-					hypoteneuse = 0.2 / math.cos(math.radians(abs(90-lambda_angle)))
-					#print("hypoteneuse: " + str(hypoteneuse))
-
-					x_adjust = math.cos(math.radians(new_angle)) * hypoteneuse
-					y_adjust = math.sin(math.radians(new_angle)) * hypoteneuse
-
-					#print("xadjust:  " + str(x_adjust))
-					#print("yadjust:  " + str(y_adjust))
+					x_adjust = math.cos(math.radians(theta)) * 0.7
+					y_adjust = math.sin(math.radians(theta)) * 0.7
 
 					x1 = self.current_coordinates[0]
 					y1 = self.current_coordinates[1]
 
 					new_coord = [x1 + x_adjust, y1 + y_adjust]
-					#print(new_coord)
 
-					self.target_coordinate = new_coord 
-					self.facing_correct_direction = False
-				else:
-					pass
-					#print("We are stuck in a corner")
-				'''------------------------------------------------'''
-				'''^^^^^^^^^^^Avoid collision stuff goes ^^^^^^^^^^'''	
+					place = None
 
-			#DONT DELETE THIS STUFF UNTIL NAV FINIALISED PLZ
+					for name, (p1, p2) in database.Database.OBJECTS.iteritems():
+						if utils.Rectangle(p1, p2).contains(new_coord):
+							place = name
+							break
+					if(place == None):
+						place = "visitor_idle"
 
-			'''#distance infront of robot within a 16 degree buffer
-			distance_infront = min(lazer_beamz.ranges[82:99])
+					current_place = self.get_current_position()
 
-			distance_to_waypoint = self.get_distance_to_target(targetx, targety)
-			half_distance_to_waypoint = distance_to_waypoint / 2
-
-			#check if there is something in the way ( this check distance infront of robot measured to 90% of the distance to the waypoint)
-			print("distance infront: " + str(distance_infront) + str(type(distance_infront)))
-			print("distance to waypoint" + str(distance_to_waypoint) + str(type(distance_to_waypoint)))
-
-
-			if(abs(distance_to_waypoint - distance_infront) > 0 and abs(distance_to_waypoint - distance_infront) < 0.4):
-				self.waypoint_blocked = False
-			
-			if(distance_infront < (distance_to_waypoint * .80)):	
-				#check if waypoint is blocked
-				print("nothing")
-				if(abs(distance_to_waypoint - distance_infront) > 0 and abs(distance_to_waypoint - distance_infront) < 0.4):
-					self.waypoint_blocked = True
-					print("waypoint_blocked")
-					print("still to implement")
-				else:
-					self.waypoint_blocked = False
-					print("waypoint unblocked")
 					self.current_path.insert(0,self.target_coordinate)
-					print("Target Coordinate: " + str(self.target_coordinate))
-						#check path left of it and compare with the path to the right of it.
-						#whichever path intersects with line perpindicular to path. If they both do choose left path.
-						#get intersection line
-
-					#for each angle check if it intersects with halfway point.
-					#creates an array with true or false values to check for a valid pathway
-					intersects = []
-					for check_angle in reversed(angle_list):
-						hypot_length = half_distance_to_waypoint / math.sin(math.radians(check_angle))
-
-						if(lazer_beamz.ranges[check_angle] > hypot_length):
-							intersects.append(True)
-						else:
-							intersects.append(False)
-
-					print(intersects)
+				
+					if(self.current_col_nodes_added == 0):
+						self.original_path = list(self.current_path)					
 					
-					#lambda_angle is the new angle relative to the robot that the robot needs to turn
-					lambda_angle = self.get_consecutive_good_angles(intersects, angle_list)
+					if(str(current_place) == str(place)):		
+						if(self.current_col_nodes_added == 3):
+							self.current_path = self.original_path
+							self.target_coordinate = self.current_path.pop(0)
+							self.current_col_nodes_added = 0
+						else:			
+							self.target_coordinate = new_coord							
+							self.current_col_nodes_added += 1
 
-					print("Angle for new direction: " + str(lambda_angle))
-					if(lambda_angle is not None):
-						self.collision = False
-						#get current facing angle in degrees
-						theta = self.normalize(int(math.degrees(self.current_direction)))
-						#angle_prime from perspective of world
-						print("Theta:" + str(theta))
-
-						new_angle = (theta + 90 - lambda_angle)
-						print("New Angle:" + str(new_angle))
-						print("Half Dist:" + str(half_distance_to_waypoint))
-						hypoteneuse = half_distance_to_waypoint / math.cos(math.radians(abs(90-lambda_angle)))
-
-						print("Hyp" + str(hypoteneuse))
-						x_adjust = math.cos(math.radians(new_angle)) * hypoteneuse
-						y_adjust = math.sin(math.radians(new_angle)) * hypoteneuse
-
-						x1 = self.current_coordinates[0]
-						y1 = self.current_coordinates[1]
-
-						new_coord = [x1 + x_adjust, y1 + y_adjust]
-						print(new_coord)
-
-						self.target_coordinate = new_coord 
-						self.facing_correct_direction = False
-						self.col_other_robot = True
+						self.collision_mode = False
 					else:
-						print("Lamba = None")
-						print("still to implement")
-						self.collision = True'''
+						self.target_coordinate = self.current_path.pop(0)
 
 	# Process current position and move if neccessary
 	def process_position(self, position_data):
@@ -225,14 +112,13 @@ class Navigation(object):
 					self.target_coordinate = []
 
 			if(self.target_coordinate != []):
-				self.target_direction = self.calculate_heading()
-				
+				self.target_direction = self.calculate_heading()				
 				self.rotate_to_direction(self.target_direction)
+
 				self.move_to_target()
 
 		if(self.waypoint_blocked == True):
 			self.move_cmd.linear.x = 0	
-
 
 	def rotate_to_direction(self, ros_angle):
 		# Find optimal direction to rotate
@@ -248,10 +134,17 @@ class Navigation(object):
 			self.move_cmd.angular.z = 0
 			self.facing_correct_direction = True
 
+		if(self.collision_mode):
+			self.move_cmd.angular.z = 0.5
 
 	def move_to_target(self):
 		# Linear movement
-		if (self.facing_correct_direction == True and self.not_at_target == True):
+		if(self.facing_correct_direction and self.collision_mode == False):
+			self.movement_speed = self.movement_speed_constant
+		else:
+			self.movement_speed = 0
+
+		if (self.not_at_target == True):
 			self.move_cmd.linear.x = self.movement_speed
 		else:
 			self.move_cmd.linear.x = 0
@@ -320,7 +213,7 @@ class Navigation(object):
 
 		old_max = 180
 		old_min = 1
-		new_max = 4
+		new_max = 6
 		new_min = 0.1
 
 		target_angle 	= 	self.normalize(int(math.degrees(self.target_direction)))
@@ -330,7 +223,7 @@ class Navigation(object):
 		difference = abs((difference + 180) % 360 - 180)
 
 		old_range = (old_max - old_min)  
-		new_range = (new_max - new_min)  
+		new_range = (new_max - new_min)
 
 		rotation_speed = (((difference - old_min) * new_range) / old_range) + new_min
 		return rotation_speed
@@ -340,6 +233,7 @@ class Navigation(object):
 		xcurrent = self.current_coordinates[0]
 		ycurrent = self.current_coordinates[1]
 		pt = [xcurrent, ycurrent]
+
 		for name, (p1, p2) in database.Database.OBJECTS.iteritems():
 			if utils.Rectangle(p1, p2).contains(pt):
 				return name
@@ -354,16 +248,19 @@ class Navigation(object):
 
 		#init all our used variables
 		self.robot_name = robot_name		
-		self.movement_speed = 0.5
+		self.movement_speed_constant = 0.6
 
-		self.current_path = []
-		self.current_direction	= None
-		self.target_coordinate = []
-		self.target_direction = None
-		self.current_coordinates = [0,0]		
-		
-		self.waypoint_blocked = False
-		self.not_at_target = True		
+		self.current_path 			= []
+		self.current_direction		= None
+		self.target_coordinate 		= []
+		self.target_direction 		= None
+		self.current_coordinates 	= [0,0]		
+		self.original_path 			= []
+
+		self.current_col_nodes_added = 0
+		self.waypoint_blocked 		= False
+		self.collision_mode 		= False
+		self.not_at_target 			= True		
 		self.facing_correct_direction = False
 
 		#init publishers and subscribesr
@@ -381,6 +278,7 @@ class Navigation(object):
 		self.facing_correct_direction = False
 		current_node = self.get_current_position()
 		s = utils.Search()
+
 		nodes_path = s.find_path(current_node, room)
 		self.current_path = self.convert_path(nodes_path)
 		self.target_coordinate = self.current_path.pop(0)
