@@ -152,8 +152,8 @@ class Database(object):
 		'Resident.eat_snack': {						#generated event for innovation
 			'explanation': 'Resident is eating a snack',
 			'priority': 1,
-			'destination': 'fridge',
-			'duration': 10
+			'destination': 'kitchen',
+			'duration': 100
 		},
 		'Resident.take_meds': {
 			'explanation': 'Resident is taking medication',
