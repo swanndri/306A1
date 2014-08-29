@@ -16,5 +16,5 @@ class Entertain(node.Robot):
 			self.jobs.put(tuple(msg.data.split()))
 
 if __name__ == '__main__':
-	rospy.init_node('robot_7')
-	entertain = Entertain('robot_7')
+	rospy.init_node('robot_5')
+	entertain = Entertain('robot_5')

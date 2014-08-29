@@ -30,7 +30,7 @@ class Database(object):
 		# robot starting positions
 		'cook_idle': (0, 3),
 		'medication_idle': (-4.2, 4.4),
-		'entertainment_idle': (-2.2, -10),
+		'entertainment_idle': (4.5, -4.5),
 		'companionship_idle': (-0.2, -10),
 
 		# human starting positions
@@ -51,7 +51,7 @@ class Database(object):
 		'bathtub': (-4.350, -3.250),
 		'fridge': (0.500, 3.000),
 		'dishwasher': (3.750, 3.500),
-		'piano': (1, -1.1)
+		'piano': (0.8, -1.1)
 	}
 
 	# objects (mostly rooms) defined by their top left and bottom right points
@@ -79,14 +79,14 @@ class Database(object):
 		'kitchen': ['dishwasher','fridge','living_room_middle','cook_idle','kitchen_stove'],	#can go straight to kitchen or through kitchen entrance - took out kitchen entrance also
 #		'kitchen_entrance': ['kitchen','living_room_middle'], # took out living room top right - not used(cook_idle changed position)
 #		'living_room_top_right': ['cook_idle','kitchen_entrance'],
-		'living_room_middle': ['kitchen','living_room_entrance','living_room_sofa'], # took out living room top right and kitchen entrance - not used
+		'living_room_middle': ['kitchen','living_room_entrance','living_room_sofa', 'piano'], # took out living room top right and kitchen entrance - not used
 		'living_room_entrance': ['hallway_mid','living_room_sofa','living_room_middle'],	#take out living room middle? do we need it?
 		'living_room_sofa': ['sofa','sofa2','piano','entertainment_idle','living_room_entrance','living_room_middle'],
 		
 		# Robot idle positions
 		'cook_idle': ['kitchen'],
 		'medication_idle': ['cupboard'],
-		'entertainment_idle': ['living_room_sofa'],
+		'entertainment_idle': ['living_room_middle'],
 		'companionship_idle': ['bedroom'],
 		
 		# Human starting positions (excluding resident)
@@ -113,7 +113,8 @@ class Database(object):
 	ROBOT_IDLES = {
 
 		'robot_0' : 'visitor_idle',		#visitor
-		'robot_2' : 'cook_idle'
+		'robot_2' : 'cook_idle',
+		'robot_5' : 'entertainment_idle'
 
 	}
 
@@ -358,7 +359,14 @@ class Database(object):
 			'priority': 1,
 			'destination': 'bathroom',
 			'duration': 100
+		},
+		'Entertain.entertain_play_piano': {
+			'explanation': 'Entertainment robot is playing the piano',
+			'priority': 2,
+			'destination': 'piano',
+			'duration': 100
 		}
+
 	}
 
 	LEVELS = (
@@ -369,6 +377,7 @@ class Database(object):
 	# tasks run by the scheduler
 	SCHEDULED_TASKS = {
 		8: 'Resident.wakeup',
+		10: 'Entertain.entertain_play_piano',
 		23: 'Visitor.visit',
 		30: 'Cook.cook_breakfast',
 		45: 'Resident.eat_breakfast',
