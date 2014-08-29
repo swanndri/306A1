@@ -220,7 +220,7 @@ class Database(object):
 			'explanation': 'Someone is visiting the house',
 			'priority': 1,
 			'destination': 'living_room_middle',
-			'duration': 20
+			'duration': 5
 		},
 		'Resident.status_eat_med':  {
 			'explanation': 'Resident is eating',
@@ -383,7 +383,7 @@ class Database(object):
 	# tasks run by the scheduler
 	SCHEDULED_TASKS = {
 		8: 'Resident.wakeup',
-		10: 'Entertain.entertain_play_piano',
+		60: 'Entertain.entertain_play_piano',
 		23: 'Visitor.visit',
 		30: 'Cook.cook_breakfast',
 		45: 'Resident.eat_breakfast',

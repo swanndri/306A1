@@ -35,11 +35,13 @@ class Scheduler(object):
 			else:
 				pass
 	def _human_status_event(self, event):
-		task = database.Database.STATUS_TASKS.get(event.data)
-		if task is not None:
-			self.publisher.publish(task)
-		else:
-			raise Exception("event not found in status dict")
+		event_name = database.Database.STATUS_TASKS[event.data]
+		event_priority = database.Database.EVENTS[event_name]['priority']
+		event_duration = database.Database.EVENTS[event_name]['duration']
+		event_destination = database.Database.EVENTS[event_name]['destination']
+
+		self.publisher.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
+
 
 if __name__ == '__main__':
 	roslib.load_manifest('package1')

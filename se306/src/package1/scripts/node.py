@@ -220,10 +220,14 @@ class Human(Node):
 					if (self.levels[levels][0] <= 0):
 						self.levels[levels][0] = 0
 
+					publish_string = ("%s: %s"%(levels,self.levels[levels][0]))
+					self.human_pub.publish(publish_string)
 
 
+		
 		# loop through all attributes
 		for attribute, value in self.levels.iteritems():
 			# publish them
+
 			self.human_pub.publish("%s: %d" % (attribute, value[0]))
-			print attribute, value[0]
+			#print attribute, value[0]
