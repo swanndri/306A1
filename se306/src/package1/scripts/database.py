@@ -123,8 +123,13 @@ class Database(object):
 
 		'robot_0' : 'visitor_idle',		#visitor
 		'robot_2' : 'cook_idle',
+		'robot_3' : 'nurse_idle',
+		'robot_4' : 'doctor_idle',
 		'robot_5' : 'entertainment_idle',
-		'robot_8' : 'relative_idle'
+		'robot_6' : 'companionship_idle',
+		'robot_7' : 'caregiver_idle',
+		'robot_8' : 'relative_idle',
+		'robot_9' : 'medication_idle'
 
 	}
 
