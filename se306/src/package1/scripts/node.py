@@ -3,9 +3,10 @@ import roslib
 import rosgraph_msgs
 import std_msgs.msg
 import navigation
-import Queue
+import heapq
 import random
 import database
+import heapq
 
 class Node(object):
 
@@ -18,7 +19,7 @@ class Node(object):
 		self.status = Node.IDLE
 		self.idled = True
 		self.navigator = navigation.Navigation(name)
-		self.jobs = Queue.PriorityQueue()
+		self.jobs = []
 		self.current_job = None
 		self.publisher = rospy.Publisher(name, std_msgs.msg.String, queue_size=10)
 		self.rate = rospy.Rate(10)
@@ -40,9 +41,9 @@ class Node(object):
 
 
 	def _assign_next_job_if_available(self):
-		try:
-			self._assign_job(self.jobs.get_nowait())
-		except Queue.Empty:
+		if len(self.jobs):
+			self._assign_job(heapq.heappop(self.jobs))
+		else:
 			self.current_job = None
 			self.status = Node.IDLE
 
@@ -56,9 +57,9 @@ class Node(object):
 
 			try:
 				# get next job without altering the queue to check if there is a job requiring immediate attention
-				next_job_priority, next_job_description, next_job_time, next_job_destination = self.jobs.queue[0] if self.jobs.qsize() else (None, None, None, None)
+				next_job_priority, next_job_description, next_job_time, next_job_destination = heapq.heappop(list(self.jobs)) if self.jobs else (None, None, None, None)
 			except ValueError:
-				raise Exception("Bogus job: %s" % self.jobs.queue[0])
+				raise Exception("Bogus job: %s" % heapq.heappop(list(self.jobs)))
 
 			# if there is a job we are attending to
 			if self.current_job:
@@ -67,7 +68,7 @@ class Node(object):
 				# if the priority is lower (1+) then that job will be processed only once the first completes
 				if next_job_priority == 0 and next_job_priority < curr_job_priority:
 					# stop everything, this is an emergency
-					self._assign_next_job()
+					self._assign_next_job_if_available()
 					continue
 
 				# check if the current position of the node matches the location where the job should take place at
@@ -134,8 +135,8 @@ class Node(object):
 
 						if self.type == "Robot" and self.navigator.has_arrived() and not(self.idled):
 							# return the robot to its idle position
-							self.jobs.put((0, 'robot.returning', 0, self.idle_position))
-							
+							self.jobs.append((0, 'robot.returning', 0, self.idle_position))
+
 							if self.navigator.has_arrived():
 								self.idled = True
 							# print("Self.idled in loop = ", self.idled)
