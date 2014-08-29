@@ -34,7 +34,6 @@ class Navigation(object):
 						collision_imminent = True
 						break
 				self.collision_mode = collision_imminent
-			print(self.collision_mode)
 			if(self.collision_mode == True):
 				all_clear = True
 				angle_list = list(range(55, 125))
@@ -43,7 +42,6 @@ class Navigation(object):
 					if (distance_to_collision < 0.5):	
 						all_clear = False
 						break
-				print("all clear" + str (all_clear))
 				if(all_clear):
 					theta = self.normalize(int(math.degrees(self.current_direction)))
 					x_adjust = math.cos(math.radians(theta)) * 0.7
@@ -66,16 +64,9 @@ class Navigation(object):
 					current_place = self.get_current_position()
 
 					self.current_path.insert(0,self.target_coordinate)
-					print(self.current_col_nodes_added)
-					print(self.original_path)
-
+				
 					if(self.current_col_nodes_added == 0):
 						self.original_path = list(self.current_path)					
-					
-					print("CURRENT")
-					print(self.current_path)
-					print(self.target_coordinate)
-					print("END LOOP")
 					
 					if(str(current_place) == str(place)):		
 						if(self.current_col_nodes_added == 3):
@@ -142,7 +133,7 @@ class Navigation(object):
 		else:
 			self.move_cmd.angular.z = 0
 			self.facing_correct_direction = True
-			
+
 		if(self.collision_mode):
 			self.move_cmd.angular.z = 0.5
 
