@@ -79,20 +79,25 @@ class Node(object):
 
 						#dchanges the rate during events
 						if 'eat' in curr_job_description:
-							self.levels['Fullness'][1] = -2
-							self.levels['Hydration'][1] = -1
+							self.levels['Fullness'][1] = -4
+							self.levels['Hydration'][1] = -2
 						elif 'meds' in curr_job_description:
 							self.levels['Health'][1] = -0.5
 						elif 'Resident.idle' in curr_job_description:
-							self.levels['Entertainment'][1] = -1
+							self.levels['Entertainment'][1] = -2
 						elif 'gym' in curr_job_description:
-							self.levels['Fitness'][1] = -5
+							self.levels['Fitness'][1] = -10
 							self.levels['Hydration'][1] = 2
-						elif 'toilet' in curr_job_description:
-							self.levels['Relief'][1] = -10
-						elif 'bath' in curr_job_description:
-							self.levels['Hygiene'][1] = -5
+							self.levels['Entertainment'][1] = -4
 							self.levels['Sanity'][1] = -2
+						elif 'toilet' in curr_job_description:
+							self.levels['Relief'][1] = -15
+						elif 'bath' in curr_job_description:
+							self.levels['Hygiene'][1] = -10
+							self.levels['Sanity'][1] = -2
+						elif 'sleep' in curr_job_description:
+							self.levels['Health'][1] = -0.2
+							self.levels['Sanity'][1] = -0.2
 
 						self.status = Node.BUSY
 						continue
@@ -109,10 +114,15 @@ class Node(object):
 						elif 'gym' in curr_job_description:
 							self.levels['Fitness'][1] = 0.5
 							self.levels['Hydration'][1] = 0.5
+							self.levels['Entertainment'][1] = 0.5
+							self.levels['Sanity'][1] = 0.1
 						elif 'toilet' in curr_job_description:
 							self.levels['Relief'][1] = 0.5
 						elif 'bath' in curr_job_description:
 							self.levels['Hygiene'][1] = 0.5
+							self.levels['Sanity'][1] = 0.1
+						elif 'sleep' in curr_job_description:
+							self.levels['Health'][1] = 0.1
 							self.levels['Sanity'][1] = 0.1
 
 						if self.type == "Robot":

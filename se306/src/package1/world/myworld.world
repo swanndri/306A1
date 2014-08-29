@@ -92,7 +92,7 @@ define myRobotFurniture model
 
 define myRobotGym model
 (
-  size [0.750 1.000 0.500]
+  size [0.750 1.000 0.000]
 )
 
 define myRobotBench model
@@ -102,13 +102,13 @@ define myRobotBench model
 
 define myRobotBathTub model
 (
-  size [0.750 1.000 0.500]
+  size [0.750 1.000 0.000]
   ranger_return 1.000
 )
 
 define myRobotToilet model
 (
-  size [0.500 0.750 0.500]
+  size [0.500 0.750 0.000]
 )
 
 define myRobotSink model
