@@ -65,7 +65,7 @@ class Node(object):
 				# if the priority is lower (1+) then that job will be processed only once the first completes
 				if next_job_priority == 0 and next_job_priority < curr_job_priority:
 					# stop everything, this is an emergency
-					self._assign_next_job()
+					self._assign_next_job_if_available()
 					continue
 
 				# check if the current position of the node matches the location where the job should take place at
