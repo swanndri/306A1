@@ -35,6 +35,7 @@ class Database(object):
 
 		# human starting positions
 		'visitor_idle': (-1.2, -10),
+		'relative_idle': (-1.9, -13),
 		'nurse_idle': (0.8, -10),
 		'doctor_idle': (1.8, -10),
 		'caregiver_idle': (2.8, -10),
@@ -114,7 +115,8 @@ class Database(object):
 
 		'robot_0' : 'visitor_idle',		#visitor
 		'robot_2' : 'cook_idle',
-		'robot_5' : 'entertainment_idle'
+		'robot_5' : 'entertainment_idle',
+		'robot_8' : 'relative_idle'
 
 	}
 
@@ -208,7 +210,7 @@ class Database(object):
 			'explanation': 'Someone is visiting the house',
 			'priority': 1,
 			'destination': 'living_room_middle',
-			'duration': 100
+			'duration': 20
 		},
 		'Resident.status_eat_med':  {
 			'explanation': 'Resident is eating',
