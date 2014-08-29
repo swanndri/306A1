@@ -133,6 +133,12 @@ class StatusGUI(tk.Tk):
 		print(selected_event)
 		if selected_event == "Heart Attack":
 			#publish new message to robots
+			task = database.Database.EVENTS.get('Resident.heart_attack')
+			event_priority = task.get('priority')
+			event_name = 'Resident.heart_attack'
+			event_duration = task.get('duration')
+			event_destination = task.get('destination')
+			event_pub.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
 			print("Should publish new event - doctor.doctor.emergency")		#example
 		elif selected_event == "Eat":
 			#publish new message to robots
@@ -152,12 +158,36 @@ class StatusGUI(tk.Tk):
 			event_pub.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
 			#publish new message to robots
 			print("Should publish new event - ",selected_event)
+		elif selected_event == "Bath":
+			task = database.Database.EVENTS.get('Resident.bath')
+			event_priority = task.get('priority')
+			event_name = 'Resident.bath'
+			event_duration = task.get('duration')
+			event_destination = task.get('destination')
+			event_pub.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
+			#publish new message to robots
+			print("Should publish new event - ",selected_event)
+		elif selected_event == "Toilet":
+			task = database.Database.EVENTS.get('Resident.toilet')
+			event_priority = task.get('priority')
+			event_name = 'Resident.toilet'
+			event_duration = task.get('duration')
+			event_destination = task.get('destination')
+			event_pub.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
+			#publish new message to robots
+			print("Should publish new event - ",selected_event)
 		elif selected_event == "Sleep":
+			task = database.Database.EVENTS.get('Resident.sleep')
+			event_priority = task.get('priority')
+			event_name = 'Resident.sleep'
+			event_duration = task.get('duration')
+			event_destination = task.get('destination')
+			event_pub.publish("%d %s %d %s" % (event_priority, event_name, event_duration, event_destination))
 			#publish new message to robots
 			print("Should publish new event - ",selected_event)
 
 	def combobox_set_up(self):
-		self.events = ('Heart Attack','Eat','Exercise','Sleep')
+		self.events = ('Heart Attack','Eat','Exercise','Sleep','Bath','Toilet')
 		self.cb = ttk.Combobox(self.combo_frame, values=self.events, state='readonly')
 		self.cb.bind("<<ComboboxSelected>>", self.handle_selected)
 

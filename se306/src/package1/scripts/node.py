@@ -17,6 +17,7 @@ class Node(object):
 	def __init__(self, name):
 		self.name = name
 		self.status = Node.IDLE
+		self.idled = True
 		self.navigator = navigation.Navigation(name)
 		self.jobs = []
 		self.current_job = None
@@ -37,6 +38,7 @@ class Node(object):
 
 		# request the node to move to new target coordinates
 		self.navigator.move(job[3])
+
 
 	def _assign_next_job_if_available(self):
 		if len(self.jobs):
@@ -80,22 +82,30 @@ class Node(object):
 
 						#dchanges the rate during events
 						if 'eat' in curr_job_description:
-							self.levels['Fullness'][1] = -2
-							self.levels['Hydration'][1] = -1
+							self.levels['Fullness'][1] = -4
+							self.levels['Hydration'][1] = -2
 						elif 'meds' in curr_job_description:
 							self.levels['Health'][1] = -0.5
 						elif 'Resident.idle' in curr_job_description:
-							self.levels['Entertainment'][1] = -1
+							self.levels['Entertainment'][1] = -2
 						elif 'gym' in curr_job_description:
-							self.levels['Fitness'][1] = -5
+							self.levels['Fitness'][1] = -10
 							self.levels['Hydration'][1] = 2
-						elif 'toilet' in curr_job_description:
-							self.levels['Relief'][1] = -10
-						elif 'bath' in curr_job_description:
-							self.levels['Hygiene'][1] = -5
+							self.levels['Entertainment'][1] = -4
 							self.levels['Sanity'][1] = -2
+						elif 'toilet' in curr_job_description:
+							self.levels['Relief'][1] = -15
+						elif 'bath' in curr_job_description:
+							self.levels['Hygiene'][1] = -10
+							self.levels['Sanity'][1] = -2
+						elif 'sleep' in curr_job_description:
+							self.levels['Health'][1] = -0.2
+							self.levels['Sanity'][1] = -0.2
+						elif 'heart_attack' in curr_job_description:
+							self.levels['Health'][1] = 15
 
 						self.status = Node.BUSY
+						self.idled = False
 						continue
 					else:
 						# out of time, job effectively completed
@@ -110,15 +120,27 @@ class Node(object):
 						elif 'gym' in curr_job_description:
 							self.levels['Fitness'][1] = 0.5
 							self.levels['Hydration'][1] = 0.5
+							self.levels['Entertainment'][1] = 0.5
+							self.levels['Sanity'][1] = 0.1
 						elif 'toilet' in curr_job_description:
 							self.levels['Relief'][1] = 0.5
 						elif 'bath' in curr_job_description:
 							self.levels['Hygiene'][1] = 0.5
 							self.levels['Sanity'][1] = 0.1
+						elif 'sleep' in curr_job_description:
+							self.levels['Health'][1] = 0.1
+							self.levels['Sanity'][1] = 0.1
+						elif 'heart_attack' in curr_job_description:
+							self.levels['Health'][1] = 0.1
 
-						if self.type == "Robot":
+						if self.type == "Robot" and self.navigator.has_arrived() and not(self.idled):
 							# return the robot to its idle position
 							self.jobs.append((0, 'robot.returning', 0, self.idle_position))
+
+							if self.navigator.has_arrived():
+								self.idled = True
+							# print("Self.idled in loop = ", self.idled)
+
 						self._assign_next_job_if_available()
 						continue
 				
