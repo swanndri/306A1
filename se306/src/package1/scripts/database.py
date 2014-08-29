@@ -56,9 +56,9 @@ class Database(object):
 
 	# objects (mostly rooms) defined by their top left and bottom right points
 	OBJECTS = collections.OrderedDict([
-		('cupboard', ((-5, 5), (-1.7, 3.6))),
-		('bedroom', ((-5, 3.6), (-1.7, -5))),
-		('bathroom', ((-5, -2.3), (-1.7, -5))),
+		('cupboard', ((-5, 5), (-2.2, 3.6))),
+		('bedroom', ((-5, 3.6), (-2.2, -5))),
+		('bathroom', ((-5, -2.3), (-2.2, -5))),
 		('hallway_mid', ((-1.7, 5), (-0.7, -5))),
 		('kitchen', ((-0.7, 5), (5, 2.2))),
 		('living_room_middle', ((-0.7, 2.2), (5, -5))),
@@ -166,6 +166,24 @@ class Database(object):
 			'explanation': 'Resident is not doing anything',
 			'priority': 3,
 			'destination': 'sofa',
+			'duration': 100
+		},
+		'Resident.gym': {
+			'explanation': 'Resident is exercising',
+			'priority': 1,
+			'destination': 'gym',
+			'duration': 100
+		},
+		'Resident.toilet': {
+			'explanation': 'Resident is going toilet',
+			'priority': 1,
+			'destination': 'toilet',
+			'duration': 100
+		},
+		'Resident.bath': {
+			'explanation': 'Resident is having a bath',
+			'priority': 1,
+			'destination': 'bathtub',
 			'duration': 100
 		},
 		'Cook.cook_breakfast': {
