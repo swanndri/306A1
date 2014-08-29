@@ -16,18 +16,22 @@ define myRobot position
 (
   block
     (
-      points 4
-      point[0] [0 0.5]
-      point[1] [0.3 1]
-      point[2] [1 0.5]
-      point[3] [0.3 0]
+      points 8
+      point[0] [0 0.8]
+      point[1] [0.2 1]
+      point[2] [0.8 1]
+      point[3] [1 0.8]
+      point[4] [1 0.2]
+      point[5] [0.8 0]
+      point[6] [0.2 0]
+      point[7] [0 0.2]
       z [0 1]
     )
   #fit shape to this size in meters
   size [0.350 0.350 0.500]
   drive "diff"
 
-  mylaser(pose [ 0.150 0.000 -0.200 0.000 ]) 
+  mylaser(pose [ 0.0 0.000 -0.200 0.000 ]) 
   
   # first one is distance is away from centre of robot in x axis (positive = right). Second is distance away from centre of robot in y axis(positive = up). Third height in z axis (positive is up vertically). Last parameter is direction facing
 )
@@ -141,9 +145,9 @@ floorplan
 
 
 # ============================================ Robots ====================================================
-myRobot( pose [ -1.200 -10.000 0.001 90.000 ] name "cook" color "yellow")
+myRobot( pose [ -1.200 -10.000 0.001 90.000 ] name "Visitor" color "yellow")
 myRobot( pose [ -2.800 -1.100 0.001 0.000 ] name "resident" color "green")
-myRobot( pose [ 4.5 2.500 0.001 90.000 ] name "visitor" color "black")
+myRobot( pose [ 0 3 0.001 90.000 ] name "cook" color "black")
 
 # myRobot( pose [ 6 -6.000 0.001 90.000 ] name "nurse" color "pink")
 # myRobot( pose [ 6 -7.500 0.001 90.000 ] name "doctor" color "gray")
@@ -176,7 +180,7 @@ myRobotBed( pose [ -3.000 -0.750 0.000 90.000 ] name "rBed2" color "black" bitma
 
 
 # =========================================== Kitchen ====================================================
-myRobotFurniture( pose [ 2.150 4.300 0.000 0.000 ] name "rStove" color "black" bitmap "images/stove.png")
-myRobotFurniture( pose [ 0.020 3.000 0.000 90.000 ] name "rFridge" color "black" bitmap "images/Fridge.png")
-myRobotBench( pose [ 0.400 4.300 0.000 0.000 ] name "rBench" color "black" bitmap "images/bench.png")
-myRobotFurniture( pose [ 3.750 4.300 0.000 0.000 ] name "rDishWasher" color "black" bitmap "images/dishwasher.png")
+myRobotFurniture( pose [ 1.680 4.300 0.000 0.000 ] name "rStove" color "black" bitmap "images/stove.png")
+myRobotFurniture( pose [ 4.350 3.000 0.000 90.000 ] name "rFridge" color "black" bitmap "images/Fridge.png")
+myRobotBench( pose [ 3.310 4.320 0.000 0.000 ] name "rBench" color "black" bitmap "images/bench.png")
+myRobotFurniture( pose [ 0.150 4.300 0.000 0.000 ] name "rDishWasher" color "black" bitmap "images/dishwasher.png")

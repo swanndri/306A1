@@ -98,7 +98,6 @@ class Search(object):
 
 		return None		#returns None if failed to find path
 
-
 class Angle(object):
 	
 	def __init__(self, current, target):
